@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+    height: 70px;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    background:rgb(255, 255, 255, 0.3);
+}
+header:hover{
+    background: rgb(255, 255, 255, 1);
+}
+header.sticky{
+    background: rgb(255, 255, 255, 1);
+}
+.logo {
+    flex: 1;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.menu {
+    flex: 3;
+    display: flex;
+}
+
+.menu>li {
+    padding: 0 15px;
+    position: relative;
+}
+
+.menu>li:hover .sub-menu {
+    visibility: visible;
+    top: 45px;
+}
+
+.sub-menu {
+    position: absolute;
+    width: 180px;
+    border: 2px solid black;
+    padding: 10px 0 10px 20px;
+    visibility: hidden;
+    top: 65px;
+    transition: 0.3s;
+    z-index: 1;
+    background: white;
+}
+
+.sub-menu ul {
+    padding-left: 15px;
+}
+
+.sub-menu li a {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.menu>li a {
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    line-height: 20px;
+}
+
+.other {
+    flex: 1;
+    display: flex;
+}
+
+.other>li {
+    padding: 0 15px;
+    position: relative;
+}
+.other>li::after{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 80%;
+    background: rgb(195, 184, 184);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.other > li:last-child::after{
+    display: none;
+}
+.other>li:first-child {
+    position: relative;
+}
+
+.other>li:first-child input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+    outline: none;
+}
+
+.other>li:first-child i {
+    position: absolute;
+    right: 10px;
+}
+
+#Slider {
+    padding-bottom: 30px;
+    border: 3px solid black;
+    overflow: hidden;
+}
+
+.aspect-ratio-169 {
+    display: block;
+    position: relative;
+    padding-top: 56.25%;
+    transition: 0.4s;
+
+}
+
+.aspect-ratio-169 img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.dot-container {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.dot {
+    height: 16px;
+    width: 16px;
+    background-color: grey;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: black;
+}
+
+/*-----------------------------------------app------------------------------------------*/
+.app-container {
+    text-align: center;
+    align-items: center;
+    padding: 150px 0 50px 0;
+}
+
+.app-google {
+    margin: 50px;
+}
+
+.app-google img {
+    height: 50px;
+    cursor: pointer;
+}
+
+.app-container {
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-size: 17px;
+    font-weight: bold;
+    color: black;
+}
+
+.app-container input {
+    margin-top: 50px;
+    border: none;
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+    width: 400px;
+    text-align: center;
+}
+
+/*-----------------------------------footer------------------------------------*/
+.footer {
+    text-align: center;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 70px;
+}
+
+.footer-top img {
+    height: 50px;
+}
+
+.footer-top li {
+    padding: 0 12px;
+    position: relative;
+}
+
+.footer-top li::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 80%;
+    background: grey;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.footer-top li:last-child::after {
+    display: none;
+}
+
+.footer-top li:last-child a {
+    margin-right: 12px;
+    color: rgb(12, 11, 11);
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-bottom {
+
+    margin: 40px 0 0 ;
+    text-align: center;
+    background-color: rgb(239, 228, 228);
+}
