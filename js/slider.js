@@ -26,3 +26,5 @@ const imgPosition = document.querySelectorAll(".aspect-ratio-169 img")
         }
 
         setInterval(imgSlide, 4000)
+
+    
