@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/1147679ae7.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="image/logocr.png" type="image/png">
+    <title>TechDiscovery</title>
+</head>
+
+<body>
+
+    <!-------------------------------------------header--------------------------------------------------->
+    <header>
+        <div class="logo">
+            <img src="image/logocr.png" alt="" width="80px" height="65 px">
+        </div>
+
+        <div class="menu">
+            <li><a href="index.html"> Home</a>
+                <ul class="sub-menu">
+                    <li><a href="category.html"> Shop</a></li>
+                    <li><a href=""> New and Sale</a></li>
+                    <li><a href=""> Contact US </a></li>
+                    <li><a href=""> Blog</a></li>
+                    <li><a href=""> About US</a></li>
+                    <li><a href=""> Khác...</a>
+                </ul>
+            </li>
+
+            <li><a href="category.html"> Shop</a>
+                <ul class="sub-menu">
+                    <li><a href=""> Điện Thoại</a>
+                        <ul>
+                            <li><a href="category.html"> iPhone</a></li>
+                            <li><a href=""> SamSung</a></li>
+                            <li><a href=""> Xiaomi</a></li>
+                            <li><a href=""> OPPO</a></li>
+                            <li><a href=""> Realmei</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href=""> Laptop</a>
+                        <ul>
+                            <li>Mac</li>
+                            <li>Dell</li>
+                            <li>ASUS</li>
+                            <li>HP</li>
+                        </ul>
+                    </li>
+                    <li><a href="">Đồng Hồ, Máy Ảnh</a>
+                        <ul>
+                            <li>Smart watch</li>
+                            <li>Vòng đeo tay thông minh</li>
+                            <li>Sony</li>
+                            <li>Fujifilm</li>
+                            <li>Canon</li>
+                        </ul>
+                    </li>
+                    <li><a href=""> PC, Màn Hình</a>
+                        <ul>
+                            <li>PC ráp sẵn CPS</li>
+                            <li>Build PC</li>
+                        </ul>
+                    </li>
+                    <li><a href=""> Phụ Kiện </a>
+                        <ul>
+                            <li>Di động</li>
+                            <li>Laptop </li>
+                            <li>Thiết bị mạng</li>
+                            <li>Camera</li>
+                        </ul>
+                    </li>
+                    <li><a href=""> Đồ Cũ</a>
+                        <ul>
+                            <li>iPhone cũ</li>
+                            <li>Android cũ</li>
+                            <li>Laptop cũ</li>
+                        </ul>
+                    </li>
+                    <li><a href=""> Khác...</a>
+                </ul>
+            </li>
+            <li><a href=""> New and Sale</a></li>
+            <li><a href=""> Contac US</a></li>
+            <li><a href=""> Blog</a></li>
+            <li><a href=""> About US</a></li>
+        </div>
+
+        <div class="other">
+            <li><input type="text" placeholder="search"> <i class="fa fa-search"></i></li>
+            <li><a href="" class="fa fa-paw"></a></li>
+            <li><a href="" class="fa fa-user"></a></li>
+            <li><a href="cart.html" class="fa fa-shopping-bag"></a></li>
+        </div>
+    </header>
+    <!-----------------------------------------end-header--------------------------------------------------->
+
+    <!--------------------------------------------check-out------------------------------------------------------>
+
+    <section class="delivery">
+        <div class="container">
+            <div class="delivery-top-wrap">
+                <div class="delivery-top">
+                    <div class="delivery-top-cart delivery-top-item" >
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="delivery-top-address delivery-top-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="delivery-top-payment delivery-top-item">
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="delivery-content row">
+                <div class="delivery-content-left">
+                    <p>Vui lòng chọn địa chỉ giao hàng</p>
+                    <div class="delivery-content-left-login row">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <p> Đăng Nhập (Nếu đã có tài khoản)</p>
+                    </div>
+                    <div class="delivery-content-left-sigle-customer row">
+                        <input name="customers" type="radio">
+                        <p><span style="font-weight: bold;">Khách Lẻ</span>(Mua mà không cần đăng nhập hay lưu lại thông tin)</p>
+                    </div>
+                    <div class="delivery-content-left-register row">
+                        <input name="customers" type="radio">
+                        <p><span style="font-weight: bold;">Đăng ký</span>(Tạo tài khoản mới)</p>
+                    </div>
+                    <div class="delivery-content-left-input-top row">
+                        <div class="delivery-content-left-input-top-item">
+                            <label for="">Họ Tên: <span style="color: red;">*</span></label>
+                            <input type="text">
+                        </div>
+                        <div class="delivery-content-left-input-top-item">
+                            <label for="">Điện Thoại: <span style="color: red;">*</span></label>
+                            <input type="text">
+                        </div>
+                        <div class="delivery-content-left-input-top-item">
+                            <label for="">Tỉnh/TP: <span style="color: red;">*</span></label>
+                            <input type="text">
+                        </div>
+                        <div class="delivery-content-left-input-top-item">
+                            <label for="">Quận/Huyện: <span style="color: red;">*</span></label>
+                            <input type="text">
+                        </div>
+                        <div class="delivery-content-left-input-top-item">
+                            <label for="">Phường/Xã: <span style="color: red;">*</span></label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="delivery-content-left-input-top-item">
+                        <label for="">Địa Chỉ (Chi Tiết): <span style="color: red;">*</span></label>
+                        <input type="text">
+                    </div>
+                    <div class="delivery-content-left-button row">
+                        <a href="cart.html"><p>&#171;</p>Quay Lại Giỏ Hàng</a>
+                        <button><p style="font-weight: bold;">Thanh Toán Và Giao Hàng</p></button>
+                    </div>
+                </div>
+                <div class="delivery-content-right">
+                    <table>
+                        <tr>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Giảm Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Thành Tiền</th>
+                        </tr>
+                        <tr>
+                            <td>iPhone 14 Pro Max 128GB | Chính hãng VN/A</td>
+                            <td>-2%</td>
+                            <td>1</td>
+                            <td><p>24.190.000<span>₫</span></p></td>
+                        </tr>
+                        <tr>
+                            <td>iPhone 14 Pro Max 128GB | Chính hãng VN/A</td>
+                            <td>-2%</td>
+                            <td>1</td>
+                            <td><p>24.190.000<span>₫</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;" colspan="3">Tổng</td>
+                            <td style="font-weight: bold;"><p>48.380.000<span>₫</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;" colspan="3">Thuế VAT</td>
+                            <td style="font-weight: bold;"><p>1.000.000<span>₫</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;" colspan="3">Tổng Thanh Toán</td>
+                            <td style="font-weight: bold;"><p>49.380.000<span>₫</span></p></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-------------------------------------------footer--------------------------------------------------->
+    <!-----------------------------------app-container------------------------------------>
+    <footer>
+        <hr>
+        <section class="app-container">
+            <div>Tải Ứng Dụng TechDiscovery</div>
+            <div class="app-google">
+                <img src="image/appstore.jpeg" alt="">
+                <img src="image/ggplay.png" alt="">
+            </div>
+            <div>Nhận Thông Báo Mới Nhất Từ TechDiscovery</div>
+            <input type="text" placeholder="Nhập email của bạn...">
+        </section>
+
+
+        <div class="footer-top">
+            <li><a href=""><img src="image/logo.png"></a></li>
+            <li><a href="contact.html"></a>Contact US</li>
+            <li><a href="category.html"></a>Shop</li>
+            <li><a href="about.html"></a>About US</li>
+            <li>
+                <a href="" class="fab fa-facebook-f"></a>
+                <a href="" class="fab fa-twitter"></a>
+                <a href="" class="fab fa-youtube"></a>
+                <a href="" class="fab fa-instagram"></a>
+            </li>
+        </div>
+
+        <div class="footer-center">
+            <p>
+                Address: 391a Nam Ky Khoi Nghia Street,
+                Ward 14, District 3, Ho Chi Minh City,
+                VietNam <br>
+                Phone: <b><a href="">+0123456789</a></b> <br>
+                Email: <b><a href="">TechDiscovery@gmail.com</a> </b>
+            </p>
+        </div>
+
+        <div class="footer-bottom">
+            @TechDiscovery All right reserved.
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/slider.js"></script>
+
+</body>
+
+</html>
