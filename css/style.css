@@ -454,11 +454,15 @@ a {
     color: white;
 }
 .product-content-right-product-button button:last-child{
-    border: 2px solid gold;
-    color: gold;
+    border: 2px solid black;
+    color: black;
     background-color: white;
     cursor: pointer;
     border-radius: 10px;
+}
+.product-content-right-product-button button:last-child:hover{
+    background-color: black;
+    color: white;
 }
 .product-content-right-product-icon-item{
     display: flex;
@@ -527,6 +531,7 @@ a {
 /*--------------------  product-related------------------------------*/
 .product-related{
     margin: 20px 50px 50px 50px;
+    padding-bottom: 80px;
 }
 .product-related-title{
     margin: 20px 0;

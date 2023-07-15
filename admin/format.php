@@ -9,7 +9,7 @@
             $text = $text. " ";
             $text = substr($text, 0, $limit);
             $text = substr($text, 0, strpos($text, ' '));
-            $text = $text.".....";
+            $text = $text."...";
             return $text;
         }
 

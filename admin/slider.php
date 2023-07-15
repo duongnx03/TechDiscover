@@ -1,7 +1,4 @@
-<header>
-        <h1>TOP</h1>
-    </header>
-    <session class="admin-content">
+<session class="admin-content">
         <div class="admin-content-left">
             <ul>
                 <li><a href="">Danh Muc</a>
@@ -23,4 +20,3 @@
                 </li>
             </ul>
         </div>
-      
