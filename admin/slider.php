@@ -1,21 +1,21 @@
-<session class="admin-content">
+<section class="admin-content">
         <div class="admin-content-left">
             <ul>
-                <li><a href="">Danh Muc</a>
+                <li><a href="">Danh Mục</a>
                     <ul>
-                        <li><a href="cartegory_add.php">Them Danh Muc</a></li>
-                        <li><a href="cartegorylist.php">Danh Sach Danh Muc</a></li>
+                        <li><a href="cartegory_add.php">Thêm Danh Mục</a></li>
+                        <li><a href="cartegorylist.php">Danh Sách Danh Mục</a></li>
                     </ul>
                 </li>
-                <li><a href="">Loai San Pham</a>
+                <li><a href="">Loại Sản Phẩm</a>
                     <ul>
-                        <li><a href="">Them Loai San Pham</a></li>
-                        <li><a href="">Danh Sach San Pham</a></li>
+                        <li><a href="brand_add.php">Thêm Loại Sản Phẩm</a></li>
+                        <li><a href="brandlist.php">Danh Sách Loại Sản Phẩm</a></li>
                     </ul></li>
-                <li><a href="">San Pham</a>
+                <li><a href="">Sản Phẩm</a>
                     <ul>
-                        <li><a href="">Them San pham</a></li>
-                        <li><a href="">Danh Sach San Pham</a></li>
+                        <li><a href="productadd.html">Thêm Sản Phẩm</a></li>
+                        <li><a href="productlist.php">Danh Sách Sản Phẩm</a></li>
                     </ul>
                 </li>
             </ul>

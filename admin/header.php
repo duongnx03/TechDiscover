@@ -8,6 +8,19 @@
     <script src="https://kit.fontawesome.com/99cf1e4b98.js" crossorigin="anonymous"></script>
     <link rel="icon" href="../image/logocr.png" type="image/png">
     <title>Category</title>
+    <script>
+        function confirmDelete(brand_id) {
+            if (confirm('Are you sure you want to remove this brand?')) {
+                window.location.href = 'branddelete.php?brand_id=' + brand_id;
+            }
+        }
+        
+        function confirmDelete(cartegory_id) {
+            if (confirm('Are you sure you want to delete this category?')) {
+                window.location.href = 'cartegorydelete.php?cartegory_id=' + cartegory_id;
+            }
+        }
+    </script>
 </head>
 <body>
     <header>

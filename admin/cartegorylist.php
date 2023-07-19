@@ -17,7 +17,7 @@ $show_cartegory = $cartegory-> show_cartegory();
             <tr>
                 <th>STT</th>
                 <th>ID</th>
-                <th>Danh Muc</th>
+                <th>Ten Danh Muc</th>
                 <th>Edit</th>
             </tr>
             <?php
@@ -28,7 +28,8 @@ $show_cartegory = $cartegory-> show_cartegory();
                 <td><?php echo $i ?></td>
                 <td><?php echo $result['cartegory_id']?></td>
                 <td><?php echo $result['cartegory_name']?></td>
-                <td><a href="cartegoryedit.php?cartegory_id=<?php echo $result['cartegory_id']?>">Update</a> | <a href="cartegorydelete.php?cartegory_id=<?php echo $result['cartegory_id']?>">Delete</a></td>
+                <td><a href="cartegoryedit.php?cartegory_id=<?php echo $result['cartegory_id']?>">Update</a> | 
+                <a href="#" onclick="confirmDelete(<?php echo $result['cartegory_id']; ?>)">Delete</a></td>
             </tr>
             <?php
              }
@@ -37,7 +38,7 @@ $show_cartegory = $cartegory-> show_cartegory();
         </table>
     </div>
 </div>
-</session>
+</section>
 </body>
 
 </html>
