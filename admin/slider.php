@@ -3,8 +3,8 @@
             <ul>
                 <li><a href="">Danh Muc</a>
                     <ul>
-                        <li><a href="">Them Danh Muc</a></li>
-                        <li><a href="">Danh Sach Danh Muc</a></li>
+                        <li><a href="cartegory_add.php">Them Danh Muc</a></li>
+                        <li><a href="cartegorylist.php">Danh Sach Danh Muc</a></li>
                     </ul>
                 </li>
                 <li><a href="">Loai San Pham</a>

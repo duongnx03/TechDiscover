@@ -2,7 +2,7 @@
     include 'database.php';
 ?>
 <?php
-    class cartegory {
+    class brand{
         private $db;
 
         public function __construct()
