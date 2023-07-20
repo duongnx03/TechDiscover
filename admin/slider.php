@@ -14,7 +14,7 @@
                     </ul></li>
                 <li><a href="">Sản Phẩm</a>
                     <ul>
-                        <li><a href="productadd.html">Thêm Sản Phẩm</a></li>
+                        <li><a href="productadd.php">Thêm Sản Phẩm</a></li>
                         <li><a href="productlist.php">Danh Sách Sản Phẩm</a></li>
                     </ul>
                 </li>
