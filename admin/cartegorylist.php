@@ -39,6 +39,14 @@ $show_cartegory = $cartegory-> show_cartegory();
     </div>
 </div>
 </section>
+<script>
+     //function for cartegory-delete
+     function confirmDelete(cartegory_id) {
+            if (confirm('Are you sure you want to delete this category?')) {
+                window.location.href = 'cartegorydelete.php?cartegory_id=' + cartegory_id;
+            }
+        }
+</script>
 </body>
 
 </html>

@@ -31,7 +31,7 @@ $show_brand = $brand-> show_brand();
                 <td><?php echo $result['cartegory_name']?></td>
                 <td><?php echo $result['brand_name']?></td>
                 <td><a href="brandedit.php?brand_id=<?php echo $result['brand_id']?>">Update</a> | 
-                <a href="#" onclick="confirmDelete(<?php echo $result['brand_id']; ?>)">Delete</a></td>
+                <a href="branddelete.php?brand_id=<?php echo $result['brand_id']?>">Delete</a></td>
             </tr>
             <?php
              }
@@ -41,6 +41,13 @@ $show_brand = $brand-> show_brand();
     </div>
 </div>
 </section>
+<script>
+        function confirmDelete(brand_id) {
+            if (confirm('Are you sure you want to remove this brand?')) {
+                window.location.href = 'branddelete.php?brand_id=' + brand_id;
+            }
+        }
+    </script>
 </body>
 
 </html>

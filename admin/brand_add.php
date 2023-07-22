@@ -24,7 +24,7 @@
             <div class="admin-content-right-category-add">
                 <h1>Thêm Sản Phẩm</h1>
                 <form action="" method="POST">
-                   <select name="cartegory_id" id="">
+                   <select name="cartegory_id" id="" required>
                         <option value="">--  Danh Mục  --</option>
                         <?php
                         $show_cartegory = $brand->show_cartegory();
@@ -35,7 +35,7 @@
                         }}
                         ?>
                    </select><br>
-                   <input require name="brand_name" type="text" placeholder="Nhập Tên Loại Sản Phẩm">
+                   <input required name="brand_name" type="text" placeholder="Nhập Tên Loại Sản Phẩm">
                     <button type="submit">Thêm</button>
                 </form>
             </div>           
