@@ -1,3 +1,17 @@
+<?php
+session_start();
+$error = $send = '';
+if (isset($_SESSION['result'])) {
+    if ($_SESSION['result'] == 'fail') {
+        $error = $_SESSION['message'];
+    } elseif ($_SESSION['result'] == 'success') {
+        $send = 'successfully sent';
+    }
+    unset($_SESSION['result']);
+    unset($_SESSION['message']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
