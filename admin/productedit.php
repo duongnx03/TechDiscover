@@ -68,6 +68,7 @@
                 ?>
             </select>
 
+ 
             <label for="">Nhập Tên Sản Phẩm <span style="color:red;">*</span></label>
             <input name="product_name" type="text" required value="<?php echo $result['product_name']; ?>">
 
@@ -77,8 +78,26 @@
             <label for="">Giá Khuyến Mãi<span style="color:red;">*</span></label>
             <input required name="product_price_sale" type="text" placeholder="" value="<?php echo $result['product_price_sale']; ?>">
 
-            <label for="">Mô Tả Sản Phẩm<span style="color:red;">*</span></label>
-            <textarea required name="product_desc" id="" cols="30" rows="10"><?php echo $result['product_desc']; ?></textarea>
+            <label for="">Màu Sắc <span style="color:red;">*</span></label>
+            <input required name="product_color" type="text" value="<?php echo $result['product_color']; ?>">
+
+            <label for="">Bộ Nhớ, Ram <span style="color:red;">*</span></label>
+            <input required name="product_memory_ram" type="text" value="<?php echo $result['product_memory_ram']; ?>">
+
+            <label for="">Số Lượng Hàng Trong Kho <span style="color:red;">*</span></label>
+            <input required name="product_quantity" type="number" min="0" value="<?php echo $result['product_quantity']; ?>">
+
+            <label for="">Giới Thiệu Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea required name="product_intro" id="" cols="30" rows="10"><?php echo $result['product_intro']; ?></textarea>
+
+            <label for="">Chi Tiết Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea name="product_detail" id="" cols="30" rows="10"><?php echo $result['product_detail']; ?></textarea>
+
+            <label for="">Phụ Kiện Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea name="product_accessory" id="" cols="30" rows="10"><?php echo $result['product_accessory']; ?></textarea>
+
+            <label for="">Bảo Hành Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea name="product_guarantee" id="" cols="30" rows="10"><?php echo $result['product_guarantee']; ?></textarea>
 
             <label for="">Ảnh Sản Phẩm<span style="color:red;">*</span></label>
             <input name="product_img" type="file">

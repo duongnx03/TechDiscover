@@ -21,7 +21,13 @@ $show_product = $product->show_product();
                 <th>Loại Sản Phẩm</th>
                 <th>Giá</th>
                 <th>Giá Khuyến Mãi</th>
-                <th>Mô Tả</th>
+                <th>Màu Sắc</th>
+                <th>Bộ Nhớ, Ram</th>
+                <th>Kho</th>
+                <th>Giới Thiệu Sản Phẩm</th>
+                <th>Chi Tiết Sản Phẩm</th>
+                <th>Phụ Kiện Sản Phẩm</th>
+                <th>Bảo Hành Sản Phẩm</th>
                 <th>Ảnh Sản Phẩm</th>
                 <th>Ảnh Mô Tả</th>
                 <th>Edit</th>
@@ -33,14 +39,20 @@ $show_product = $product->show_product();
                     $i++;
             ?>
                     <tr>
-                        <td><?php echo $i ?></td>
+                    <td><?php echo $i ?></td>
                         <td><?php echo $result['product_id'] ?></td>
                         <td><?php echo $result['product_name'] ?></td>
                         <td><?php echo $result['cartegory_name'] ?></td>
                         <td><?php echo $result['brand_name'] ?></td>
                         <td><?php echo $result['product_price'] ?></td>
                         <td><?php echo $result['product_price_sale'] ?></td>
-                        <td><?php echo $result['product_desc'] ?></td>
+                        <td><?php echo $result['product_color'] ?></td>
+                        <td><?php echo $result['product_memory_ram'] ?></td>
+                        <td><?php echo $result['product_quantity'] ?></td>
+                        <td><?php echo $result['product_intro'] ?></td>
+                        <td><?php echo $result['product_detail'] ?></td>
+                        <td><?php echo $result['product_accessory'] ?></td>
+                        <td><?php echo $result['product_guarantee'] ?></td>
                         <td>
                             <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
                         </td>

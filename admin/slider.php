@@ -1,3 +1,6 @@
+
+
+
 <section class="admin-content">
         <div class="admin-content-left">
             <ul>
@@ -17,6 +20,23 @@
                         <li><a href="productadd.php">Thêm Sản Phẩm</a></li>
                         <li><a href="productlist.php">Danh Sách Sản Phẩm</a></li>
                     </ul>
+                </li>
+                <li><a href="">Màu Sắc</a>
+                    <ul>
+                        <li><a href="productadd.php">Thêm Màu Sắc</a></li>
+                        <li><a href="productlist.php">Danh Sách Màu Sắc</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Bộ Nhớ, Ram</a>
+                    <ul>
+                        <li><a href="productadd.php">Thêm Bộ Nhớ, Ram</a></li>
+                        <li><a href="productlist.php">Danh Sách Bộ Nhớ, Ram</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Users</a>
+                </li>
+
+                <li><a href="../index.php">Log out</a>
                 </li>
             </ul>
         </div>

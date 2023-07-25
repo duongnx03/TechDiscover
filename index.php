@@ -24,7 +24,7 @@
 
             <li><a href="category.html">Điện Thoại</a>
                 <ul class="sub-menu">
-                    <li><a href=""> iPhone</a></li>
+                    <li><a href="category.html"> iPhone</a></li>
                     <li><a href=""> SamSung</a></li>
                     <li><a href=""> Xiaomi</a></li>
                     <li><a href=""> OPPO</a></li>
@@ -70,17 +70,17 @@
 
             <li><a href="">About Shop</a>
                 <ul class="sub-menu">
-                    <li><a href="">Blog</a></li>
-                    <li><a href="">Contac US</a></li>
-                    <li><a href="">About US</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contac US</a></li>
+                    <li><a href="about.html">About US</a></li>
                 </ul>
             </li> 
         </div>
 
         <div class="other">
             <li class="search-container"><input type="text" placeholder="search"><a href=""><i class="fa fa-search"></i></a></li>
-            <li><a href="" class="fa fa-paw"></a></li>
-            <li><a href="" class="fa fa-user"></a></li>
+            <li><a href="contact.html" class="fa fa-paw"></a></li>
+            <li><a href="login.html" class="fa fa-user"></a></li>
             <li><a href="cart.html" class="fa fa-shopping-bag"></a></li>
         </div>
     </header>

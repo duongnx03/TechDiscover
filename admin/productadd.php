@@ -51,31 +51,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="">Giá Khuyễn Mãi<span style="color:red;">*</span></label>
             <input required name="product_price_sale" type="text" placeholder="">
 
-            <label for="">Mô Tả Sản Phẩm<span style="color:red;">*</span></label>
-            <textarea required name="product_desc" id="" cols="30" rows="10"></textarea>
+            <label for="">Màu Sắc <span style="color:red;">*</span></label>
+            <input required name="product_color" type="text">
+
+            <label for="">Bộ Nhớ, Ram <span style="color:red;">*</span></label>
+            <input required name="product_memory_ram" type="text">
+
+            <label for="">Số Lượng Hàng Trong Kho <span style="color:red;">*</span></label>
+            <input required name="product_quantity" type="number" min="0">
+
+            <label for="">Giới Thiệu Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea required name="product_intro" id="" cols="30" rows="10"></textarea>
+
+            <label for="">Chi Tiết Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea  name="product_detail" id="" cols="30" rows="10"></textarea>
+
+            <label for="">Phụ Kiện Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea  name="product_accessory" id="" cols="30" rows="10"></textarea>
+
+            <label for="">Bảo Hành Sản Phẩm <span style="color:red;">*</span></label>
+            <textarea  name="product_guarantee" id="" cols="30" rows="10"></textarea>
+
 
             <label for="">Ảnh Sản Phẩm<span style="color:red;">*</span></label>
             <input required name="product_img" type="file" onchange="previewImage(this, 'previewProductImg')">
             <img id="previewProductImg" src="#" alt="Preview Image" style="max-width: 200px; max-height: 200px; display: none;"><br>
 
             <div>
-            <label for="">Ảnh Mô Tả<span style="color:red;">*</span></label>
-            <input name="product_img_desc[]" multiple type="file" onchange="previewImages(this)">
-            <div class="image-previews"></div>
-            <div class="error-messages"></div>
+                <label for="">Ảnh Mô Tả<span style="color:red;">*</span></label>
+                <input name="product_img_desc[]" multiple type="file" onchange="previewImages(this)">
+                <div class="image-previews"></div>
+                <div class="error-messages"></div>
             </div>
             <button type="submit">Add</button>
-           
+
         </form>
     </div>
 </div>
 </section>
 <style>
-   .image-previews {
+    .image-previews {
         display: grid;
-        grid-template-columns: repeat(5, 1fr); /* Thiết lập số cột tùy ý */
-        grid-gap: 10px; /* Khoảng cách giữa các ô */
-        justify-items: center; /* Căn giữa các ô */
+        grid-template-columns: repeat(5, 1fr);
+        /* Thiết lập số cột tùy ý */
+        grid-gap: 10px;
+        /* Khoảng cách giữa các ô */
+        justify-items: center;
+        /* Căn giữa các ô */
     }
 
     .image-preview-item {
@@ -83,28 +105,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .image-preview-item img {
-        width: 150px; /* Cài độ rộng tùy ý */
-        height: 200px; /* Cài chiều cao tùy ý */
+        width: 150px;
+        /* Cài độ rộng tùy ý */
+        height: 200px;
+        /* Cài chiều cao tùy ý */
         display: block;
         margin-bottom: 5px;
     }
 </style>
 <script>
-
-     //function for productadd to show brand with cartegory_id
-        function getBrandsByCategory() {
-            var cartegory_id = document.getElementById("cartegory_id").value;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "get_brands_by_category.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var selectBrand = document.getElementById("brand_id");
-                    selectBrand.innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send("cartegory_id=" + cartegory_id);
-        }
+    //function for productadd to show brand with cartegory_id
+    function getBrandsByCategory() {
+        var cartegory_id = document.getElementById("cartegory_id").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "get_brands_by_category.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var selectBrand = document.getElementById("brand_id");
+                selectBrand.innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send("cartegory_id=" + cartegory_id);
+    }
 
     //hien anh truoc khi add san pham 
     function previewImage(input, imageID) {
@@ -134,12 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             var image = document.createElement('img');
             image.src = imageURL;
             image.style.width = '150px'; // Cài độ rộng tùy ý
-            image.style.height = '100px'; // Cài chiều cao tùy ý
+            image.style.height = '150px'; // Cài chiều cao tùy ý
 
             imagesContainer.appendChild(image);
 
             // Kiểm tra định dạng và dung lượng của ảnh mô tả
-            var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
             var maxFileSize = 5 * 1024 * 1024; // 5MB
 
             var fileExtension = file.name.split('.').pop().toLowerCase();
