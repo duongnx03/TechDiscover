@@ -127,6 +127,16 @@
         }
 
 
+        public function get_product_detail($product_id) {
+            $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name
+                      FROM tbl_product
+                      INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+                      INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+                      WHERE tbl_product.product_id = '$product_id'";
+            $result = $this->db->select($query);
+            return $result;
+        }
+
         public function get_product($product_id){
             $query = "SELECT * FROM tbl_product WHERE product_id = '$product_id'";
             $result = $this->db->select($query);

@@ -1,9 +1,65 @@
 <?php
 include "header.php";
 
+// Khởi tạo biến lưu trữ thông tin giỏ hàng
+$cart_items = array();
+
+// Kiểm tra nếu có thông tin sản phẩm được truyền từ trang product.php
+if (isset($_GET['product_id']) && isset($_GET['product_name']) && isset($_GET['product_price']) && isset($_GET['quantity'])) {
+    $product_id = $_GET['product_id'];
+    $product_name = $_GET['product_name'];
+    $product_price = $_GET['product_price'];
+    $quantity = $_GET['quantity'];
+
+    // Lưu thông tin sản phẩm vào giỏ hàng
+    $cart_item = array(
+        'product_id' => $product_id,
+        'product_name' => $product_name,
+        'product_price' => $product_price,
+        'quantity' => $quantity
+    );
+    array_push($cart_items, $cart_item);
+}
+
+// Xử lý xoá sản phẩm khỏi giỏ hàng
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delete_product_id'])) {
+    $delete_product_id = $_GET['delete_product_id'];
+    foreach ($cart_items as $key => $item) {
+        if ($item['product_id'] === $delete_product_id) {
+            unset($cart_items[$key]);
+        }
+    }
+    // Cập nhật lại giỏ hàng sau khi xoá
+    $cart_items = array_values($cart_items);
+}
+
 ?>
 
-<!---------------------------------------start-cart--------------------------------------------------->
+<script>
+    function updateCartItemQuantity(product_id) {
+        const quantityInput = document.getElementById(`quantity-${product_id}`);
+        const productPrice = parseFloat(quantityInput.dataset.productPrice);
+        const oldQuantity = parseFloat(quantityInput.dataset.oldQuantity);
+        const newQuantity = parseFloat(quantityInput.value);
+
+        const totalQuantityElement = document.getElementById('total-quantity');
+        const totalPriceElement = document.getElementById('total-price');
+
+        const totalQuantity = parseFloat(totalQuantityElement.innerText);
+        const totalPrice = parseFloat(totalPriceElement.innerText);
+
+        const quantityDiff = newQuantity - oldQuantity;
+        const newTotalQuantity = totalQuantity + quantityDiff;
+        const newTotalPrice = totalPrice + quantityDiff * productPrice;
+
+        totalQuantityElement.innerText = newTotalQuantity;
+        totalPriceElement.innerText = newTotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+        // Cập nhật giá trị cũ của input
+        quantityInput.dataset.oldQuantity = newQuantity;
+    }
+</script>
+
 <section class="cart">
     <div class="container">
         <div class="cart-top-wrap">
@@ -23,68 +79,69 @@ include "header.php";
     <div class="container">
         <div class="cart-content row">
             <div class="cart-content-left">
-                <table>
-                    <tr>
-                        <th>Sản Phẩm</th>
-                        <th>Ram</th>
-                        <th>Màu Sắc</th>
-                        <th>SL</th>
-                        <th>Thành Tiền</th>
-                        <th>Xoá</th>
-                    </tr>
-                    <tr>
-                        <td><img src="image/cate1-gold.webp">
-                            <p>iPhone 14 Pro Max | Chính hãng VN/A</p>
-                        </td>
-                        <td>
-                            <p>128GB</p>
-                        </td>
-                        <td>Gold</td>
-                        <td><input type="number" value="1" min="1"></td>
-                        <td>
-                            <p>24.590.000<span>₫</span></p>
-                        </td>
-                        <td><span class="delete-product-cart">X</span></td>
-                    </tr>
-                    <tr>
-                        <td><img src="image/cate2.webp">
-                            <p>iPhone 14 | Chính hãng VN/A</p>
-                        </td>
-                        <td>
-                            <p>128GB</p>
-                        </td>
-                        <td>Vàng</td>
-                        <td><input type="number" value="1" min="1"></td>
-                        <td>
-                            <p>19.090.000<span>₫</span></p>
-                        </td>
-                        <td><span class="delete-product-cart">X</span></td>
-                    </tr>
-                </table>
+                <?php if (count($cart_items) > 0) { ?>
+                    <table>
+                        <tr>
+                            <th>Sản Phẩm</th>
+                            <th>Ram</th>
+                            <th>Màu Sắc</th>
+                            <th>SL</th>
+                            <th>Thành Tiền</th>
+                            <th>Xoá</th>
+                        </tr>
+                        <?php foreach ($cart_items as $item) { ?>
+                            <tr>
+                                <td><img src="admin/uploads/<?php echo $item['product_id']; ?>.png">
+                                    <p><?php echo $item['product_name']; ?></p>
+                                </td>
+                                <td>
+                                    <p>128GB</p>
+                                </td>
+                                <td>Gold</td>
+                                <td><input type="number" value="<?php echo $item['quantity']; ?>" min="1"></td>
+                                <td>
+                                    <p><?php echo number_format($item['product_price'] * $item['quantity']); ?><span>₫</span></p>
+                                </td>
+                                <td><a href="cart.php?action=delete&delete_product_id=<?php echo $item['product_id']; ?>" onclick="return confirm('Bạn có muốn xoá sản phẩm khỏi giỏ hàng?')"><span class="delete-product-cart">X</span></a></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                <?php } else { ?>
+                    <p>Không có sản phẩm trong giỏ hàng.</p>
+                <?php } ?>
             </div>
             <div class="cart-content-right">
+                <?php
+                $total_quantity = 0;
+                $total_price = 0;
+
+                foreach ($cart_items as $item) {
+                    $total_quantity += $item['quantity'];
+                    $total_price += $item['product_price'] * $item['quantity'];
+                }
+                ?>
                 <table>
                     <tr>
                         <th colspan="2">Tổng tiền tạm tính:</th>
                     </tr>
                     <tr>
                         <td>Tổng Sản Phẩm</td>
-                        <td>1</td>
+                        <td><?php echo $total_quantity; ?></td>
                     </tr>
                     <tr>
                         <td>Tổng Tiền Hàng</td>
-                        <td>24.590.000<span>₫</span></td>
+                        <td><?php echo number_format($total_price); ?><span>₫</span></td>
                     </tr>
                     <tr>
                         <td>Thành Tiền</td>
                         <td>
-                            <p>24.290.000<span>₫</span></p>
+                            <p><?php echo number_format($total_price); ?><span>₫</span></p>
                         </td>
                     </tr>
                     <tr>
                         <td>Tạm Tính</td>
                         <td>
-                            <p style="color: black; font-weight:bold;">24.290.000<span>₫</span></p>
+                            <p style="color: black; font-weight:bold;"><?php echo number_format($total_price); ?><span>₫</span></p>
                         </td>
                     </tr>
                 </table>
@@ -105,7 +162,6 @@ include "header.php";
     </div>
 </section>
 
-
 <?php
-   include "footer.php";
+include "footer.php";
 ?>
