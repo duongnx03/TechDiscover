@@ -31,7 +31,7 @@ header {
 .admin-content-left {
     background-color: rgb(242, 156, 76);
     width: 20%;
-    min-height: 100vh; /* Đặt chiều cao tối thiểu của admin-content-left là 100% chiều cao của viewport */
+    min-height: 90vh; /* Đặt chiều cao tối thiểu của admin-content-left là 100% chiều cao của viewport */
     padding: 10px 0 0 12px;
     display: flex; /* Sử dụng Flexbox cho admin-content-left */
     flex-direction: column; /* Thiết lập hướng của flex là dọc */

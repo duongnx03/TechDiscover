@@ -26,6 +26,19 @@
             return $result;
         }
 
+        public function show_color() {
+            $query = "SELECT * FROM tbl_color ORDER BY color_id DESC";
+            $result = $this->db->select($query);
+            return $result;
+        }
+    
+        // Hàm để lấy danh sách các bộ nhớ RAM từ bảng tbl_memory_ram
+        public function show_memory_ram() {
+            $query = "SELECT * FROM tbl_memory_ram ORDER BY memory_ram_id DESC";
+            $result = $this->db->select($query);
+            return $result;
+        }
+
         public function show_product() {
             $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name
                       FROM tbl_product
@@ -156,6 +169,8 @@
             $product_img = $this->get_product_img_by_id($product_id);
         }
 
+
+        
         // Cập nhật thông tin sản phẩm vào cơ sở dữ liệu
         $query = "UPDATE tbl_product 
                   SET product_name = '$product_name',

@@ -367,8 +367,10 @@ a {
 }
 .category-right-content-item p{
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
+    color: red;
 }
+
 .category-right-content-item h2{
     font-size: 11px;
     margin-top: 6px;

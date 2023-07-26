@@ -12,12 +12,12 @@ $show_cartegory = $cartegory-> show_cartegory();
 
 <div class="admin-content-right">
     <div class="admin-content-right-category-list">
-        <h1>Danh Sách Danh Mục</h1>
+        <h1>Category List</h1>
         <table>
             <tr>
                 <th>STT</th>
                 <th>ID</th>
-                <th>Ten Danh Muc</th>
+                <th>Category Name</th>
                 <th>Edit</th>
             </tr>
             <?php

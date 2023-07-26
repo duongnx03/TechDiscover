@@ -1,7 +1,13 @@
 <?php
 include "header.php";
 include "slider.php";
-include "class/product_class.php"
+include "class/product_class.php";
+?>
+
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 
 <?php
@@ -52,10 +58,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input required name="product_price_sale" type="text" placeholder="">
 
             <label for="">Màu Sắc <span style="color:red;">*</span></label>
-            <input required name="product_color" type="text">
+            <select name="product_color" required>
+                <option value="">--Chọn--</option>
+                <?php
+                $color_list = $product->show_color();
+                if ($color_list) {
+                    while ($color = $color_list->fetch_assoc()) {
+                        echo '<option value="' . $color['color_name'] . '">' . $color['color_name'] . '</option>';
+                    }
+                }
+                ?>
+            </select>
 
             <label for="">Bộ Nhớ, Ram <span style="color:red;">*</span></label>
-            <input required name="product_memory_ram" type="text">
+            <select name="product_memory_ram" required>
+                <option value="">--Chọn--</option>
+                <?php
+                $memory_ram_list = $product->show_memory_ram();
+                if ($memory_ram_list) {
+                    while ($memory_ram = $memory_ram_list->fetch_assoc()) {
+                        echo '<option value="' . $memory_ram['memory_ram_name'] . '">' . $memory_ram['memory_ram_name'] . '</option>';
+                    }
+                }
+                ?>
+            </select>
 
             <label for="">Số Lượng Hàng Trong Kho <span style="color:red;">*</span></label>
             <input required name="product_quantity" type="number" min="0">
@@ -64,13 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea required name="product_intro" id="" cols="30" rows="10"></textarea>
 
             <label for="">Chi Tiết Sản Phẩm <span style="color:red;">*</span></label>
-            <textarea  name="product_detail" id="" cols="30" rows="10"></textarea>
+            <textarea name="product_detail" id="" cols="30" rows="10"></textarea>
 
             <label for="">Phụ Kiện Sản Phẩm <span style="color:red;">*</span></label>
-            <textarea  name="product_accessory" id="" cols="30" rows="10"></textarea>
+            <textarea name="product_accessory" id="" cols="30" rows="10"></textarea>
 
             <label for="">Bảo Hành Sản Phẩm <span style="color:red;">*</span></label>
-            <textarea  name="product_guarantee" id="" cols="30" rows="10"></textarea>
+            <textarea name="product_guarantee" id="" cols="30" rows="10"></textarea>
 
 
             <label for="">Ảnh Sản Phẩm<span style="color:red;">*</span></label>

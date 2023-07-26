@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,11 +36,14 @@
             </div>
             <button type="submit">Login</button>
             <div class="register-link">
-                <p >Don't have an account you can<a href="register.html">Register now</a></p>
+                <p >Don't have an account you can<a href="register.php">Register now</a></p>
             </div>
         </form>
     </div>
     </section>
     
 </body>
+<?php
+    include "footer.php";
+?>
 </html>

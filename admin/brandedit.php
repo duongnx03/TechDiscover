@@ -30,7 +30,7 @@
 
 <div class="admin-content-right">
             <div class="admin-content-right-category-add">
-                <h1>Thêm Sản Phẩm</h1>
+                <h1>Update Brand</h1>
                 <form action="" method="POST">
                    <select name="cartegory_id" id="">
                         <option value="">--  Danh Mục  --</option>

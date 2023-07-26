@@ -12,13 +12,13 @@ $show_brand = $brand-> show_brand();
 
 <div class="admin-content-right">
     <div class="admin-content-right-category-list">
-        <h1>Danh Sách Loại Sản Phẩm</h1>
+        <h1>Brand List</h1>
         <table>
             <tr>
                 <th>STT</th>
                 <th>ID</th>
-                <th>Tên Danh Mục</th>
-                <th>Loại Sản Phẩm</th>
+                <th>Category Name</th>
+                <th>Product Type</th>
                 <th>Edit</th>
             </tr>
             <?php

@@ -42,7 +42,7 @@
                     <button type="submit">Register Now</a></button>
                 </div>
                 <div class="register-link">
-                    <p >Already have an account! <a href="login.html">Login now</a></p>
+                    <p >Already have an account! <a href="login.php">Login now</a></p>
                 </div>
             </form>
         </div>

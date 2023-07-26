@@ -22,10 +22,10 @@
 
 <div class="admin-content-right">
             <div class="admin-content-right-category-add">
-                <h1>Thêm Sản Phẩm</h1>
+                <h1>ADD Brand</h1>
                 <form action="" method="POST">
                    <select name="cartegory_id" id="" required>
-                        <option value="">--  Danh Mục  --</option>
+                        <option value="">--  Select  --</option>
                         <?php
                         $show_cartegory = $brand->show_cartegory();
                         if($show_cartegory){while($result = $show_cartegory -> fetch_assoc()){
@@ -36,7 +36,7 @@
                         ?>
                    </select><br>
                    <input required name="brand_name" type="text" placeholder="Nhập Tên Loại Sản Phẩm">
-                    <button type="submit">Thêm</button>
+                    <button type="submit">ADD</button>
                 </form>
             </div>           
         </div>

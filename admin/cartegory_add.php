@@ -16,10 +16,10 @@
 
 <div class="admin-content-right">
             <div class="admin-content-right-category-add">
-                <h1>Them Danh Muc</h1>
+                <h1>ADD Category</h1>
                 <form action="" method="POST">
                     <input name="cartgory_name" type="text" placeholder="Nhap ten danh muc" required>
-                    <button type="submit">Them</button>
+                    <button type="submit">ADD</button>
                 </form>
             </div>           
         </div>

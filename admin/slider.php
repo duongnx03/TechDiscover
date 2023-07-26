@@ -1,6 +1,3 @@
-
-
-
 <section class="admin-content">
         <div class="admin-content-left">
             <ul>
@@ -23,14 +20,14 @@
                 </li>
                 <li><a href="">Màu Sắc</a>
                     <ul>
-                        <li><a href="productadd.php">Thêm Màu Sắc</a></li>
-                        <li><a href="productlist.php">Danh Sách Màu Sắc</a></li>
+                        <li><a href="color_add.php">Thêm Màu Sắc</a></li>
+                        <li><a href="colorlist.php">Danh Sách Màu Sắc</a></li>
                     </ul>
                 </li>
                 <li><a href="">Bộ Nhớ, Ram</a>
                     <ul>
-                        <li><a href="productadd.php">Thêm Bộ Nhớ, Ram</a></li>
-                        <li><a href="productlist.php">Danh Sách Bộ Nhớ, Ram</a></li>
+                        <li><a href="memory_ram_add.php">Thêm Bộ Nhớ, Ram</a></li>
+                        <li><a href="memory_ramlist.php">Danh Sách Bộ Nhớ, Ram</a></li>
                     </ul>
                 </li>
                 <li><a href="">Users</a>
