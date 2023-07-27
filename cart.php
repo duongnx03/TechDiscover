@@ -1,5 +1,8 @@
 <?php
 include "header.php";
+include "admin/database.php";
+include "admin/config.php";
+include "admin/class/product_class.php";
 
 // Khởi tạo biến lưu trữ thông tin giỏ hàng
 $cart_items = array();
@@ -14,6 +17,7 @@ if (isset($_GET['product_id']) && isset($_GET['product_name']) && isset($_GET['p
     // Lưu thông tin sản phẩm vào giỏ hàng
     $cart_item = array(
         'product_id' => $product_id,
+        'product_img' => $product_img,
         'product_name' => $product_name,
         'product_price' => $product_price,
         'quantity' => $quantity
@@ -91,14 +95,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delet
                         </tr>
                         <?php foreach ($cart_items as $item) { ?>
                             <tr>
-                                <td><img src="admin/uploads/<?php echo $item['product_id']; ?>.png">
+                                <td><img src="admin/uploads/<?php echo $item['product_img']; ?>">
                                     <p><?php echo $item['product_name']; ?></p>
                                 </td>
                                 <td>
                                     <p>128GB</p>
                                 </td>
                                 <td>Gold</td>
-                                <td><input type="number" value="<?php echo $item['quantity']; ?>" min="1"></td>
+                                <td><input type="number" value="<?php echo $item['quantity']; ?>" min="1" id="quantity-<?php echo $item['product_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" data-old-quantity="<?php echo $item['quantity']; ?>" onchange="updateCartItemQuantity(<?php echo $item['product_id']; ?>)"></td>
                                 <td>
                                     <p><?php echo number_format($item['product_price'] * $item['quantity']); ?><span>₫</span></p>
                                 </td>
@@ -126,11 +130,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delet
                     </tr>
                     <tr>
                         <td>Tổng Sản Phẩm</td>
-                        <td><?php echo $total_quantity; ?></td>
+                        <td id="total-quantity"><?php echo $total_quantity; ?></td>
                     </tr>
                     <tr>
                         <td>Tổng Tiền Hàng</td>
-                        <td><?php echo number_format($total_price); ?><span>₫</span></td>
+                        <td id="total-price"><?php echo number_format($total_price); ?><span>₫</span></td>
                     </tr>
                     <tr>
                         <td>Thành Tiền</td>
@@ -155,7 +159,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delet
                 </div>
                 <div class="cart-content-right-login">
                     <p>TechDiscovery!</p>
-                    <p>Hãy <a href="login.html">Đăng Nhập</a> Để Tiếp Tục Mua Sắm Và Tích Điểm Thưởng Nhé!</p>
+                    <p>Hãy <a href="login.php">Đăng Nhập</a> Để Tiếp Tục Mua Sắm Và Tích Điểm Thưởng Nhé!</p>
                 </div>
             </div>
         </div>

@@ -20,7 +20,6 @@ if (isset($_GET['product_id'])) {
             <div class="product-top row">
                 <p>Home</p> <span>&#10148;</span>
                 <p>iPhone</p><span>&#10148;</span>
-                <p>New</p><span>&#10148;</span>
                 <p><?php echo $row['product_name']; ?></p>
             </div>
             <div class="produc-content row">

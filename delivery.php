@@ -68,7 +68,7 @@ include "header.php";
                         <p>&#171;</p>Quay Lại Giỏ Hàng
                     </a>
                     <button>
-                        <p style="font-weight: bold;"><a href="payment.html"> Thanh Toán Và Giao Hàng</a></p>
+                        <p style="font-weight: bold;"><a href="payment.php"> Thanh Toán Và Giao Hàng</a></p>
                     </button>
                 </div>
             </div>
