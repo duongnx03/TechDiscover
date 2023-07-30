@@ -1,6 +1,12 @@
 <section class="admin-content">
         <div class="admin-content-left">
             <ul>
+                <li><a href="">Danh Mục Chính</a>
+                    <ul>
+                        <li><a href="cartegory_main_add.php">Thêm Danh Mục Chính</a></li>
+                        <li><a href="cartegory_mainlist.php">Danh Sách Danh Mục Chính</a></li>
+                    </ul>
+                </li>
                 <li><a href="">Danh Mục</a>
                     <ul>
                         <li><a href="cartegory_add.php">Thêm Danh Mục</a></li>

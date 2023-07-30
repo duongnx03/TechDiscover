@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // echo '</pre>';
 
     $update_product = $product->update_product($_POST, $_FILES, $product_id);
+
+    
 }
 ?>
 
@@ -126,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="uploads/<?php echo $result['product_img']; ?>" alt="Product Image" style="max-width: 200px; max-height: 200px;"><br>
 
             <label for="">Ảnh Mô Tả<span style="color:red;">*</span></label>
-            <input name="product_img_desc[]" multiple type="file">
+            <input name="product_img_desc[]" multiple type="file" onchange="previewImagesOnEdit(this)">
             <div class="image-previews">
                 <?php
                 $product_imgs_desc = $product->get_product_imgs_desc($product_id);
@@ -171,6 +173,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         margin-bottom: 5px;
     }
 </style>
+
+<!--  <script> của trang productedit.php -->
+<!-- Đoạn mã JavaScript -->
+<script>
+    function previewImagesOnEdit(input) {
+        var imagesContainer = document.querySelector('.image-previews');
+        imagesContainer.innerHTML = '';
+
+        // var errorMessagesContainer = document.querySelector('.error-messages');
+        // errorMessagesContainer.innerHTML = '';
+
+        var files = input.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var imageURL = URL.createObjectURL(file);
+
+            var image = document.createElement('img');
+            image.src = imageURL;
+            image.style.width = '150px'; // Cài độ rộng tùy ý
+            image.style.height = '150px'; // Cài chiều cao tùy ý
+
+            imagesContainer.appendChild(image);
+
+            // Kiểm tra định dạng và dung lượng của ảnh mô tả
+            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+            var maxFileSize = 5 * 1024 * 1024; // 5MB
+
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(fileExtension)) {
+                var errorMessage = document.createElement('div');
+                errorMessage.innerText = "Định dạng đuôi ảnh không hợp lệ. Chỉ chấp nhận định dạng jpg, jpeg, png, webp, gif.";
+                errorMessagesContainer.appendChild(errorMessage);
+            }
+
+            if (file.size > maxFileSize) {
+                var errorMessage = document.createElement('div');
+                errorMessage.innerText = "Dung lượng ảnh quá lớn. Chỉ chấp nhận ảnh có dung lượng tối đa là 5MB.";
+                errorMessagesContainer.appendChild(errorMessage);
+            }
+        }
+    }
+</script>
 
 </body>
 

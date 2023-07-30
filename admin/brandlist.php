@@ -17,6 +17,7 @@ $show_brand = $brand-> show_brand();
             <tr>
                 <th>STT</th>
                 <th>ID</th>
+                <th>Category Main Name</th>
                 <th>Category Name</th>
                 <th>Product Type</th>
                 <th>Edit</th>
@@ -28,10 +29,11 @@ $show_brand = $brand-> show_brand();
             <tr>
                 <td><?php echo $i ?></td>
                 <td><?php echo $result['brand_id']?></td>
+                <td><?php echo $result['cartegory_main_name'] ?></td>
                 <td><?php echo $result['cartegory_name']?></td>
                 <td><?php echo $result['brand_name']?></td>
                 <td><a href="brandedit.php?brand_id=<?php echo $result['brand_id']?>">Update</a> | 
-                <a href="branddelete.php?brand_id=<?php echo $result['brand_id']?>">Delete</a></td>
+                <a href="#" onclick="confirmDelete(<?php echo $result['brand_id'] ?>)">Delete</a>
             </tr>
             <?php
              }

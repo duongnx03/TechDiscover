@@ -28,6 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Thêm Sản Phẩm</h1>
         <form action="" method="POST" enctype="multipart/form-data">
 
+            <label for="">Chọn Danh Mục Chính <span style="color:red;">*</span></label>
+            <select name="cartegory_main_id" id="cartegory_main_id"  onchange="getCategoriesByMainCategory()">
+                <option value="">--Chọn--</option>
+                <?php
+                $show_cartegory_main = $product->show_cartegory_main();
+                if ($show_cartegory_main) {
+                    while ($_result = $show_cartegory_main->fetch_assoc()) {
+                ?>
+                        <option value="<?php echo $_result['cartegory_main_id'] ?>"><?php echo $_result['cartegory_main_name'] ?></option>
+                <?php
+                    }
+                }
+                ?>
+            </select>
+
             <label for="">Chọn Danh Mục <span style="color:red;">*</span></label>
             <select name="cartegory_id" id="cartegory_id" onchange="getBrandsByCategory()">
                 <option value="">--Chon--</option>
@@ -140,6 +155,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 </style>
 <script>
+    //function for productadd to show cartegory with cartegory_main_id
+    function getCategoriesByMainCategory() {
+    var cartegory_main_id = document.getElementById("cartegory_main_id").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "get_cartegories_by_cartegory_main_id.php?cartegory_main_id=" + cartegory_main_id, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var selectCategory = document.getElementById("cartegory_id");
+            selectCategory.innerHTML = xhr.responseText;
+
+            // Trigger the change event of the category select to update the brands select
+            getBrandsByCategory();
+        }
+    };
+    xhr.send();
+}
+
     //function for productadd to show brand with cartegory_id
     function getBrandsByCategory() {
         var cartegory_id = document.getElementById("cartegory_id").value;

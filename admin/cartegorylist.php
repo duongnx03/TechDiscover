@@ -6,7 +6,7 @@ include "class/cartegory_class.php"
 
 <?php
 $cartegory = new cartegory;
-$show_cartegory = $cartegory-> show_cartegory();
+$show_cartegory = $cartegory->show_cartegory();
 ?>
 
 
@@ -17,6 +17,7 @@ $show_cartegory = $cartegory-> show_cartegory();
             <tr>
                 <th>STT</th>
                 <th>ID</th>
+                <th>Main Category Name</th>
                 <th>Category Name</th>
                 <th>Edit</th>
             </tr>
@@ -27,6 +28,7 @@ $show_cartegory = $cartegory-> show_cartegory();
             <tr>
                 <td><?php echo $i ?></td>
                 <td><?php echo $result['cartegory_id']?></td>
+                <td><?php echo $result['cartegory_main_name']?></td>
                 <td><?php echo $result['cartegory_name']?></td>
                 <td><a href="cartegoryedit.php?cartegory_id=<?php echo $result['cartegory_id']?>">Update</a> | 
                 <a href="#" onclick="confirmDelete(<?php echo $result['cartegory_id']; ?>)">Delete</a></td>
@@ -40,13 +42,12 @@ $show_cartegory = $cartegory-> show_cartegory();
 </div>
 </section>
 <script>
-     //function for cartegory-delete
-     function confirmDelete(cartegory_id) {
-            if (confirm('Are you sure you want to delete this category?')) {
-                window.location.href = 'cartegorydelete.php?cartegory_id=' + cartegory_id;
-            }
+    // Function for cartegory-delete
+    function confirmDelete(cartegory_id) {
+        if (confirm('Are you sure you want to delete this category?')) {
+            window.location.href = 'cartegorydelete.php?cartegory_id=' + cartegory_id;
         }
+    }
 </script>
 </body>
-
 </html>
