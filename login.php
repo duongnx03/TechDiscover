@@ -1,6 +1,6 @@
 
 <?php
-require 'config.php';
+require '../TechDiscovery2/admin/config.php';
 session_start();
 if(isset($_POST["submit"])){
     $emailusername = $_POST["emailusername"];
