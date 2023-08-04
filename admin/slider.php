@@ -38,7 +38,11 @@
                 </li>
                 <li><a href="">Users</a>
                 </li>
-
+                <li><a href="">Order List</a>
+                    <ul>
+                        <li><a href="order_list.php">List</a></li>
+                    </ul>
+                </li>
                 <li><a href="../index.php">Log out</a>
                 </li>
             </ul>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "header.php";
 include "admin/database.php";
 include "admin/config.php";
@@ -9,14 +10,22 @@ if (isset($_GET['product_id'])) {
     $product = new product;
     $product_detail = $product->get_product_detail($product_id);
 }
-
+$result = '';
+if (isset($_SESSION["add_to_cart_result"])) {
+    $result = $_SESSION["add_to_cart_result"];
+    unset($_SESSION["add_to_cart_result"]);
+        echo "<script>
+                alert('$result');
+             </script>";
+    }
 ?>
 
 <section class="product">
     <div class="container">
-        <?php if ($product_detail) {
-            $row = $product_detail->fetch_assoc();
-        ?>
+        <form id="addToCartForm" action="admin/process-addToCart.php" method="post">
+            <?php if ($product_detail) {
+                $row = $product_detail->fetch_assoc();
+            ?>
             <div class="product-top row">
                 <p>Home</p> <span>&#10148;</span>
                 <p>iPhone</p><span>&#10148;</span>
@@ -60,35 +69,31 @@ if (isset($_GET['product_id'])) {
                             // Chia các bộ nhớ - ram thành mảng và hiển thị
                             $memory_ram_arr = explode(",", $row['product_memory_ram']);
                             foreach ($memory_ram_arr as $memory_ram) {
-                                echo '<span>' . $memory_ram . '</span>';
+                                echo '<label><input type="radio" name="selected_ram" value="' . htmlspecialchars($memory_ram) . '"> ' . $memory_ram . '</label><br>';
                             }
                             ?>
                         </div>
                     </div>
-
                     <div class="quantity">
                         <p style="font-weight: bold;">Số Lượng: </p>
-                        <input type="number" min="0" value="1">
+                        <input type="number" name="quantity" min="1" value="1">
                     </div>
                     <div class="quantity">
                         <p>Kho:</p>
                         <p><?php echo $row['product_quantity']; ?></p>
                     </div>
-                    <p style="color: red;">Vui Lòng Chọn Sản Phẩm Mong Muốn *</p>
-
+                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+                    <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>">
+                    <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>">
+                    <input type="hidden" name="product_img" value="<?php echo $row['product_img']; ?>">
+                    <input type="hidden" name="product_color" value="<?php echo htmlspecialchars($row['product_color']); ?>">
+                    <input type="hidden" name="product_memory_ram" value="<?php echo htmlspecialchars($row['product_memory_ram']); ?>">
                     <div class="product-content-right-product-button">
-                        <a href="cart.php?product_id=<?php echo $row['product_id']; ?>&product_name=<?php echo urlencode($row['product_name']); ?>&product_price=<?php echo $row['product_price']; ?>&quantity=1">
-                            <button><i class="fas fa-shopping-cart"></i>
-                                <p>Mua Hàng</p>
-                            </button>
-                        </a>
-                        <a href="cart.php?product_id=<?php echo $row['product_id']; ?>&product_name=<?php echo urlencode($row['product_name']); ?>&product_price=<?php echo $row['product_price']; ?>&quantity=1">
-                            <button><i class="fa fa-shopping-bag"></i>
-                                <p>Add To Cart</p>
-                            </button>
-                        </a>
-                    </div>
-
+                        <button type="submit" name="addToCart"><i class="fa fa-shopping-bag"></i>
+                            <p>Add To Cart</p>
+                        </button>
+                   </div>
+                    </form>
                     <div class="product-content-right-product-icon row">
                         <div class="product-content-right-product-icon-item">
                             <i class="fas fa-phone-alt"></i>

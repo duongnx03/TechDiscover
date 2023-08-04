@@ -1,68 +1,21 @@
 <?php
+session_start();
 include "header.php";
-include "admin/database.php";
 include "admin/config.php";
-include "admin/class/product_class.php";
+include "admin/database.php";
 
-// Khởi tạo biến lưu trữ thông tin giỏ hàng
-$cart_items = array();
-
-// Kiểm tra nếu có thông tin sản phẩm được truyền từ trang product.php
-if (isset($_GET['product_id']) && isset($_GET['product_name']) && isset($_GET['product_price']) && isset($_GET['quantity'])) {
-    $product_id = $_GET['product_id'];
-    $product_name = $_GET['product_name'];
-    $product_price = $_GET['product_price'];
-    $quantity = $_GET['quantity'];
-
-    // Lưu thông tin sản phẩm vào giỏ hàng
-    $cart_item = array(
-        'product_id' => $product_id,
-        'product_img' => $product_img,
-        'product_name' => $product_name,
-        'product_price' => $product_price,
-        'quantity' => $quantity
-    );
-    array_push($cart_items, $cart_item);
+$totalProducts = $totalPrice = $intoMoney = 0;
+$shippingFee = 10;
+if (isset($_SESSION["id"])) {
+    $user_id = $_SESSION['id'];
+}else{
+    $user_id = 0;
 }
-
-// Xử lý xoá sản phẩm khỏi giỏ hàng
-if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delete_product_id'])) {
-    $delete_product_id = $_GET['delete_product_id'];
-    foreach ($cart_items as $key => $item) {
-        if ($item['product_id'] === $delete_product_id) {
-            unset($cart_items[$key]);
-        }
-    }
-    // Cập nhật lại giỏ hàng sau khi xoá
-    $cart_items = array_values($cart_items);
-}
-
+$database = new Database();
+$query = "SELECT * FROM tbl_cart where user_id = $user_id";
+$result = $database->select($query);
 ?>
 
-<script>
-    function updateCartItemQuantity(product_id) {
-        const quantityInput = document.getElementById(`quantity-${product_id}`);
-        const productPrice = parseFloat(quantityInput.dataset.productPrice);
-        const oldQuantity = parseFloat(quantityInput.dataset.oldQuantity);
-        const newQuantity = parseFloat(quantityInput.value);
-
-        const totalQuantityElement = document.getElementById('total-quantity');
-        const totalPriceElement = document.getElementById('total-price');
-
-        const totalQuantity = parseFloat(totalQuantityElement.innerText);
-        const totalPrice = parseFloat(totalPriceElement.innerText);
-
-        const quantityDiff = newQuantity - oldQuantity;
-        const newTotalQuantity = totalQuantity + quantityDiff;
-        const newTotalPrice = totalPrice + quantityDiff * productPrice;
-
-        totalQuantityElement.innerText = newTotalQuantity;
-        totalPriceElement.innerText = newTotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-
-        // Cập nhật giá trị cũ của input
-        quantityInput.dataset.oldQuantity = newQuantity;
-    }
-</script>
 
 <section class="cart">
     <div class="container">
@@ -83,89 +36,93 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['delet
     <div class="container">
         <div class="cart-content row">
             <div class="cart-content-left">
-                <?php if (count($cart_items) > 0) { ?>
+            <?php
+                    if($result){
+                ?>
                     <table>
                         <tr>
-                            <th>Sản Phẩm</th>
-                            <th>Ram</th>
-                            <th>Màu Sắc</th>
-                            <th>SL</th>
-                            <th>Thành Tiền</th>
-                            <th>Xoá</th>
+                            <th>Product</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
                         </tr>
-                        <?php foreach ($cart_items as $item) { ?>
-                            <tr>
-                                <td><img src="admin/uploads/<?php echo $item['product_img']; ?>">
-                                    <p><?php echo $item['product_name']; ?></p>
-                                </td>
+                        <?php
+                            while ($row = $result->fetch_assoc()) {
+                                $totalProducts += $row['quantity'];
+                                $totalPrice += $row['total'];
+                                $intoMoney = $totalPrice + $shippingFee;
+                        ?>
+                        <tr>
+                        <form action="admin/process-cart-edit.php?id=<?php echo $row["cart_id"]?>" method="post">
+                                <td><img src="admin/uploads/<?php echo $row['product_img']; ?>" width="100px"></td>
+                                <td><?php echo $row['product_name']?></td>
+                                <td><?php echo $row['product_color'].' | '.$row['product_memory_ram']?></td>
+                                <td><span>$</span><?php echo number_format($row['product_price']); ?></td>
+                                <td><input type="number" name="quantity[<?php echo $row['cart_id']; ?>]" value="<?php echo $row['quantity']; ?>" min="1"></td>
+                                <td><span>$</span><?php echo number_format($row['total']); ?></td>
                                 <td>
-                                    <p>128GB</p>
+                                    <button type="submit">Edit</button> |
+                            </form>
+                                <button onclick="confirmDelete(<?php echo $row['cart_id']?>)">Delete</button>
                                 </td>
-                                <td>Gold</td>
-                                <td><input type="number" value="<?php echo $item['quantity']; ?>" min="1" id="quantity-<?php echo $item['product_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" data-old-quantity="<?php echo $item['quantity']; ?>" onchange="updateCartItemQuantity(<?php echo $item['product_id']; ?>)"></td>
-                                <td>
-                                    <p><?php echo number_format($item['product_price'] * $item['quantity']); ?><span>₫</span></p>
-                                </td>
-                                <td><a href="cart.php?action=delete&delete_product_id=<?php echo $item['product_id']; ?>" onclick="return confirm('Bạn có muốn xoá sản phẩm khỏi giỏ hàng?')"><span class="delete-product-cart">X</span></a></td>
-                            </tr>
-                        <?php } ?>
+                        </tr>
+                        <?php
+                            }  
+                        ?>
                     </table>
-                <?php } else { ?>
-                    <p>Không có sản phẩm trong giỏ hàng.</p>
-                <?php } ?>
+                <?php
+                    }else{
+                        echo 'There is no product in the store';
+                    }
+                ?>    
             </div>
             <div class="cart-content-right">
-                <?php
-                $total_quantity = 0;
-                $total_price = 0;
-
-                foreach ($cart_items as $item) {
-                    $total_quantity += $item['quantity'];
-                    $total_price += $item['product_price'] * $item['quantity'];
-                }
-                ?>
                 <table>
                     <tr>
-                        <th colspan="2">Tổng tiền tạm tính:</th>
+                        <th colspan="2">TOTAL MONEY (Temporary):</th>
                     </tr>
                     <tr>
-                        <td>Tổng Sản Phẩm</td>
-                        <td id="total-quantity"><?php echo $total_quantity; ?></td>
+                        <td>Total Products</td>
+                        <td id="total-quantity"><?php echo $totalProducts?></td>
                     </tr>
                     <tr>
-                        <td>Tổng Tiền Hàng</td>
-                        <td id="total-price"><?php echo number_format($total_price); ?><span>₫</span></td>
+                        <td>Total Amount</td>
+                        <td id="total-price"><span>$</span><?php echo number_format($totalPrice)?></td>
                     </tr>
                     <tr>
-                        <td>Thành Tiền</td>
-                        <td>
-                            <p><?php echo number_format($total_price); ?><span>₫</span></p>
-                        </td>
+                        <td>Shopping Fee</td>
+                        <td id="total-price"><span>$</span><?php echo number_format($shippingFee)?></td>
                     </tr>
                     <tr>
-                        <td>Tạm Tính</td>
-                        <td>
-                            <p style="color: black; font-weight:bold;"><?php echo number_format($total_price); ?><span>₫</span></p>
-                        </td>
+                        <td>Into money</td>
+                        <td><span>$</span><?php echo number_format($intoMoney)?></td>
                     </tr>
                 </table>
-                <div class="cart-content-right-text">
-                    <p style="color: rgb(52, 178, 84); font-weight:bold;">Bạn sẽ được miễn phí ship khi đơn hàng của bạn có tổng giá trị trên 2.000.000<span>₫</span>*</p>
-                    <p style="color: rgb(244, 8, 63); font-weight:bold;">Mua thêm 10.000.000<span>₫</span> để được miễn phí SHIP *</p>
-                </div>
                 <div class="cart-content-right-button">
-                    <button><a href="delivery.php">TIẾN HÀNH THANH TOÁN</a></button>
-                    <button><a href="category.php">CHỌN THÊM SẢN PHẨM KHÁC</a></button>
+                     <button><a href="delivery.php">PROCEED PAYMENT</a></button>
+                    <button><a href="category.php">CHOOSE MORE OTHER PRODUCTS</a></button>
                 </div>
                 <div class="cart-content-right-login">
                     <p>TechDiscovery!</p>
-                    <p>Hãy <a href="login.php">Đăng Nhập</a> Để Tiếp Tục Mua Sắm Và Tích Điểm Thưởng Nhé!</p>
+                    <p>Please <a href="23/login.php">Login</a> To Continue Shopping And Earn Rewards Points!</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    function confirmDelete(cartId) {
+        var confirmation = confirm("Are you sure you want to delete this product from the cart?");
+        if (confirmation) {
+            window.location.href = "admin/process-cart-delete.php?id=" + cartId;
+        } else {
 
+        }
+    }
+</script>
 <?php
 include "footer.php";
 ?>

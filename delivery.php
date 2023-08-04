@@ -1,6 +1,37 @@
 <?php
+session_start();
 include "header.php";
+include "admin/config.php";
+include "admin/database.php";
 
+$totalProducts = $totalPrice = $intoMoney = 0;
+$shippingFee = 10;
+if (isset($_SESSION["id"])) {
+    $user_id = $_SESSION['id'];
+}else{
+    $user_id = 0;
+}
+$database = new Database();
+$query = "SELECT * FROM tbl_cart where user_id = $user_id";
+$result = $database->select($query);
+$cartItems = array();
+
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $cartItems[] = array(
+            'product_name' => $row['product_name'],
+            'product_color' => $row['product_color'],
+            'product_memory_ram' => $row['product_memory_ram'],
+            'product_price' => $row['product_price'],
+            'quantity' => $row['quantity'],
+            'total' => $row['total'],
+            'product_img' => $row['product_img']
+        );
+        $totalProducts += $row['quantity'];
+        $totalPrice += $row['total'];
+    }
+    $intoMoney = $totalPrice + $shippingFee;
+}
 ?>
 <!--------------------------------------------check-out------------------------------------------------------>
 
@@ -23,95 +54,83 @@ include "header.php";
 
     <div class="container">
         <div class="delivery-content row">
+        <form action="admin/process-order.php" method="post">
             <div class="delivery-content-left">
-                <p>Vui lòng chọn địa chỉ giao hàng</p>
-                <div class="delivery-content-left-login row">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <p> Đăng Nhập (Nếu đã có tài khoản)</p>
-                </div>
-                <div class="delivery-content-left-sigle-customer row">
-                    <input name="customers" type="radio">
-                    <p><span style="font-weight: bold;">Khách Lẻ</span>(Mua mà không cần đăng nhập hay lưu lại thông tin)</p>
-                </div>
-                <div class="delivery-content-left-register row">
-                    <input name="customers" type="radio">
-                    <p><span style="font-weight: bold;">Đăng ký</span>(Tạo tài khoản mới)</p>
-                </div>
+                <p>Please select a shipping address</p>
                 <div class="delivery-content-left-input-top row">
                     <div class="delivery-content-left-input-top-item">
-                        <label for="">Họ Tên: <span style="color: red;">*</span></label>
-                        <input type="text">
+                        <label for="">Full name: <span style="color: red;">*</span></label>
+                        <input type="text" name="name" required>
                     </div>
                     <div class="delivery-content-left-input-top-item">
-                        <label for="">Điện Thoại: <span style="color: red;">*</span></label>
-                        <input type="text">
+                        <label for="">Phone number: <span style="color: red;">*</span></label>
+                        <input type="text" name="phone" required> 
                     </div>
                     <div class="delivery-content-left-input-top-item">
-                        <label for="">Tỉnh/TP: <span style="color: red;">*</span></label>
-                        <input type="text">
+                        <label for="">Province/City: <span style="color: red;">*</span></label>
+                        <input type="text" name="city" v>
                     </div>
                     <div class="delivery-content-left-input-top-item">
-                        <label for="">Quận/Huyện: <span style="color: red;">*</span></label>
-                        <input type="text">
+                        <label for="">District: <span style="color: red;">*</span></label>
+                        <input type="text" name="district" required>
                     </div>
                     <div class="delivery-content-left-input-top-item">
-                        <label for="">Phường/Xã: <span style="color: red;">*</span></label>
-                        <input type="text">
+                        <label for="">Wards: <span style="color: red;">*</span></label>
+                        <input type="text" name="ward" required>
                     </div>
                 </div>
                 <div class="delivery-content-left-input-top-item">
-                    <label for="">Địa Chỉ (Chi Tiết): <span style="color: red;">*</span></label>
-                    <input type="text">
+                    <label for="">Address (Details): <span style="color: red;">*</span></label>
+                    <input type="text" name="address" required>
                 </div>
                 <div class="delivery-content-left-button row">
-                    <a href="cart.html">
-                        <p>&#171;</p>Quay Lại Giỏ Hàng
+                    <a href="cart.php?user_id=<?php echo $user_id; ?>">
+                        <p>&#171;</p>Back to Cart
                     </a>
-                    <button>
-                        <p style="font-weight: bold;"><a href="payment.php"> Thanh Toán Và Giao Hàng</a></p>
+                    <button type="submit">
+                        <p style="font-weight: bold;">Payment And Delivery</p>
                     </button>
                 </div>
             </div>
+            </form>
             <div class="delivery-content-right">
                 <table>
                     <tr>
-                        <th>Tên Sản Phẩm</th>
-                        <th>Giảm Giá</th>
-                        <th>Số Lượng</th>
-                        <th>Thành Tiền</th>
+                        <th>Product</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
                     </tr>
+                    <?php
+                        foreach ($cartItems as $item) {
+                    ?>
                     <tr>
-                        <td>iPhone 14 Pro Max 128GB | Chính hãng VN/A</td>
-                        <td>-2%</td>
-                        <td>1</td>
-                        <td>
-                            <p>24.190.000<span>₫</span></p>
-                        </td>
+                        <td><?php echo $item['product_name']?></td>
+                        <td align="center"><?php echo $item['product_color'].' | '.$item['product_memory_ram'];?></td>
+                        <td align="center"><span>$</span><?php echo number_format($item['product_price']); ?></td>
+                        <td align="center"><?php echo $item['quantity'];?></td>
+                        <td><span>$</span><?php echo number_format($item['total']);?></td>
                     </tr>
+                    <?php
+                        }
+                    ?>
                     <tr>
-                        <td>iPhone 14 Pro Max 128GB | Chính hãng VN/A</td>
-                        <td>-2%</td>
-                        <td>1</td>
-                        <td>
-                            <p>24.190.000<span>₫</span></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold;" colspan="3">Tổng</td>
+                        <td style="font-weight: bold;" colspan="4">Total</td>
                         <td style="font-weight: bold;">
-                            <p>48.380.000<span>₫</span></p>
+                            <p><span>$</span><?php echo number_format($totalPrice); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight: bold;" colspan="3">Thuế VAT</td>
+                        <td style="font-weight: bold;" colspan="4">Shipping Fee</td>
                         <td style="font-weight: bold;">
-                            <p>1.000.000<span>₫</span></p>
+                            <p><span>$</span><?php echo number_format($shippingFee); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight: bold;" colspan="3">Tổng Thanh Toán</td>
+                        <td style="font-weight: bold;" colspan="4">Into Money</td>
                         <td style="font-weight: bold;">
-                            <p>49.380.000<span>₫</span></p>
+                            <p><span>$</span><?php echo number_format($intoMoney); ?></p>
                         </td>
                     </tr>
                 </table>

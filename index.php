@@ -1,6 +1,14 @@
 <?php
+    session_start();
     include "header.php";
-    
+    $result = '';
+    if (isset($_SESSION["order_success"])) {
+        $result = $_SESSION["order_success"];
+        unset($_SESSION["order_success"]);
+            echo "<script>
+                    alert('$result');
+                </script>";
+        }
 ?>
 
     <!-------------------------------------------slider--------------------------------------------------->
