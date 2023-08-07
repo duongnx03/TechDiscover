@@ -77,6 +77,7 @@
                     <li><a href="about.php">About US</a></li>
                 </ul>
             </li> 
+            <li><a href="">Survey</a></li> 
         </div>
 
         <div class="other">

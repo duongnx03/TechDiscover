@@ -14,8 +14,8 @@
     <!-------------------------------------------slider--------------------------------------------------->
     <section id="Slider">
         <div class="aspect-ratio-169">
-            <img src="image/slide1.png">
-            <img src="image/slide2.jpeg">
+            <img src="image/slide6.jpeg">
+            <img src="image/slide7.jpeg">
             <img src="image/slide3.jpeg">
             <img src="image/slide4.jpeg">
             <img src="image/slide5.jpeg">

@@ -28,6 +28,7 @@ if (isset($_SESSION["add_to_cart_result"])) {
             ?>
             <div class="product-top row">
                 <p>Home</p> <span>&#10148;</span>
+                <p>Điện Thoại</p><span>&#10148;</span>
                 <p>iPhone</p><span>&#10148;</span>
                 <p><?php echo $row['product_name']; ?></p>
             </div>

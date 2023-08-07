@@ -36,9 +36,9 @@
                         <li><a href="memory_ramlist.php">Danh Sách Bộ Nhớ, Ram</a></li>
                     </ul>
                 </li>
-                <li><a href="">Users</a>
+                <li><a href="../userlist.php">Users</a>
                 </li>
-                <li><a href="">Order List</a>
+                <li><a href="order_list.php">Order List</a>
                     <ul>
                         <li><a href="order_list.php">List</a></li>
                     </ul>

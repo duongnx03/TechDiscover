@@ -1,8 +1,6 @@
 <?php
 include "header.php";
-
 include "admin/database.php";
-include "admin/config.php";
 include "admin/class/product_class.php";
 
 $product = new product();
