@@ -1333,3 +1333,51 @@ a {
   }
 
 
+  .table_price {
+    border-collapse: collapse;
+    width: 100%;    
+  }
+
+  .table_price th,
+  .table_price td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .table_price th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .table_price tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .table_price tr:hover {
+    background-color: #dddddd;
+  }
+   
+  .btn{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+  .button-cell{
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+
+  .button-cell:hover {
+    background-color: #45a049;
+  }
+

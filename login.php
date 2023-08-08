@@ -2,16 +2,32 @@
 <?php
 require '../TechDiscovery2/admin/config.php';
 session_start();
+$hostname = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'website_td';
+
+// Create a connection to the database using MySQLi.
+$conn = mysqli_connect($hostname, $username, $password, $database);
+
+// Check if the connection was successful or display an error message.
+if (!$conn) {
+    die("Database connection error: " . mysqli_connect_error());
+}
 if(isset($_POST["submit"])){
     $emailusername = $_POST["emailusername"];
     $password = $_POST["password"]; 
-    $result = mysqli_query($conn, "SELECT * FROM user WHERE username ='$emailusername' OR email ='$emailusername'");
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE username ='$emailusername' OR email ='$emailusername'");
     $row = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) > 0){
         if($password == $row["password"]){  
             $_SESSION["login"] = true;
             $_SESSION["id"] = $row["id"];
-            header("Location: index.php");
+            if (isset($_SESSION["product_page_url"])) {
+                header("Location: " . $_SESSION["product_page_url"]);
+            } else {
+                header("Location: index.php");
+            }
         }else{
             echo "<script>Wrong Password</scrpit>";
         }
@@ -20,6 +36,7 @@ if(isset($_POST["submit"])){
     }
 
 }
+
 
 
 ?>

@@ -1,15 +1,12 @@
 <?php
 session_start();
 include "header.php";
-include "admin/config.php";
 include "admin/database.php";
 
 $totalProducts = $totalPrice = $intoMoney = 0;
 $shippingFee = 10;
 if (isset($_SESSION["id"])) {
     $user_id = $_SESSION['id'];
-}else{
-    $user_id = 0;
 }
 $database = new Database();
 $query = "SELECT * FROM tbl_cart where user_id = $user_id";
@@ -23,9 +20,6 @@ $result = $database->select($query);
             <div class="cart-top">
                 <div class="cart-top-cart cart-top-item">
                     <i class="fas fa-shopping-cart"></i>
-                </div>
-                <div class="cart-top-address cart-top-item">
-                    <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <div class="cart-top-payment cart-top-item">
                     <i class="fas fa-money-check-alt"></i>
@@ -80,7 +74,7 @@ $result = $database->select($query);
                 ?>    
             </div>
             <div class="cart-content-right">
-                <table>
+                <table class="table_price">
                     <tr>
                         <th colspan="2">TOTAL MONEY (Temporary):</th>
                     </tr>
@@ -102,12 +96,12 @@ $result = $database->select($query);
                     </tr>
                 </table>
                 <div class="cart-content-right-button">
-                     <button><a href="delivery.php">PROCEED PAYMENT</a></button>
-                    <button><a href="category.php">CHOOSE MORE OTHER PRODUCTS</a></button>
+                    <a href="checkout.php"><button>PROCEED PAYMENT</button></a>
+                    <a href="category.php"><button>CHOOSE MORE OTHER PRODUCTS</button></a>
                 </div>
                 <div class="cart-content-right-login">
                     <p>TechDiscovery!</p>
-                    <p>Please <a href="23/login.php">Login</a> To Continue Shopping And Earn Rewards Points!</p>
+                    <p>Please <a href="login.php">Login</a> To Continue Shopping And Earn Rewards Points!</p>
                 </div>
             </div>
         </div>

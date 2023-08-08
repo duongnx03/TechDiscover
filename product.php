@@ -5,6 +5,8 @@ include "admin/database.php";
 include "admin/config.php";
 include "admin/class/product_class.php";
 
+$_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
+
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
     $product = new product;

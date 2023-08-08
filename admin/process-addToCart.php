@@ -3,13 +3,17 @@ session_start();
 include("config.php");
 include("database.php");
 
-$user_id = $product_id = $product_color = $product_memory_ram = $product_img = $product_name = $product_price = $total = '';
+if (isset($_SESSION["id"])) {
+    $user_id = $_SESSION['id'];
+}else{
+    echo '<script>
+            alert("Please login to add products to cart.");
+            window.location.href = "../login.php";
+        </script>';
+        exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['addToCart'])) {
-    if (isset($_SESSION["id"])) {
-        $user_id = $_SESSION['id'];
-    }else{
-        $user_id = 0;
-    }
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
