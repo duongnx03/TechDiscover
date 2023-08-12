@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+include "navbar.php";
 session_start();
 $error = $send = '';
 if (isset($_SESSION['result'])) {

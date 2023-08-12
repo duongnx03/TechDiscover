@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "header.php";
+include "navbar.php";
 include "admin/database.php";
 
 $totalProducts = $totalPrice = $intoMoney = 0;

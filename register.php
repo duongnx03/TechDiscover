@@ -1,7 +1,34 @@
 <?php
-require '../TechDiscovery2/admin/config.php';
+require '../TechDiscovery/admin/config.php';
+
 session_start();
-if(isset($_POST["submit"])){
+$servername = "localhost";
+$dbusername = "root";
+$dbpassword = "";
+$dbname = "website_td";
+
+// Create a new mysqli connection
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+
+// Check if the connection was successful
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$result = '';
+  if(isset($_GET["result"])){
+     $result = $_GET["result"];
+     echo "<script>
+          alert ('$result');
+           </script>";
+  }
+
+
+
+
+
+if(isset($_POST["register"])){
     $email = $_POST["email"];
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -9,12 +36,12 @@ if(isset($_POST["submit"])){
     $fullname = $_POST["fullname"];
     $address = $_POST["address"];
     $phone = $_POST["phone"];
-    $duplicate = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' or email = '$email'");
+    $duplicate = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username' or email = '$email'");
         if(mysqli_num_rows($duplicate) > 0){
         echo "<script> alert('Username or Email has already taken');</script>";    
     }else{
         if($password == $confirmpassword){
-            $query = "INSERT INTO user VALUES('','$email','$username','$password','$fullname','$address','$phone')";
+            $query = "INSERT INTO users VALUES('','$email','$username','$password','$fullname','$address','$phone')";
             mysqli_query($conn, $query);
             header("Location: login.php");
         }else{
@@ -23,6 +50,7 @@ if(isset($_POST["submit"])){
       
     }
 }
+
 
 
 ?>
@@ -34,12 +62,12 @@ if(isset($_POST["submit"])){
     <title>REGISTER</title>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="../src/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <section>
     <div class="">
-        <form action="" method="post" autocomplete="off">
+        <form action="register.php" method="post" autocomplete="off">
             <h2>Register</h2>
             <div class="input-box">
                 <span class="icon">
@@ -64,9 +92,9 @@ if(isset($_POST["submit"])){
                 </div>
                 <div class="input-box">
                 <span class="icon">
-                    <ion-icon name="person"></ion-icon>
+                    <ion-icon name="lock-closed"></ion-icon>
                 </span>
-                <input type="text" name="confirmpassword" id="confirmpassword" required>
+                <input type="password" name="confirmpassword" id="confirmpassword" required>
                 <label class='confirmpassword'>Confirm Password</label>
             </div>
             <div class="input-box">
@@ -90,7 +118,7 @@ if(isset($_POST["submit"])){
                 <input type="number" name="phone" id="phone" required>
                 <label class='phone'>Phone</label>
             </div>
-            <button type="submit" name="submit">Register Now</button>
+            <button type="submit" name="register">Register Now</button>
 
         </form>
     </div>
