@@ -1,6 +1,6 @@
 
 <?php
-require '../TechDiscovery2/admin/config.php';
+require '../TechDiscovery/admin/config.php';
 session_start();
 $hostname = 'localhost';
 $username = 'root';
