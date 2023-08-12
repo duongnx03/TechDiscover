@@ -1,5 +1,6 @@
 <?php
 include "header.php";
+include "navbar.php";
 include "admin/database.php";
 include "admin/class/product_class.php";
 
