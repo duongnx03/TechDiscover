@@ -15,26 +15,28 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.php" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="index.php" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Products</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="cartegory_mainlist.php" class="dropdown-item">Cartegory-Main</a>
-                            <a href="404.php" class="dropdown-item">Cartegory</a>
-                            <a href="404.php" class="dropdown-item">Brand</a>
-                            <a href="404.php" class="dropdown-item">Product</a>
-                            <a href="404.php" class="dropdown-item">Color</a>
-                            <a href="404.php" class="dropdown-item">Memory-Ram</a>
+                            <a href="cartegorylist.php" class="dropdown-item">Cartegory</a>
+                            <a href="brandlist.php" class="dropdown-item">Brand</a>
+                            <a href="productlist.php" class="dropdown-item">Product</a>
+                            <a href="colorlist.php" class="dropdown-item">Color</a>
+                            <a href="memory_ramlist.php" class="dropdown-item">Memory-Ram</a>
                         </div>
                     </div>
-                    <a href="404.php" class="nav-item nav-link"><i class="fas fa-users"></i>User</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i>Survey</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Chart</a>
+                    <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>
+                    <a href="order_list.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order</a>
+                    <a href="404.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Survey</a>
+                    <a href="../blog.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
+                    <a href="widget.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                 </div>
             </nav>
         </div>
         <!-- Sidebar End -->
+
+        
+        
         

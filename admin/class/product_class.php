@@ -1,6 +1,7 @@
 <?php
-include 'database.php';
+    include 'database.php';
 ?>
+
 <?php
 class product
 {
@@ -169,37 +170,37 @@ class product
     }
 
     public function update_product($post_data, $files_data, $product_id)
-{
-    $product_name = $post_data['product_name'];
-    $cartegory_id = $post_data['cartegory_id'];
-    $brand_id = $post_data['brand_id'];
-    $product_price = $post_data['product_price'];
-    $product_price_sale = $post_data['product_price_sale'];
-    $product_color = $post_data['product_color'];
-    $product_memory_ram = $post_data['product_memory_ram'];
-    $product_quantity = $post_data['product_quantity'];
-    $product_intro = $post_data['product_intro'];
-    $product_detail = $post_data['product_detail'];
-    $product_accessory = $post_data['product_accessory'];
-    $product_guarantee = $post_data['product_guarantee'];
+    {
+        $product_name = $post_data['product_name'];
+        $cartegory_id = $post_data['cartegory_id'];
+        $brand_id = $post_data['brand_id'];
+        $product_price = $post_data['product_price'];
+        $product_price_sale = $post_data['product_price_sale'];
+        $product_color = $post_data['product_color'];
+        $product_memory_ram = $post_data['product_memory_ram'];
+        $product_quantity = $post_data['product_quantity'];
+        $product_intro = $post_data['product_intro'];
+        $product_detail = $post_data['product_detail'];
+        $product_accessory = $post_data['product_accessory'];
+        $product_guarantee = $post_data['product_guarantee'];
 
-    // Kiểm tra nếu người dùng đã chọn ảnh sản phẩm mới
-    if (isset($files_data['product_img']['name']) && !empty($files_data['product_img']['name'])) {
-        // Xóa ảnh sản phẩm cũ trước khi cập nhật ảnh mới
-        $old_img_path = "uploads/" . $this->get_product_img_by_id($product_id);
-        if (file_exists($old_img_path)) {
-            unlink($old_img_path);
+        // Kiểm tra nếu người dùng đã chọn ảnh sản phẩm mới
+        if (isset($files_data['product_img']['name']) && !empty($files_data['product_img']['name'])) {
+            // Xóa ảnh sản phẩm cũ trước khi cập nhật ảnh mới
+            $old_img_path = "uploads/" . $this->get_product_img_by_id($product_id);
+            if (file_exists($old_img_path)) {
+                unlink($old_img_path);
+            }
+
+            $product_img = $files_data['product_img']['name'];
+            move_uploaded_file($files_data['product_img']['tmp_name'], "uploads/" . $files_data['product_img']['name']);
+        } else {
+            // Nếu người dùng không chọn ảnh mới, giữ nguyên ảnh cũ
+            $product_img = $this->get_product_img_by_id($product_id);
         }
 
-        $product_img = $files_data['product_img']['name'];
-        move_uploaded_file($files_data['product_img']['tmp_name'], "uploads/" . $files_data['product_img']['name']);
-    } else {
-        // Nếu người dùng không chọn ảnh mới, giữ nguyên ảnh cũ
-        $product_img = $this->get_product_img_by_id($product_id);
-    }
-
-    // Cập nhật thông tin sản phẩm vào cơ sở dữ liệu
-    $query = "UPDATE tbl_product 
+        // Cập nhật thông tin sản phẩm vào cơ sở dữ liệu
+        $query = "UPDATE tbl_product 
               SET product_name = '$product_name',
                   cartegory_id = '$cartegory_id',
                   brand_id = '$brand_id',
@@ -215,37 +216,37 @@ class product
                   product_img = '$product_img'
               WHERE product_id = '$product_id'";
 
-    $result = $this->db->update($query);
+        $result = $this->db->update($query);
 
-    // Xóa các ảnh mô tả cũ trước khi cập nhật các ảnh mô tả mới
-    if (isset($files_data['product_img_desc']['name'][0]) && !empty($files_data['product_img_desc']['name'][0])) {
-        $this->delete_product_imgs_desc_by_product_id($product_id);
-    }
+        // Xóa các ảnh mô tả cũ trước khi cập nhật các ảnh mô tả mới
+        if (isset($files_data['product_img_desc']['name'][0]) && !empty($files_data['product_img_desc']['name'][0])) {
+            $this->delete_product_imgs_desc_by_product_id($product_id);
+        }
 
-    // Lưu các ảnh mô tả mới vào cơ sở dữ liệu
-    if (isset($files_data['product_img_desc'])) {
-        $product_img_descs = $files_data['product_img_desc'];
+        // Lưu các ảnh mô tả mới vào cơ sở dữ liệu
+        if (isset($files_data['product_img_desc'])) {
+            $product_img_descs = $files_data['product_img_desc'];
 
-        foreach ($product_img_descs['tmp_name'] as $key => $tmp_name) {
-            // Kiểm tra xem có lỗi upload không
-            if ($product_img_descs['error'][$key] === UPLOAD_ERR_OK) {
-                // Lấy tên và đường dẫn tạm thời của ảnh mô tả
-                $filename = $product_img_descs['name'][$key];
-                $filetmp = $product_img_descs['tmp_name'][$key];
+            foreach ($product_img_descs['tmp_name'] as $key => $tmp_name) {
+                // Kiểm tra xem có lỗi upload không
+                if ($product_img_descs['error'][$key] === UPLOAD_ERR_OK) {
+                    // Lấy tên và đường dẫn tạm thời của ảnh mô tả
+                    $filename = $product_img_descs['name'][$key];
+                    $filetmp = $product_img_descs['tmp_name'][$key];
 
-                // Upload ảnh mô tả vào thư mục "uploads"
-                move_uploaded_file($filetmp, "uploads/" . $filename);
+                    // Upload ảnh mô tả vào thư mục "uploads"
+                    move_uploaded_file($filetmp, "uploads/" . $filename);
 
-                // Thêm thông tin ảnh mô tả vào cơ sở dữ liệu
-                $query = "INSERT INTO tbl_product_img_desc (product_id, product_img_desc) VALUES ('$product_id', '$filename')";
-                $this->db->insert($query);
+                    // Thêm thông tin ảnh mô tả vào cơ sở dữ liệu
+                    $query = "INSERT INTO tbl_product_img_desc (product_id, product_img_desc) VALUES ('$product_id', '$filename')";
+                    $this->db->insert($query);
+                }
             }
         }
-    }
 
-    header('Location: productlist.php');
-    return $result;
-}
+        header('Location: productlist.php');
+        return $result;
+    }
 
 
 
@@ -284,7 +285,8 @@ class product
         return $result;
     }
 
-    public function get_cartegories_by_cartegory_main_id($cartegory_main_id) {
+    public function get_cartegories_by_cartegory_main_id($cartegory_main_id)
+    {
         $query = "SELECT * FROM tbl_cartegory WHERE cartegory_main_id = '$cartegory_main_id' ORDER BY cartegory_id DESC";
         $result = $this->db->select($query);
         return $result;

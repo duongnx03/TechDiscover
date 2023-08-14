@@ -1,6 +1,7 @@
 <?php
 include "header.php";
-include "slider.php";
+include "sidebar.php";
+include "navbar.php";
 include "class/product_class.php";
 ?>
 
@@ -9,138 +10,99 @@ $product = new product;
 $show_product = $product->show_product();
 ?>
 
-<div class="admin-content-right">
-    <div class="admin-content-right-category-list">
-        <h1>Danh Sách Sản Phẩm</h1>
-        <table>
-            <tr>
-                <th>STT</th>
-                <th>ID</th>
-                <th>Tên Sản Phẩm</th>
-                <th>Danh Mục</th>
-                <th>Loại Sản Phẩm</th>
-                <th>Giá</th>
-                <th>Giá Khuyến Mãi</th>
-                <th>Màu Sắc</th>
-                <th>Bộ Nhớ, Ram</th>
-                <th>Kho</th>
-                <th>Giới Thiệu Sản Phẩm</th>
-                <th>Chi Tiết Sản Phẩm</th>
-                <th>Phụ Kiện Sản Phẩm</th>
-                <th>Bảo Hành Sản Phẩm</th>
-                <th>Ảnh Sản Phẩm</th>
-                <th>Ảnh Mô Tả</th>
-                <th>Edit</th>
-            </tr>
-            <?php
-            if ($show_product) {
-                $i = 0;
-                while ($result = $show_product->fetch_assoc()) {
-                    $i++;
-            ?>
-                    <tr>
-                    <td><?php echo $i ?></td>
-                        <td><?php echo $result['product_id'] ?></td>
-                        <td><?php echo $result['product_name'] ?></td>
-                        <td><?php echo $result['cartegory_name'] ?></td>
-                        <td><?php echo $result['brand_name'] ?></td>
-                        <td><?php echo $result['product_price'] ?></td>
-                        <td><?php echo $result['product_price_sale'] ?></td>
-                        <td><?php echo $result['product_color'] ?></td>
-                        <td><?php echo $result['product_memory_ram'] ?></td>
-                        <td><?php echo $result['product_quantity'] ?></td>
-                        <td><?php echo $result['product_intro'] ?></td>
-                        <td><?php echo $result['product_detail'] ?></td>
-                        <td><?php echo $result['product_accessory'] ?></td>
-                        <td><?php echo $result['product_guarantee'] ?></td>
-                        <td>
-                            <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
-                        </td>
-                        <td>
-                            <?php
-                            $product_id = $result['product_id'];
-                            $product_imgs_desc = $product->get_product_imgs_desc($product_id);
-                            if ($product_imgs_desc) {
-                                while ($row = $product_imgs_desc->fetch_assoc()) {
-                                    echo '<img src="uploads/' . $row['product_img_desc'] . '" alt="Product Image" style="max-width: 100px;">';
-                                }
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <a href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a> |
-                            <a href="#" onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
-                        </td>
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Product List</h6>
+            <a href="#">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên Sản Phẩm</th>
+                        <th scope="col">Danh Mục</th>
+                        <th scope="col">Loại Sản Phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Giá Khuyến Mãi</th>
+                        <th scope="col">Màu Sắc</th>
+                        <th scope="col">Bộ Nhớ, Ram</th>
+                        <th scope="col">Kho</th>
+                        <th scope="col">Giới Thiệu Sản Phẩm</th>
+                        <th scope="col">Chi Tiết Sản Phẩm</th>
+                        <th scope="col">Phụ Kiện Sản Phẩm</th>
+                        <th scope="col">Bảo Hành Sản Phẩm</th>
+                        <th scope="col">Ảnh Sản Phẩm</th>
+                        <th scope="col">Ảnh Mô Tả</th>
+                        <th scope="col">Action</th>
                     </tr>
-            <?php
-                }
-            }
-            ?>
-        </table>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($show_product) {
+                        $i = 0;
+                        while ($result = $show_product->fetch_assoc()) {
+                            $i++;
+                    ?>
+                            <tr>
+                                <td><?php echo $i ?></td>
+                                <td><?php echo $result['product_id'] ?></td>
+                                <td><?php echo $result['product_name'] ?></td>
+                                <td><?php echo $result['cartegory_name'] ?></td>
+                                <td><?php echo $result['brand_name'] ?></td>
+                                <td><?php echo $result['product_price'] ?></td>
+                                <td><?php echo $result['product_price_sale'] ?></td>
+                                <td><?php echo $result['product_color'] ?></td>
+                                <td><?php echo $result['product_memory_ram'] ?></td>
+                                <td><?php echo $result['product_quantity'] ?></td>
+                                <td><?php echo $result['product_intro'] ?></td>
+                                <td><?php echo $result['product_detail'] ?></td>
+                                <td><?php echo $result['product_accessory'] ?></td>
+                                <td><?php echo $result['product_guarantee'] ?></td>
+                                <td>
+                                    <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
+                                </td>
+                                <td class="image-previews">
+                                    <?php
+                                    $product_id = $result['product_id'];
+                                    $product_imgs_desc = $product->get_product_imgs_desc($product_id);
+                                    if ($product_imgs_desc) {
+                                        while ($row = $product_imgs_desc->fetch_assoc()) {
+                                            echo '<div class="image-preview-item"><img src="uploads/' . $row['product_img_desc'] . '" alt="Product Image" style="max-width: 100px;"></div>';
+                                        }
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a> |
+                                    <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
+                                </td>
+                            </tr>
+                    <?php
+                        }
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-</section>
+
 <style>
-    .admin-content-right-product-add .image-previews {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        /* Thiết lập số cột tùy ý */
-        grid-gap: 10px;
-        /* Khoảng cách giữa các ô */
-        justify-items: center;
-        /* Căn giữa các ô */
-    }
-
-    .admin-content-right-product-add .image-preview-item {
-        text-align: center;
-    }
-
-    .admin-content-right-product-add .image-preview-item img {
-        width: 150px;
-        /* Cài độ rộng tùy ý */
-        height: 150px;
-        /* Cài chiều cao tùy ý - đặt chiều cao giống chiều rộng để giữ kích thước vuông */
-        object-fit: cover;
-        /* Hiển thị ảnh trong kích thước đã thiết lập mà không làm biến dạng ảnh */
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .admin-content-right-category-list .image-previews {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        /* Thiết lập số cột tùy ý */
-        grid-gap: 10px;
-        /* Khoảng cách giữa các ô */
-        justify-items: center;
-        /* Căn giữa các ô */
-    }
-
-    .admin-content-right-category-list .image-preview-item {
-        text-align: center;
-    }
-
-    .admin-content-right-category-list .image-preview-item img {
-        width: 150px;
-        /* Cài độ rộng tùy ý */
-        height: 150px;
-        /* Cài chiều cao tùy ý - đặt chiều cao giống chiều rộng để giữ kích thước vuông */
-        object-fit: cover;
-        /* Hiển thị ảnh trong kích thước đã thiết lập mà không làm biến dạng ảnh */
-        display: block;
-        margin-bottom: 5px;
-    }
+    /* ... */
 </style>
 
 <script>
-    //function for productlist-delete
+    // Function for product-delete
     function confirmDelete(product_id) {
-        var result = confirm("Are you sure you want to delete this product?");
-        if (result) {
-            window.location.href = "productdelete.php?product_id=" + product_id;
+        if (confirm('Are you sure you want to delete this product?')) {
+            window.location.href = 'productdelete.php?product_id=' + product_id;
         }
     }
 </script>
-</body>
 
-</html>
+<?php
+include "footer.php";
+?>

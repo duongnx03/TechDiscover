@@ -18,8 +18,8 @@
                                 <img class="rounded-circle flex-shrink-0" src="img/rose2.jpeg" alt="" style="width: 40px; height: 40px;">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                                        <h6 class="mb-0">ABC</h6>
+                                        <small>1 minutes ago</small>
                                     </div>
                                     <span>Short message goes here...</span>
                                 </div>
@@ -28,8 +28,8 @@
                                 <img class="rounded-circle flex-shrink-0" src="img/rose2.jpeg" alt="" style="width: 40px; height: 40px;">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                                        <h6 class="mb-0">ABC</h6>
+                                        <small>5 minutes ago</small>
                                     </div>
                                     <span>Short message goes here...</span>
                                 </div>
@@ -38,8 +38,8 @@
                                 <img class="rounded-circle flex-shrink-0" src="img/rose2.jpeg" alt="" style="width: 40px; height: 40px;">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                                        <h6 class="mb-0">ABC</h6>
+                                        <small>10 minutes ago</small>
                                     </div>
                                     <span>Short message goes here...</span>
                                 </div>
@@ -48,7 +48,7 @@
                                 <img class="rounded-circle flex-shrink-0" src="img/rose2.jpeg" alt="" style="width: 40px; height: 40px;">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
+                                        <h6 class="mb-0">ABC</h6>
                                         <small>15 minutes ago</small>
                                     </div>
                                     <span>Short message goes here...</span>
@@ -128,15 +128,15 @@
                             <div class="owl-carousel testimonial-carousel">
                                 <div class="testimonial-item text-center">
                                     <img class="img-fluid rounded-circle mx-auto mb-4" src="img/rose2.jpeg" style="width: 100px; height: 100px;">
-                                    <h5 class="mb-1">Client Name</h5>
+                                    <h5 class="mb-1">ROSE</h5>
                                     <p>Profession</p>
-                                    <p class="mb-0">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                                    <p class="mb-0">Awesome, I'm really impressed with your website!!!</p>
                                 </div>
                                 <div class="testimonial-item text-center">
                                     <img class="img-fluid rounded-circle mx-auto mb-4" src="img/rose2.jpeg" style="width: 100px; height: 100px;">
-                                    <h5 class="mb-1">Client Name</h5>
+                                    <h5 class="mb-1">ROSE</h5>
                                     <p>Profession</p>
-                                    <p class="mb-0">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                                    <p class="mb-0">It's very much to look forward to!!!</p>
                                 </div>
                             </div>
                         </div>
