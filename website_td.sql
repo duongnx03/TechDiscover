@@ -161,7 +161,8 @@ CREATE TABLE `tbl_order` (
   `order_date` varchar(50) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
   `order_status` varchar(50) NOT NULL,
-  `user_info` varchar(400) NOT NULL
+  `user_info` varchar(400) NOT NULL,
+  `total_order` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -179,6 +180,34 @@ CREATE TABLE `tbl_order_items` (
   `product_memory_ram` varchar(50) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_discounts`
+--
+CREATE TABLE `user_discounts` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `discount_code` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `discount`
+--
+
+CREATE TABLE `discount` (
+  `id` int(11) NOT NULL,
+  `discount_code` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discount`
+--
+
+INSERT INTO `discount` (`id`, `discount_code`) VALUES
+(1, 'tri123'),
+(2, 'tri234');
 
 -- --------------------------------------------------------
 
@@ -307,6 +336,12 @@ ALTER TABLE `tbl_memory_ram`
   ADD PRIMARY KEY (`memory_ram_id`);
 
 --
+-- Indexes for table `discount`
+--
+ALTER TABLE `discount`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_order`
 --
 ALTER TABLE `tbl_order`
@@ -317,6 +352,12 @@ ALTER TABLE `tbl_order`
 --
 ALTER TABLE `tbl_order_items`
   ADD PRIMARY KEY (`order_item_id`);
+
+--
+-- Indexes for table `user_discounts`
+--
+ALTER TABLE `user_discounts`
+  ADD PRIMARY KEY (`id`),
 
 --
 -- Indexes for table `tbl_product`
@@ -371,16 +412,28 @@ ALTER TABLE `tbl_memory_ram`
   MODIFY `memory_ram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `discount`
+--
+ALTER TABLE `discount`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_order`
 --
 ALTER TABLE `tbl_order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `tbl_order_items`
 --
 ALTER TABLE `tbl_order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+
+--
+-- AUTO_INCREMENT for table `user_discounts`
+--
+ALTER TABLE `user_discounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tbl_product`
