@@ -75,6 +75,9 @@ $result = $database->select($query);
                 ?>    
             </div>
             <div class="cart-content-right">
+                <?php
+                    if ($totalProducts > 0) {
+                ?>
                 <table class="table_price">
                     <tr>
                         <th colspan="2">TOTAL MONEY (Temporary):</th>
@@ -96,14 +99,23 @@ $result = $database->select($query);
                         <td><span>$</span><?php echo number_format($intoMoney)?></td>
                     </tr>
                 </table>
+                <?php
+                    }
+                ?>
                 <div class="cart-content-right-button">
-                    <a href="checkout.php"><button>PROCEED PAYMENT</button></a>
+                    <?php if ($totalProducts > 0) { ?>
+                        <a href="checkout.php"><button>PROCEED PAYMENT</button></a>
+                    <?php } ?>
                     <a href="category.php"><button>CHOOSE MORE OTHER PRODUCTS</button></a>
                 </div>
-                <div class="cart-content-right-login">
-                    <p>TechDiscovery!</p>
-                    <p>Please <a href="login.php">Login</a> To Continue Shopping And Earn Rewards Points!</p>
-                </div>
+                <?php
+                    if(!isset($_SESSION['id'])) {
+                        echo '<div class="cart-content-right-login">';
+                        echo '<p>TechDiscovery!</p>';
+                        echo '<p>Please <a href="login.php">Login</a> To Continue Shopping And Earn Rewards Points!</p>';
+                        echo '</div>';
+                    }
+                ?>
             </div>
         </div>
     </div>
