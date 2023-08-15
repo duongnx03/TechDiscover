@@ -60,9 +60,10 @@
                     <li><a href="blog.php">Blog</a></li>
                     <li><a href="contact.php">Contac US</a></li>
                     <li><a href="about.php">About US</a></li>
+                    <li><a href="survey.php">Survey</a></li>
                 </ul>
             </li> 
-            <li><a href="">Survey</a></li> 
+            
         </div>
 
         <div class="other">
