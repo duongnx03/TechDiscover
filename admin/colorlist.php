@@ -14,7 +14,7 @@ $show_colors = $color->show_color();
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Color List</h6>
-            <a href="#">Show All</a>
+            <a href="color_add.php">ADD Color</a>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
