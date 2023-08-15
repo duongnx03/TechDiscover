@@ -1,6 +1,7 @@
 <?php
 include "header.php";
-include "slider.php";
+include "sidebar.php";
+include "navbar.php";
 ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

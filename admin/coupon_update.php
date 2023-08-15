@@ -1,6 +1,7 @@
 <?php
 include "header.php";
-include "slider.php";
+include "sidebar.php";
+include "navbar.php";
 include "class/coupon_class.php";
 
 $coupon_data = null;
