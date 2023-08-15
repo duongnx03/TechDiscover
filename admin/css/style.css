@@ -14,7 +14,9 @@
     z-index: 99;
 }
 
-
+.form-group{
+    margin-bottom: 20px;
+}
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -79,7 +81,7 @@
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: var(--dark);
+    background: var(--white);
     transition: 0.5s;
 }
 
