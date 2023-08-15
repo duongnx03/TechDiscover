@@ -29,7 +29,7 @@
                     </div>
                     <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>
                     <a href="order_list.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order</a>
-                    <a href="404.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Survey</a>
+                    <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>
                     <a href="../blog.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
                     <a href="widget.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                 </div>
