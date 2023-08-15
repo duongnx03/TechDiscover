@@ -277,6 +277,7 @@ INSERT INTO `tbl_product_img_desc` (`product_id`, `product_img_desc`) VALUES
 -- Table structure for table `users`
 --
 
+
 CREATE TABLE `users` (
   `id` int(3) NOT NULL,
   `email` varchar(250) NOT NULL,
@@ -284,16 +285,18 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `phone` int(10) NOT NULL
+  `phone` int(10) NOT NULL,
+  `verification_code` int(6) NOT NULL,
+  `registration_time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`) VALUES
-(1, '123@', '123', '123', '123', '123', 123),
-(2, '321@gmail.com', '321', '321', '321', '321', 321);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`) VALUES
+(52, 'phamphudien901@gmail.com', '23', '23', '23', '23', 23, 149061, '2023-08-14 21:32:38'),
+(57, 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 0, 170272, '2023-08-14 22:14:07');
 
 --
 -- Indexes for dumped tables
