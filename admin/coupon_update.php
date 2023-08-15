@@ -65,3 +65,6 @@ function validateForm() {
 }
 </script>
 
+<?php
+    include "footer.php";
+?>

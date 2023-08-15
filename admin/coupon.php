@@ -52,3 +52,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id']))
     </div>
 </div>
 
+<?php
+    include "footer.php";
+?>
