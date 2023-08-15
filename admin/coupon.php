@@ -11,10 +11,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
     $coupon->delete_coupon($id);
 }
 if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id'])) {
-    // Chuyển đến trang cập nhật
-    // $coupon = new coupon();
-    // $coupon_data = $coupon->get_coupon_by_id($id);
-    header('Location: coupon_update.php?id=' . $_GET['id']);
+    $id = intval($_GET['id']);
+    header('Location: coupon_update.php?id=' . $id);
+    // // Chuyển đến trang cập nhật
+    // // $coupon = new coupon();
+    // // $coupon_data = $coupon->get_coupon_by_id($id);
+    // header('Location: coupon_update.php?id=' . $_GET['id']);
     
 }
     $coupon = new coupon();
