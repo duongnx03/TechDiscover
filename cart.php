@@ -8,6 +8,8 @@ $totalProducts = $totalPrice = $intoMoney = 0;
 $shippingFee = 10;
 if (isset($_SESSION["id"])) {
     $user_id = $_SESSION['id'];
+}else{
+    $user_id = 0;
 }
 $database = new Database();
 $query = "SELECT * FROM tbl_cart where user_id = $user_id";
