@@ -1,7 +1,8 @@
 <?php
-    include "header.php";
-    include "slider.php";
-    include "user_class.php";
+include "header.php";
+include "sidebar.php";
+include "navbar.php";
+include "class/user_class.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];
@@ -15,21 +16,48 @@
     }
 ?>
 
-<div class="admin-content-right">
-    <div class="admin-content-right-category-add">
-        <h1>ADD User Information</h1>
-        <form action="" method="POST">
-            <input name="id" type="text" placeholder="ID" required>
-            <input name="email" type="email" placeholder="Email" required>
-            <input name="username" type="text" placeholder="Username" required>
-            <input name="password" type="password" placeholder="Password" required>
-            <input name="fullname" type="text" placeholder="Full Name" required>
-            <input name="address" type="text" placeholder="Address" required>
-            <input name="phone" type="tel" placeholder="Phone" required>
-            <button type="submit">Add</button>
-        </form>
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">ADD User Information</h6>
+            <a href="userlist.php">Back to User List</a>
+        </div>
+        <div class="admin-content-right-category-add">
+            <form action="" method="POST">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input name="id" type="text" class="form-control" required placeholder="Enter ID">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input name="email" type="email" class="form-control" required placeholder="Enter Email">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input name="username" type="text" class="form-control" required placeholder="Enter Username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input name="password" type="password" class="form-control" required placeholder="Enter Password">
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input name="fullname" type="text" class="form-control" required placeholder="Enter Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input name="address" type="text" class="form-control" required placeholder="Enter Address">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input name="phone" type="tel" class="form-control" required placeholder="Enter Phone Number">
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
     </div>
 </div>
-</section>
-</body>
-</html>
+
+<?php
+include "footer.php";
+?>

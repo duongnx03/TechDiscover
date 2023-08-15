@@ -1,6 +1,4 @@
 <?php
-// include database.php và cartegory_class.php nếu cần
-// include 'database.php';
  include 'class/cartegory_class.php';
 
 // Kiểm tra xem cartegory_main_id được gửi từ yêu cầu AJAX có tồn tại không

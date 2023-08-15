@@ -18,7 +18,10 @@
         }
 
         public function show_cartegory(){
-            $query = "SELECT * FROM tbl_cartegory ORDER BY cartegory_id DESC ";
+            $query = "SELECT tbl_cartegory.*, tbl_cartegory_main.cartegory_main_name
+                      FROM tbl_cartegory
+                      INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+                      ORDER BY tbl_cartegory.cartegory_id DESC";
             $result = $this->db->select($query);
             return $result;
         }

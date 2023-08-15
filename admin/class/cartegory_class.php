@@ -18,7 +18,7 @@
         }
 
         public function get_cartegories_by_cartegory_main_id($cartegory_main_id) {
-            $query = "SELECT * FROM tbl_cartegory WHERE cartegory_main_id = '$cartegory_main_id' ORDER BY cartegory_id DESC ";
+            $query = "SELECT * FROM tbl_cartegory WHERE cartegory_main_id = '$cartegory_main_id' ORDER BY cartegory_id DESC";
             $result = $this->db->select($query);
             return $result;
         }
