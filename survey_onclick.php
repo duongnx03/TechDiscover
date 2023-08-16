@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to DealZone Survey</title>
+    <title>Welcome to TechDiscovery </title>
     <style>
         /* Lớp mờ */
         #overlay {

@@ -166,7 +166,7 @@
                 <div class="col-lg-12">
                     <div class="title-all text-center">
                         <h1>Latest Blog</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p>
+                        <p>Explore the world of technology with the latest articles, from cutting-edge trends to ways to get the most out of your device.</p>
                     </div>
                 </div>
             </div>
@@ -178,8 +178,8 @@
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed mollis. Praesent laoreet lacinia elit id lobortis.</p>
+                                <h3>Latest technology news </h3>
+                                <p>Next-generation mobile phones and all-in-one computers are changing the way we work and play.</p>
                             </div>
                             <ul class="option-blog">
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i class="far fa-heart"></i></a></li>
@@ -196,8 +196,8 @@
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed mollis. Praesent laoreet lacinia elit id lobortis.</p>
+                                <h3>Discover Store</h3>
+                                <p>Explore and enhance your experience with your favorite devices, from stylish cases to high-quality headphones.</p>
                             </div>
                             <ul class="option-blog">
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i class="far fa-heart"></i></a></li>
@@ -214,8 +214,8 @@
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed mollis. Praesent laoreet lacinia elit id lobortis.</p>
+                                <h3>Technology Trends</h3>
+                                <p>Learn about the latest technology trends, from 5G to virtual reality, and their impact on your everyday life.</p>
                             </div>
                             <ul class="option-blog">
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i class="far fa-heart"></i></a></li>

@@ -16,10 +16,11 @@
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                         <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../product.php">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="service.php">Sale</a></li>    
-                        <li class="nav-item"><a class="nav-link" href="service.php">Survey</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact-us.php">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="shop.php">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="shop-detail.php">Sale</a></li>    
+                        <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>    
+                        <li class="nav-item"><a class="nav-link" href="../survey_xuatcode.php">Survey</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../blog.php">Blog</a></li>
                         <li class="dropdown">
                             <a href="shop.php" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">About Shop</a>
                             <ul class="dropdown-menu">
@@ -27,18 +28,6 @@
                                 <li><a href="../about.php">About US</a></li>
                             </ul>
                         </li>
-
-                        <li class="dropdown">
-                            <a href="shop.php" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Demo New Layout</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="cart.php">Cart</a></li>
-                                <li><a href="checkout.php">Checkout</a></li>
-                                <li><a href="my-account.php">My Account</a></li>
-                                <li><a href="wishlist.php">Wishlist</a></li>
-                                <li><a href="shop-detail.php">Shop Detail</a></li>
-                            </ul>
-                        </li>
-                        
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -47,7 +36,7 @@
                 <div class="attr-nav">
                     <ul>
                         <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                        <li class="side-menu"><a href="../cart.php">
+                        <li class="side-menu"><a href="cart.php">
 						<i class="fa fa-shopping-bag"></i>
                             <span class="badge">0</span>
 					</a></li>

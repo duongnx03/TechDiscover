@@ -30,7 +30,7 @@ smallImg.forEach(function(imgItem,X){
     })
 })
 
-//detail
+//product detail
 const introduce = document.querySelector(".introduce")
 const detail = document.querySelector(".detail")
 const accessory = document.querySelector(".accessory")

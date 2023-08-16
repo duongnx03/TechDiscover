@@ -796,7 +796,7 @@
      font-weight: 700;
      padding: 8px 0px;
 }
-/*------------------------------------------------------------------ Products -------------------------------------------------------------------*/
+/*------------------------------------------------- Products -------------------------------------------------------------------*/
  .title-all{
      margin-bottom: 30px;
 }
@@ -879,6 +879,13 @@
      font-family: 'Montserrat', sans-serif;
      padding: 0px;
      font-weight: 600;
+}
+
+.why-text h5 del{
+    padding-right: 10px;
+}
+.why-text h5 a{
+   color: red;
 }
  .mask-icon{
      width: 100%;
@@ -1337,7 +1344,7 @@
 }
 /*------------------------------------------------------------------ All Pages -------------------------------------------------------------------*/
  .all-title-box{
-     background: url("../images/all-bg-title.jpg") no-repeat center center;
+     background: url("../../image/hinh3d.jpeg") no-repeat center center;
      -webkit-background-size: cover;
      -moz-background-size: cover;
      -ms-background-size: cover;
@@ -2274,10 +2281,69 @@
      opacity: 1;
 }
  .carousel-indicators{
+     padding-top: 20px;
      position: relative;
      bottom: 0;
-     background: #010101;
+     border-radius: solid 1px;
 }
+
+.product-content-right-bottom{
+    border-top: 2px solid rgb(137, 125, 125);
+    position: relative;
+    margin: 30px 20px 0 20px;
+}
+
+.product-content-right-bottom-top{ 
+    font-size: 35px;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgb(138, 123, 123);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    top: -15px;
+    left: 50%;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+.product-content-right-bottom-top span {
+    display: inline-block;
+    border-radius: 80%;
+    padding-left: 18px;
+    padding-bottom: 30px;
+  }
+.product-content-right-bottom-content-title{
+    padding-top: 30px;
+    border-bottom: 2px solid grey;
+}
+.product-content-right-bottom-content-title-item{
+    padding: 6px;
+    cursor: pointer;
+    margin-right: 40px;
+    padding-left: 35px;
+}
+.product-content-right-bottom-content-title-item p{
+    font-size: 17px;
+}
+.product-content-right-bottom-content{
+    padding-top: 30px;
+}
+.product-content-right-bottom-content p{
+    font-size: 12px;
+}
+.product-content-right-bottom-content-detail,
+.product-content-right-bottom-content-accessory,
+.product-content-right-bottom-content-guarantee{
+    display: none;
+}
+.activeB{
+    display: none;
+}
+
+
  .carousel-indicators li{
      width: 30%;
      height: 100%;
