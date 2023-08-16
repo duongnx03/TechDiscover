@@ -21,7 +21,7 @@
 
             <li><a href="">Sale</a></li> 
 
-            <li><a href=""> Survey</a></li>
+            <li><a href="survey.php"> Survey</a></li>
 
             <li><a href="blog.php">Blog</a></li>
 
