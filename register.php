@@ -5,10 +5,13 @@ include "../TechDiscovery/mail/Exception.php";
 include "../TechDiscovery/mail/OAuth.php";
 include "../TechDiscovery/mail/POP3.php";
 include "../TechDiscovery/mail/SMTP.php";
+require_once '../TechDiscovery/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 
 session_start();
 $servername = "localhost";
@@ -16,10 +19,8 @@ $dbusername = "root";
 $dbpassword = "";
 $dbname = "website_td";
 
-// Create a new mysqli connection
 $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-
-// Check if the connection was successful
+// Create a new mysqli connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -27,12 +28,11 @@ if ($conn->connect_error) {
 $errors = array();
 
 if (isset($_POST["register"])) {
-
     $email = $_POST["email"];
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $validator = new EmailValidator();
+    if (!$validator->isValid($email, new RFCValidation())) {
         $errors['email'] = "Invalid email format";
     }
-
     $username = $_POST["username"];
     if (empty($username)) {
         $errors['username'] = "Username is required";
@@ -61,6 +61,7 @@ if (isset($_POST["register"])) {
     if (empty($phone)) {
         $errors['phone'] = "Phone number is required";
     }
+
 
     if (count($errors) === 0) {
         $checkQuery = "SELECT * FROM users WHERE email = '$email' OR username = '$username'";
@@ -95,6 +96,7 @@ if (isset($_POST["register"])) {
                     $errors['email'] = "Email không tồn tại hoặc không thể gửi được ";
                 } else {
                     $currentTime = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hash the password
 
                     $query = "INSERT INTO users (email, username, password, fullname, address, phone, registration_time, verification_code) 
                           VALUES ('$email', '$username', '$password', '$fullname', '$address', '$phone', '$currentTime', '$verificationCode')";
@@ -156,22 +158,26 @@ if (isset($_POST["register"])) {
                     <input type="text" name="email" id="email" required value="">
                     <label for="email">Email</label>
                     <div class="error-message">
-                        <?php if (isset($errors['email'])) echo $errors['email']; ?>
-                    </div>
-                    <div class="error-message">
-                        <?php if (isset($errors['duplicate'])) echo $errors['duplicate']; ?></div>
+                    <?php
+                    if (!empty($errors['email'])) {
+                        echo $errors['email'];
+                    }
+                    ?>
                 </div>
-
+                </div>
                 <div class="input-box input-container">
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
                     <input type="text" name="username" id="username" required>
                     <label for="username">Username</label>
-                    <div class="error-password">
-                        <?php if (isset($errors['username'])) echo $errors['username']; ?>
-                    </div>
-
+                    <div class="error-message">
+                    <?php
+                    if (!empty($errors['username'])) {
+                        echo $errors['username'];
+                    }
+                    ?>
+                </div>
                 </div>
                 <div class="input-box">
                     <span class="icon">
@@ -179,7 +185,13 @@ if (isset($_POST["register"])) {
                     </span>
                     <input type="password" name="password" id="password" required>
                     <label class='password'>Password</label>
-                    <?php if (isset($errors['password'])) echo '<span class="error-message">' . $errors['password'] . '</span>'; ?>
+                    <div class="error-message">
+                    <?php
+                    if (!empty($errors['password'])) {
+                        echo $errors['password'];
+                    }
+                    ?>
+                </div>
                 </div>
                 <div class="input-box">
                     <span class="icon">
@@ -187,7 +199,13 @@ if (isset($_POST["register"])) {
                     </span>
                     <input type="password" name="confirmpassword" id="confirmpassword" required>
                     <label class='confirmpassword'>Confirm Password</label>
-                    <?php if (isset($errors['confirmpassword'])) echo '<span class="error-message">' . $errors['confirmpassword'] . '</span>'; ?>
+                    <div class="error-message">
+                    <?php
+                    if (!empty($errors['confirmpassword'])) {
+                        echo $errors['confirmpassword'];
+                    }
+                    ?>
+                </div>
                 </div>
                 <div class="input-box">
                     <span class="icon">
@@ -195,7 +213,13 @@ if (isset($_POST["register"])) {
                     </span>
                     <input type="text" name="fullname" id="fullname" required>
                     <label class='fullname'>Full Name</label>
-                    <?php if (isset($errors['fullname'])) echo '<span class="error-message">' . $errors['fullname'] . '</span>'; ?>
+                    <div class="error-message">
+                    <?php
+                    if (!empty($errors['fullname'])) {
+                        echo $errors['fullname'];
+                    }
+                    ?>
+                </div>
                 </div>
                 <div class="input-box">
                     <span class="icon">
@@ -203,7 +227,14 @@ if (isset($_POST["register"])) {
                     </span>
                     <input type="text" name="address" id="address" required>
                     <label class='address'>Address</label>
-                    <?php if (isset($errors['address'])) echo '<span class="error-message">' . $errors['address'] . '</span>'; ?>
+                  
+                   <div class="error-message">
+                   <?php
+                   if (!empty($errors['address'])) {
+                       echo $errors['address'];
+                   }
+                   ?>
+               </div>
                 </div>
                 <div class="input-box">
                     <span class="icon">
@@ -211,12 +242,32 @@ if (isset($_POST["register"])) {
                     </span>
                     <input type="number" name="phone" id="phone" required>
                     <label class='phone'>Phone</label>
-                    <?php if (isset($errors['phone'])) echo '<span class="error-message">' . $errors['phone'] . '</span>'; ?>
+                    <div class="error-message">
+                   <?php
+                   if (!empty($errors['phone'])) {
+                       echo $errors['phone'];
+                   }
+                   ?>
+               </div>
                 </div>
                 <button type="submit" name="register">Register Now</button>
             </form>
         </div>
     </section>
+      
+    <script>
+    // Hiển thị thông báo lỗi (nếu có)
+    var errorMessageDiv = document.getElementById("error-message");
+    if (errorMessageDiv.innerHTML !== "") {
+        alert("Đã có lỗi xảy ra:\n" + errorMessageDiv.innerHTML);
+    }
+
+    // Hiển thị thông báo thành công (nếu có)
+    var successMessageDiv = document.getElementById("success-message");
+    if (successMessageDiv.innerHTML !== "") {
+        alert(successMessageDiv.innerHTML);
+    }
+</script>
 </body>
 
 </html>
