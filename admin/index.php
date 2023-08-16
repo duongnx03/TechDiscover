@@ -267,7 +267,6 @@
                 </div>
             </div>
             <!-- Widgets End -->
-
 <?php
     include "footer.php";
 ?>
