@@ -14,27 +14,29 @@ $conn = mysqli_connect($hostname, $username, $password, $database);
 if (!$conn) {
     die("Database connection error: " . mysqli_connect_error());
 }
-if(isset($_POST["submit"])){
+if (isset($_POST["submit"])) {
     $emailusername = $_POST["emailusername"];
     $password = $_POST["password"]; 
     $result = mysqli_query($conn, "SELECT * FROM users WHERE username ='$emailusername' OR email ='$emailusername'");
     $row = mysqli_fetch_assoc($result);
-    if(mysqli_num_rows($result) > 0){
-        if($password == $row["password"]){  
+    
+    if (mysqli_num_rows($result) > 0) {
+        if ($password == $row["password"]) {
             $_SESSION["login"] = true;
             $_SESSION["id"] = $row["id"];
-            if (isset($_SESSION["product_page_url"])) {
-                header("Location: " . $_SESSION["product_page_url"]);
+            
+            if ($row["role"] == "admin") {
+                header("Location: admin/slider.php");
             } else {
                 header("Location: index.php");
             }
-        }else{
-            echo "<script>Wrong Password</scrpit>";
+            
+        } else {
+            echo "<script>alert('Wrong Password');</script>";
         }
-    }else{
-        echo"<script>Username Not Registered</script>";
+    } else {
+        echo "<script>alert('Username Not Registered');</script>";
     }
-
 }
 
 
