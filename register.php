@@ -81,11 +81,11 @@ if (isset($_POST["register"])) {
             $mail->Port = 587;
             $mail->SMTPSecure = "tls";
             $mail->SMTPAuth = true;
-            $mail->Username = 'phamphudien901@gmail.com';
-            $mail->Password = 'ambevlcjpjsobovr';
+            $mail->Username = 'techdiscoverys@gmail.com';
+            $mail->Password = 'jownwmiahngtjhzx';
             $mail->FromName = "TechDiscovery Registration";
 
-            $mail->setFrom('phamphudien901@gmail.com');
+            $mail->setFrom('techdiscoverys@gmail.com');
             if (!$mail->addAddress($email)) {
                 $errors['email'] = "Invalid address: " . $mail->ErrorInfo;
             } else {
