@@ -33,6 +33,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script src="https://kit.fontawesome.com/99cf1e4b98.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
