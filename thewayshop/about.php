@@ -24,13 +24,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h2 class="noo-sh-title">We are <span>ThewayShop</span></h2>
-                    <p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-                        voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-                        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
-                        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
+                    <h2 class="noo-sh-title">We are <span>TechDiscovery</span></h2>
+                    <p>Welcome to TechDiscovery, your one-stop destination for all your technology needs. We are a leading web-based platform dedicated to selling the latest and most innovative technology products. At TechDiscovery, we believe that technology has the power to transform lives, and our mission is to provide easy access to cutting-edge gadgets and solutions that enhance and simplify your everyday experiences.</p>
+                    <p>Our vision is to be the premier online destination for technology enthusiasts and consumers looking for reliable and high-quality products. We aim to build a community of tech-savvy individuals who share our passion for innovation and embrace the digital revolution. By staying at the forefront of emerging technologies, we strive to deliver a seamless shopping experience that caters to our customers' evolving needs.</p>
+                    <p>At TechDiscovery, we are committed to offering an extensive range of technologically advanced products from renowned brands and manufacturers. We carefully curate our product selection to ensure that each item meets our rigorous standards for quality, performance, and reliability. Whether you're searching for the latest smartphones, laptops, gaming consoles, smart home devices, or any other tech gadgets, you can trust that we have done the research to provide you with the best options available.</p>
+                    
                 </div>
                 <div class="col-lg-6">
                     <div class="banner-frame"> <img class="img-thumbnail img-fluid" src="images/about-img.jpg" alt="" />
@@ -41,19 +39,19 @@
                 <div class="col-sm-6 col-lg-4">
                     <div class="service-block-inner">
                         <h3>We are Trusted</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p>With many years of experience providing leading technology products, we have built a solid reputation for providing the best quality and service to our customers. We are proud to be a trusted partner. trusted by thousands of customers around the world, and is committed to continuing to maintain and develop this relationship in the future.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <div class="service-block-inner">
                         <h3>We are Professional</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p>With a team of experienced and dedicated professionals, we are proud to be a reliable companion in the field of technology. We always strive to improve and constantly innovate to bring you the best quality products and services, accompanied by professionalism and dedication.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <div class="service-block-inner">
                         <h3>We are Expert</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p>With extensive knowledge and dedication, we confidently call ourselves experts in the field of technology. Our ability to understand and meet the most difficult requirements of our customers is our pride. When you choose us, you are choosing the knowledge, sophistication and talent of people who work with real passion.</p>
                     </div>
                 </div>
             </div>
@@ -63,9 +61,9 @@
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="hover-team">
-                        <div class="our-team"> <img src="images/img-1.jpg" alt="" />
+                        <div class="our-team"> <img src="../admin/img/rose2.jpeg" alt="" />
                             <div class="team-content">
-                                <h3 class="title">Williamson</h3> <span class="post">Web Developer</span> </div>
+                                <h3 class="title">DuongNX</h3> <span class="post">Web Developer</span> </div>
                             <ul class="social">
                                 <li>
                                     <a href="#" class="fab fa-facebook"></a>
@@ -83,15 +81,15 @@
                             <div class="icon"> <i class="fa fa-plus" aria-hidden="true"></i> </div>
                         </div>
                         <div class="team-description">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent urna diam, maximus ut ullamcorper quis, placerat id eros. Duis semper justo sed condimentum rutrum. Nunc tristique purus turpis. Maecenas vulputate. </p>
+                            <p>abc</p>
                         </div>
                         <hr class="my-0"> </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="hover-team">
-                        <div class="our-team"> <img src="images/img-2.jpg" alt="" />
+                        <div class="our-team"> <img src="../admin/img/rose2.jpeg" alt="" />
                             <div class="team-content">
-                                <h3 class="title">Kristiana</h3> <span class="post">Web Developer</span> </div>
+                                <h3 class="title">Dien Pham</h3> <span class="post">Web Developer</span> </div>
                             <ul class="social">
                                 <li>
                                     <a href="#" class="fab fa-facebook"></a>
@@ -109,15 +107,15 @@
                             <div class="icon"> <i class="fa fa-plus" aria-hidden="true"></i> </div>
                         </div>
                         <div class="team-description">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent urna diam, maximus ut ullamcorper quis, placerat id eros. Duis semper justo sed condimentum rutrum. Nunc tristique purus turpis. Maecenas vulputate. </p>
+                            <p>123</p>
                         </div>
                         <hr class="my-0"> </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="hover-team">
-                        <div class="our-team"> <img src="images/img-3.jpg" alt="" />
+                        <div class="our-team"> <img src="../admin/img/rose2.jpeg" alt="" />
                             <div class="team-content">
-                                <h3 class="title">Steve Thomas</h3> <span class="post">Web Developer</span> </div>
+                                <h3 class="title">Minh Tri</h3> <span class="post">Web Developer</span> </div>
                             <ul class="social">
                                 <li>
                                     <a href="#" class="fab fa-facebook"></a>
@@ -135,15 +133,15 @@
                             <div class="icon"> <i class="fa fa-plus" aria-hidden="true"></i> </div>
                         </div>
                         <div class="team-description">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent urna diam, maximus ut ullamcorper quis, placerat id eros. Duis semper justo sed condimentum rutrum. Nunc tristique purus turpis. Maecenas vulputate. </p>
+                            <p>456</p>
                         </div>
                         <hr class="my-0"> </div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
                     <div class="hover-team">
-                        <div class="our-team"> <img src="images/img-1.jpg" alt="" />
+                        <div class="our-team"> <img src="../admin/img/rose2.jpeg" alt="" />
                             <div class="team-content">
-                                <h3 class="title">Williamson</h3> <span class="post">Web Developer</span> </div>
+                                <h3 class="title">Quang Trung</h3> <span class="post">Web Developer</span> </div>
                             <ul class="social">
                                 <li>
                                     <a href="#" class="fab fa-facebook"></a>
@@ -161,7 +159,7 @@
                             <div class="icon"> <i class="fa fa-plus" aria-hidden="true"></i> </div>
                         </div>
                         <div class="team-description">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent urna diam, maximus ut ullamcorper quis, placerat id eros. Duis semper justo sed condimentum rutrum. Nunc tristique purus turpis. Maecenas vulputate. </p>
+                            <p>789</p>
                         </div>
                         <hr class="my-0"> </div>
                 </div>
