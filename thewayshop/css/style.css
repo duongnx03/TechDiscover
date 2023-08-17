@@ -2462,10 +2462,16 @@
      vertical-align: middle;
      white-space: nowrap;
 }
+<<<<<<< Updated upstream
  
 .alight-right{
    padding-left: 560px;
 }
+=======
+ .button-remove{
+    cursor: pointer;
+ }
+>>>>>>> Stashed changes
 
 
 
