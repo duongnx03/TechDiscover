@@ -74,7 +74,6 @@ include "navbar.php";
                             <div class="form-group size-st">
                                 <label class="size-label">Memory-Capacity</label>
                                 <select id="basic" class="selectpicker show-tick form-control">
-                                    <option value="0">64GB</option>
                                     <option value="0">128GB</option>
                                     <option value="1">256GB</option>
                                     <option value="1">512GB</option>
@@ -109,7 +108,7 @@ include "navbar.php";
                         </div>
                     </div>
                 </div><br><br>
-                
+
                 <div class="product-content-right-bottom">
                     <div class="product-content-right-bottom-top">
                         <span>&#812;</span>
@@ -132,17 +131,27 @@ include "navbar.php";
 
                         <div class="product-content-right-bottom-content">
                             <div class="product-content-right-bottom-content-introduce active">
-                                <h4>abc</h4> <br>
+                                <h4>Máy mới 100% , chính hãng Apple Việt Nam. <br>
+                                 iPhone chính hãng VN/A của Apple Việt Nam</h4> <br>
+                                 <span><a href="" style="color: rgb(105, 159, 235);">Xem Thêm &#10148;</a>
                             </div>
                             <div class="product-content-right-bottom-content-detail">
-                                <h4>abcakc</h4>
+                                <h4>Màn hình:OLED6.7"Super Retina XDR <br>
+                                    Hệ điều hành: iOS 16 <br>
+                                    Camera sau:Chính 48 MP & Phụ 12 MP, 12 MP<br>
+                                    Camera trước:12 MP<br>
+                                    Chip:Apple A16 Bionic<br>
+                                    RAM:6 GB<br>
+                                    Dung lượng lưu trữ:128 GB<br>
+                                    SIM:1 Nano SIM & 1 eSIMHỗ trợ 5G<br>
+                                    Pin, Sạc:4323 mAh20 W</h4>
 
                             </div>
                             <div class="product-content-right-bottom-content-accessory">
-                                <h4>viaekjbniahefjkdb</h4>
+                                <h4>Hộp, Sách hướng dẫn, Cây lấy sim, Cáp Lightning - Type C</h4>
                             </div>
                             <div class="product-content-right-bottom-content-guarantee">
-                                <h4>kjbsavijkfdbvpai</h4>
+                                <h4>1 ĐỔI 1 trong 30 ngày nếu có lỗi phần cứng nhà sản xuất. Bảo hành 12 tháng tại trung tâm bảo hành chính hãng Apple <span><a href="" style="color: rgb(105, 159, 235);">(Xem chi tiết)</a> </h4>
                             </div>
                         </div>
                     </div>

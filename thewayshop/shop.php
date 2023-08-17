@@ -37,7 +37,7 @@ include "navbar.php";
                         </div>
                         <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
                             <div class="list-group-collapse sub-men">
-                                <a class="list-group-item list-group-item-action" href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1">Phone 
+                                <a class="list-group-item list-group-item-action" href="#sub-men1" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men1">Phone
                                     <small class="text-muted">(50)</small>
                                 </a>
                                 <div class="collapse show" id="sub-men1" data-parent="#list-group-men">
@@ -76,7 +76,7 @@ include "navbar.php";
                                     </div>
                                 </div>
                             </div>
-                       </div>
+                        </div>
                     </div>
 
                     <div class="filter-brand-left">
@@ -165,14 +165,14 @@ include "navbar.php";
                                     <option value="4">Best Selling</option>
                                 </select>
                             </div>
-                            <p>Showing all <span>0</span>  results</p>
+                            <p>Showing all <span>0</span> results</p>
                         </div>
                         <div class="col-12 col-sm-4 text-center text-sm-right">
                             <ul class="nav nav-tabs ml-auto">
                                 <li>
                                     <a class="nav-link active" href="#grid-view" data-toggle="tab"> <i class="fa fa-th"></i> </a>
                                 </li>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -218,7 +218,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href=""><a href=""> iPhone 14 PROMAX 256GB VN/A</a></a></h4>
+                                                <h4><a href=""><a href=""> iPhone 14 PROMAX 256GB VN/A</a></a></h4>
                                                 <h5> <del> $1699.79</del> <a href="">$1599.79</a></h5>
                                             </div>
                                         </div>
@@ -239,7 +239,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">iPhone 12  128GB VN/A</a></h4>
+                                                <h4><a href="">iPhone 12 128GB VN/A</a></h4>
                                                 <h5> <del> $1099.79</del> <a href="">$999.79</a></h5>
                                             </div>
                                         </div>
@@ -260,7 +260,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">iPhone 13 PROMAX 128GB VN/A</a></h4>
+                                                <h4><a href="">iPhone 13 PROMAX 128GB VN/A</a></h4>
                                                 <h5> <del> $1599.79</del> <a href="">$1499.79</a></h5>
                                             </div>
                                         </div>
@@ -281,7 +281,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">iPhone 12 256 VN/A</a></h4>
+                                                <h4><a href="">iPhone 12 256 VN/A</a></h4>
                                                 <h5> <del> $1199.79</del> <a href="">$1109.79</a></h5>
                                             </div>
                                         </div>
@@ -302,7 +302,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">iPhone 14 PROMAX 512GB VN/A</a></h4>
+                                                <h4><a href="">iPhone 14 PROMAX 512GB VN/A</a></h4>
                                                 <h5> <del> $1799.79</del> <a href="">$1709.79</a></h5>
                                             </div>
                                         </div>
@@ -323,7 +323,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">Macbook Air M2</a></h4>
+                                                <h4><a href="">Macbook Air M2</a></h4>
                                                 <h5> <del> $1599.79</del> <a href="">$1499.79</a></h5>
                                             </div>
                                         </div>
@@ -344,7 +344,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">iPad VN/A</a></h4>
+                                                <h4><a href="">iPad VN/A</a></h4>
                                                 <h5> <del> $1599.79</del> <a href="">$1499.79</a></h5>
                                             </div>
                                         </div>
@@ -366,7 +366,7 @@ include "navbar.php";
                                                 </div>
                                             </div>
                                             <div class="why-text">
-                                            <h4><a href="">Vertu</a></h4>
+                                                <h4><a href="">Vertu</a></h4>
                                                 <h5> <del> $8599.79</del> <a href="">$8099.79</a></h5>
                                             </div>
                                         </div>
@@ -376,6 +376,14 @@ include "navbar.php";
                         </div>
                     </div>
                 </div>
+                <!-- Start Pagination -->
+                <div class="pagination-area">
+                    <ul class="pagination">
+                    <p>Display 6 <span>|</span> 6 Product</p>
+                    <p class="alight-right"><span>&#171;</span>1 2  ... <span>&#187;</span>Last page</p>
+                    </ul>
+                </div>
+                <!-- End Pagination -->
             </div>
         </div>
     </div>
