@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../admin/database.php";
+$database = new Database();
 
 $totalPrice = 0;
 if (isset($_SESSION["id"])) {
@@ -8,7 +9,6 @@ if (isset($_SESSION["id"])) {
 }else{
     $user_id = -1;
 }
-$database = new Database();
 $cart_query = "SELECT * FROM tbl_cart where user_id = $user_id";
 $cart_result = $database->select($cart_query);
 if($cart_result){
@@ -54,7 +54,7 @@ if ($count_result) {
              <!-- Collect the nav links, forms, and other content for toggling -->
              <div class="collapse navbar-collapse" id="navbar-menu">
                  <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                     <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
+                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                      <li class="nav-item"><a class="nav-link" href="shop.php">Shop</a></li>
                      <li class="nav-item"><a class="nav-link" href="shop-detail.php">Sale</a></li>
                      <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>

@@ -2,6 +2,7 @@
     include "header.php";
     include "navbar.php";
     include "slide.php";
+
 ?>
 
     <!-- Start Categories  -->
