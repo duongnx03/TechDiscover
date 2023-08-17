@@ -6,9 +6,9 @@ include "class/coupon_class.php"
 ?>
 <?php
 $coupon = new coupon();
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $coupon->delete_coupon($id);
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['coupon_id'])) {
+    $id = $_GET['coupon_id'];
+    $coupon->delete_coupon($coupon_id);
     echo "<script>window.location.href = 'coupon.php';</script>";
     exit;
 }
@@ -79,7 +79,7 @@ h3{
                 <td>
                 <!-- <a class="btn-update" href="coupon_update.php?id=">Update</a> -->
 
-                    <a class="btn-delete" href="coupon.php?action=delete&id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
+                    <a class="btn-delete" href="coupon.php?action=delete&id=<?php echo $row['coupon_id']; ?>" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>

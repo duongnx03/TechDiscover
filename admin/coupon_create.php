@@ -6,7 +6,7 @@ include 'class/coupon_class.php';
 ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = null; // Since ID is AUTO_INCREMENT, it will be automatically generated
+    $coupon_id = null; // Since ID is AUTO_INCREMENT, it will be automatically generated
     $code = $_POST['code'];
     $amount = $_POST['amount'];
     $expiry_date = $_POST['expiry_date'];
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Expiry date is not in the future
             echo "Expiry date must be in the future.";
         } else {
-            $coupon->insert_coupon($id, $code, $amount, $expiry_date, $created_at);
+            $coupon->insert_coupon($coupon_id, $code, $amount, $expiry_date, $created_at);
             echo "<script>window.location.href = 'coupon.php';</script>";
             exit;
         }
