@@ -40,9 +40,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-content-right-category-add">
             <form action="" method="POST">
                 <div class="mb-3">
-                    <label for="cartegory_main_id" class="form-label">Category Main</label>
+                    <label for="cartegory_main_id" class="form-label">Category</label>
                     <select class="form-control" id="cartegory_main_id" name="cartegory_main_id" required>
-                        <option value="">-- Select Cartegory --</option>
+                        <option value="">-- Selec Cartegory --</option>
                         <?php
                         $show_cartegory_main = $cartegory->show_cartegory_main();
                         if ($show_cartegory_main) {

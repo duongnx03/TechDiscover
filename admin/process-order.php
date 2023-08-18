@@ -1,65 +1,47 @@
 <?php
 session_start();
 include "database.php";
-$database = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_SESSION["id"])) {
         $user_id = $_SESSION['id'];
     }
     $currentDateTime = date('Y-m-d H:i:s');
-    $username = $_POST['username'];
+    $name = $_POST['name'];
     $phone = $_POST['phone'];
-    $email = $_POST['email'];
+    $city = $_POST['city'];
+    $district = $_POST['district'];
+    $ward = $_POST['ward'];
     $address = $_POST['address'];
-    $total_order = $_POST['total_order'];
+    $user_info = $name.'\n'.$phone.'\n'.$address.' street, ward '.$ward.', district '.$district.', '.$city.' city.';
     $order_status = 'Order processing';
-    $selectedPaymentMethod = $_POST['paymentMethod'];
-    $selectedShippingOption = $_POST['shipping-option'];
-    $user_info = $username . ' | ' . $phone . ' | ' . $email . ' | ' . $address;
-
-    if ($selectedPaymentMethod == "Paypal") {
-        echo "
-        <style>
-            /* CSS để căn chỉnh nút PayPal ra giữa màn hình */
-            body, html {
-                height: 100%;
-                margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
-        <script src='https://www.paypal.com/sdk/js?client-id=AUbOEvIMIXKSLOwnIgiCu0q7iRKK2hJtW55odcvAgtYO7heyQAa2ZDIv7ziZkzD-sGM3L2rKH5SIaxad&currency=USD'></script>
-        <div id='paypal-button-container'></div>
-        <script>
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: $total_order
-                            }
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(orderData) {
-                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                        if (orderData.status === 'COMPLETED') {
-    
-                        } else {
-                            window.location.href = '../thewayshop/cart.php';
-                        }
-                    });
-                }
-            }).render('#paypal-button-container');
-        </script>";
+    $payment_method = $_POST["payment_method"];
+    $database = new Database();
+    if (isset($_POST['code']) && !empty($_POST['code'])) { 
+        if (isset($_SESSION['discount_applied']) && $_SESSION['discount_applied'] == true) {
+            $discount_code = $_POST['code'];
+            $discount_query = "INSERT INTO user_discounts (user_id, discount_code) VALUES ($user_id, '$discount_code')";
+            $discount_result = $database->insert($discount_query);
+        }
+        unset($_SESSION['discount_applied']);
     }
-    
+    if (isset($_POST['code']) && !empty($_POST['code'])) { 
+        $total_order = $_POST['total_price'];
+    }else{
+        $totalPrice = $intoMoney = 0;
+        $shippingFee = 10;
+        $cart_query = "SELECT * FROM tbl_cart where user_id = $user_id";
+        $cart_result = $database->select($cart_query);
+        if ($cart_result) {
+            while ($row = $cart_result->fetch_assoc()) {
+                $totalPrice += $row['total'];
+            }
+            $total_order = $totalPrice + $shippingFee;
+        }
+    }
     $insert_query = ("insert into tbl_order (user_id, order_date, payment_method, order_status, user_info, total_order) values 
-        ($user_id, '$currentDateTime', '$selectedPaymentMethod', '$order_status', '$user_info', '$total_order')");
-    $insert_result = $database->insert($insert_query);
+        ($user_id, '$currentDateTime', '$payment_method', '$order_status', '$user_info', '$total_order')");
+        $insert_result = $database->insert($insert_query);
 
     $select_query = "SELECT * FROM tbl_order where user_id = $user_id";
     $select_result = $database->select($select_query);
@@ -67,6 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         while ($row = $select_result->fetch_assoc()) {
             $order_id = $row['order_id'];
         }
+        $totalProducts = $totalPrice = $intoMoney = 0;
+        $shippingFee = 10;
         $cart_query = "SELECT * FROM tbl_cart where user_id = $user_id";
         $cart_result = $database->select($cart_query);
         $cartItems = array();
@@ -80,7 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     'quantity' => $row['quantity'],
                     'product_img' => $row['product_img']
                 );
+                $totalPrice += $row['total'];
             }
+            $intoMoney = $totalPrice + $shippingFee;
         }
         foreach ($cartItems as $item) {
             $product_name = $item['product_name'];
@@ -93,8 +79,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $order_result = $database->insert($order_query);
         }
     }
-
+   
     $database = new Database();
     $delete_query = "delete from tbl_cart where user_id = $user_id";
     $delete_result = $database->delete($delete_query);
+    if ($delete_result) {
+        $_SESSION["order_success"] = "Order success!";
+        header("Location: ../index.php");
+        exit();
+    }
 }

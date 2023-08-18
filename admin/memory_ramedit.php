@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="memory_ram_name" class="form-label">Memory - Ram</label>
                     <input type="text" class="form-control" id="memory_ram_name" name="memory_ram_name" placeholder="Enter memory - ram" required value="<?php echo $result['memory_ram_name'] ?>">
                 </div>
-                <button type="submit" class="btn btn-primary">UPDATE</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>

@@ -22,13 +22,20 @@ $show_product = $product->show_product();
                     <tr class="text-white">
                         <th scope="col">#</th>
                         <th scope="col">ID</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Promotional Price</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Memory-Capacity</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Image</th>
+                        <th scope="col">Tên Sản Phẩm</th>
+                        <th scope="col">Danh Mục</th>
+                        <th scope="col">Loại Sản Phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Giá Khuyến Mãi</th>
+                        <th scope="col">Màu Sắc</th>
+                        <th scope="col">Bộ Nhớ, Ram</th>
+                        <th scope="col">Kho</th>
+                        <th scope="col">Giới Thiệu Sản Phẩm</th>
+                        <th scope="col">Chi Tiết Sản Phẩm</th>
+                        <th scope="col">Phụ Kiện Sản Phẩm</th>
+                        <th scope="col">Bảo Hành Sản Phẩm</th>
+                        <th scope="col">Ảnh Sản Phẩm</th>
+                        <th scope="col">Ảnh Mô Tả</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -43,13 +50,30 @@ $show_product = $product->show_product();
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $result['product_id'] ?></td>
                                 <td><?php echo $result['product_name'] ?></td>
+                                <td><?php echo $result['cartegory_name'] ?></td>
+                                <td><?php echo $result['brand_name'] ?></td>
                                 <td><?php echo $result['product_price'] ?></td>
                                 <td><?php echo $result['product_price_sale'] ?></td>
                                 <td><?php echo $result['product_color'] ?></td>
                                 <td><?php echo $result['product_memory_ram'] ?></td>
                                 <td><?php echo $result['product_quantity'] ?></td>
+                                <td><?php echo $result['product_intro'] ?></td>
+                                <td><?php echo $result['product_detail'] ?></td>
+                                <td><?php echo $result['product_accessory'] ?></td>
+                                <td><?php echo $result['product_guarantee'] ?></td>
                                 <td>
                                     <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
+                                </td>
+                                <td class="image-previews">
+                                    <?php
+                                    $product_id = $result['product_id'];
+                                    $product_imgs_desc = $product->get_product_imgs_desc($product_id);
+                                    if ($product_imgs_desc) {
+                                        while ($row = $product_imgs_desc->fetch_assoc()) {
+                                            echo '<div class="image-preview-item"><img src="uploads/' . $row['product_img_desc'] . '" alt="Product Image" style="max-width: 100px;"></div>';
+                                        }
+                                    }
+                                    ?>
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a> |
