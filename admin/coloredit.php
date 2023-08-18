@@ -39,7 +39,7 @@
                     <label for="color_name" class="form-label">Color Name</label>
                     <input type="text" class="form-control" id="color_name" name="color_name" placeholder="Enter color name" required value="<?php echo $result['color_name'] ?>">
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
             </form>
         </div>
     </div>

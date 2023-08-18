@@ -6,21 +6,20 @@ include "class/coupon_class.php";
 
 $coupon_data = null;
 $error_message = '';
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_GET['coupon_id'])) {
+    $coupon_id = $_GET['coupon_id'];
     $coupon = new coupon();
-    $coupon_data = $coupon->get_coupon_by_id($id);
+    $coupon_data = $coupon->get_coupon_by_id($coupon_id);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST['id'];
+    $coupon_id = $_POST['coupon_id'];
     $code = $_POST['code'];
     $amount = $_POST['amount'];
     $expiry_date = $_POST['expiry_date'];
 
     $coupon = new coupon();
-    $result = $coupon->update_coupon($id, $code, $amount, $expiry_date);
-
+     $result = $coupon->update_coupon($coupon_id, $code, $amount, $expiry_date);
     if ($result) {
         // Cập nhật thành công, chuyển hướng người dùng về trang danh sách coupon
         header('Location: coupon.php');
@@ -37,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="error-message"><?php echo $error_message; ?></p>
     <?php endif; ?>
     <form action="" method="post" id="update-form" onsubmit="return validateForm()">
-        <input type="hidden" name="id" value="<?php echo isset($coupon_data['id']) ? $coupon_data['id'] : ''; ?>">
+    <input type="hidden" name="id" value="<?php echo isset($coupon_data['coupon_id']) ? $coupon_data['coupon_id'] : ''; ?>">
 
         <label for="code">Code:</label>
         <input type="text" id="code" name="code" value="<?php echo isset($coupon_data['code']) ? $coupon_data['code'] : ''; ?>"><br><br>

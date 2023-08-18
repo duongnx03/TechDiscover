@@ -136,8 +136,7 @@ if (isset($_SESSION["add_to_cart_result"])) {
                             <div class="product-content-right-bottom-content">
                                 <div class="product-content-right-bottom-content-introduce active">
                                     <?php echo $row['product_intro']; ?>
-                                    <br><br>
-                                    <h4></h4> <br>
+                                    <h4></h4> 
                                 </div>
                                 <div class="product-content-right-bottom-content-detail">
                                     <h4></h4>

@@ -1,7 +1,6 @@
 <?php
 include "header.php";
 include "navbar.php";
-include "../admin/database.php";
 include "../admin/class/product_class.php";
 include "../admin/class/cartegory_class.php";
 include "../admin/class/brand_class.php";
