@@ -52,7 +52,7 @@ include "class/user_class.php";
                     <label for="phone">Phone</label>
                     <input name="phone" type="tel" class="form-control" required placeholder="Enter Phone Number">
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" class="btn btn-primary">ADD</button>
             </form>
         </div>
     </div>

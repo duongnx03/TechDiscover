@@ -9,7 +9,7 @@ if (isset($_GET['id'])) {
     $result = $database->delete($query);
 
     if ($result) {
-        header("Location: ../cart.php");
+        header("Location: ../thewayshop/cart.php");
     }else{
         echo 'error';
     }

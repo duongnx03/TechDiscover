@@ -66,7 +66,7 @@
                     <label for="brand_name" class="form-label">Brand Name</label>
                     <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Enter brand name" value="<?php echo $resultA['brand_name'] ?>" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
             </form>
         </div>
     </div>

@@ -55,7 +55,7 @@ if (isset($_SESSION["order_result"])) {
                                             <option value="order_processing" <?php if ($result['order_status'] == 'order_processing') echo 'selected' ?>>Order processing</option>
                                             <!-- Thêm các option khác tương tự -->
                                         </select>
-                                        <button type="submit">Update</button>
+                                        <button type="submit">UPDATE</button>
                                     </form>
                                 </td>
                                 <td>

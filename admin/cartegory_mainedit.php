@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="cartegory_main_main_name" class="form-label">Category Main Name</label>
                     <input type="text" class="form-control" id="cartegory_main_main_name" name="cartegory_main_main_name" placeholder="Enter the main category name" required value="<?php echo $result['cartegory_main_name']; ?>">
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
             </form>
         </div>
     </div>

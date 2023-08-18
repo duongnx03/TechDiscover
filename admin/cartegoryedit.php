@@ -42,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mb-3">
                     <label for="cartegory_main_id" class="form-label">Category Main</label>
                     <select class="form-control" id="cartegory_main_id" name="cartegory_main_id" required>
-                        <option value="">-- Danh Mục --</option>
+                        <option value="">-- Select Cartegory --</option>
                         <?php
                         $show_cartegory_main = $cartegory->show_cartegory_main();
                         if ($show_cartegory_main) {
@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="cartegory_name" class="form-label">Category Name</label>
                     <input type="text" class="form-control" id="cartegory_name" name="cartegory_name" placeholder="Enter category name" value="<?php echo $result['cartegory_name']?>" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
             </form>
         </div>
     </div>

@@ -53,15 +53,17 @@ class product
     }
 
     public function show_product()
-    {
-        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name
-                      FROM tbl_product
-                      INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
-                      INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
-                      ORDER BY tbl_product.product_id DESC";
-        $result = $this->db->select($query);
-        return $result;
-    }
+{
+    $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+                  FROM tbl_product
+                  INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+                  INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+                  INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+                  ORDER BY tbl_product.product_id DESC";
+    $result = $this->db->select($query);
+    return $result;
+}
+
 
     public function insert_product($post_data, $files_data)
     {
@@ -139,7 +141,6 @@ class product
             }
         }
 
-        header('Location: productlist.php');
         return $result;
     }
 
