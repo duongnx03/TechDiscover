@@ -58,7 +58,7 @@ if ($count_result) {
                     <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="product-detail.php">Sale</a></li>
                     <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../survey_xuatcode.php">Survey</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../survey.php">Survey</a></li>
                     <li class="nav-item"><a class="nav-link" href="../blog.php">Blog</a></li>
                     <li class="dropdown">
                         <a href="shop.php" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">About Shop</a>
