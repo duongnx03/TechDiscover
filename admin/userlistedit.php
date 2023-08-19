@@ -1,68 +1,88 @@
 <?php
-   include "header.php";
-   include "slider.php";
-   include "user_class.php";
+include "header.php";
+include "sidebar.php";
+include "navbar.php";
+include "class/user_class.php";
 
-   $user = new User;
-
-   if (!isset($_GET['user_id']) || $_GET['user_id'] == NULL) {
-       //echo "<script>window.location = 'userlist.php'</script>";
-       exit(); // Thêm lệnh exit để dừng thực thi script
-   } else {
-       $user_id = $_GET['user_id'];
-   }
-
-   $get_user = $user->get_user_by_id($user_id);
-
-   if ($get_user) {
-       $user_data = $get_user->fetch_assoc();
-   }
-   
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Make sure that the user_id has been provided and has a value
-        if (isset($_POST['user_id'])) {
-            $user_id = $_POST['id'];
-            $email = $_POST['email'];
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $fullname = $_POST['fullname'];
-            $address = $_POST['address'];
-            $phone = $_POST['phone'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_POST["id"];
+    $email = $_POST["email"];
+    $username = $_POST["username"];
+    $password = $_POST["password"]; // Nhớ thêm xử lý mã hóa mật khẩu
+    $fullname = $_POST["fullname"];
+    $address = $_POST["address"];
+    $phone = $_POST["phone"];
     
-            // Add validation and sanitization of user inputs here
-    
-            $update_success = $user->update_user($user_id, $email, $username, $password, $fullname, $address, $phone);
-    
-            if ($update_success) {
-                echo "<script>alert('User information updated successfully.');</script>";
-            } else {
-                echo "<script>alert('Failed to update user information.');</script>";
-            }
+    $user = new User();
+    $user->update_user($user_id, $email, $username, $password, $fullname, $address, $phone);
+} else {
+    if (isset($_GET["id"])) {
+        $user_id = $_GET["id"];
+        $user = new User();
+        $user_info = $user->get_user_by_id($user_id);
+
+       
+        if ($user_info && $user_info->num_rows > 0) {
+            $row = $user_info->fetch_assoc();
+            $user_id = $row["id"];
+            $email = $row['email'];
+            $username = $row['username'];
+            $password = $row['password'];
+            $fullname = $row["fullname"];
+            $address = $row["address"];
+            $phone = $row["phone"];
+            // ... (populate other fields)
+        } else {
+            header("Location: ../admin/userlist.php"); // Redirect if user info is not found
+            exit;
         }
+    } else {
+        header("Location: ../admin/userlist.php"); // Redirect if "id" is not set in URL
+        exit;
     }
-    
+}
 ?>
 
-<div class="admin-content-right">
-    <div class="admin-content-right-category-add">
-        <h1>User Details</h1>
-        <?php if (isset($user_data)) { ?>
-            <p>ID: <?php echo $user_data['id']; ?></p>
-            <p>Email: <?php echo $user_data['email']; ?></p>
-            <p>Username: <?php echo $user_data['username']; ?></p>
-            <p>Password: <?php echo $user_data['password']; ?></p>
-            <p>Full Name: <?php echo $user_data['fullname']; ?></p>
-            <p>Address: <?php echo $user_data['address']; ?></p>
-            <p>Phone: <?php echo $user_data['phone']; ?></p>
+<div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Edit User Information</h6>
+            <a href="userlist.php">Back to User List</a>
+        </div>
+        <div class="admin-content-right-category-add">
+            <form action="" method="POST">
+            <div class="form-group">
+                    <label for="id">ID</label>  
+                    <input name="id" type="text" class="form-control" required value="<?php echo $user_id; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input name="email" type="email" class="form-control" required value="<?php echo $email; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input name="username" type="text" class="form-control" required value="<?php echo $username; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input name="password" type="text" class="form-control" required value="<?php echo $password; ?>">
+                </div>
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input name="fullname" type="text" class="form-control" required value="<?php echo $fullname; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input name="address" type="text" class="form-control" required value="<?php echo $address; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input name="phone" type="text" class="form-control" required value="<?php echo $phone; ?>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-            <!-- You can provide links/buttons to edit or delete the user entry if needed -->
-            <a href="userlistedit.php?user_id=<?php echo $user_data['id']; ?>">Edit</a>
-            <a href="delete_user.php?user_id=<?php echo $user_data['id']; ?>">Delete</a>
-            <?php } else { ?>
-
-            <p>No user found with the provided ID.</p>
-            <?php } ?>
-</div>
-</body>
-</html>
- 
+<?php include "footer.php"; // Include your footer ?>
