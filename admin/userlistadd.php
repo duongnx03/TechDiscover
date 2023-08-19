@@ -4,16 +4,17 @@ include "sidebar.php";
 include "navbar.php";
 include "class/user_class.php";
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = $_POST['id'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $fullname = $_POST['fullname'];
-        $address = $_POST['address'];
-        $phone = $_POST['phone'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    $fullname = $_POST["fullname"];
+    $address = $_POST["address"];
+    $phone = $_POST["phone"];
 
-    }
+    $user = new User();
+    $user->insert_user($email, $username, $password, $fullname, $address, $phone);
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -52,12 +53,10 @@ include "class/user_class.php";
                     <label for="phone">Phone</label>
                     <input name="phone" type="tel" class="form-control" required placeholder="Enter Phone Number">
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" class="btn btn-primary">Add User</button>
             </form>
         </div>
     </div>
 </div>
 
-<?php
-include "footer.php";
-?>
+<?php include "footer.php"; // Include your footer ?>
