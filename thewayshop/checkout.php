@@ -11,7 +11,6 @@ if ($user_result) {
     $phone = $row['phone'];
 }
 ?>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Start All Title Box -->
 <div class="all-title-box">
     <div class="container">
@@ -59,6 +58,26 @@ if ($user_result) {
                                                                                                                 } ?>">
                         </div>
                         <div class="mb-3">
+                            <label for="provinceSelect">Province *</label>
+                            <select class="form-control" id="province" required name="province">
+                                <option value="">Select Province</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="districtSelect">District *</label>
+                                <select class="form-control" id="district" required name="district">
+                                    <option value="">Select District</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="wardSelect">Ward *</label>
+                                <select class="form-control" id="ward" required name="ward">
+                                    <option value="">Select Ward</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label for="address">Address *</label>
                             <input type="text" name="address" class="form-control" id="address" required value="<?php if (!empty($address)) {
                                                                                                                     echo $address;
@@ -73,7 +92,7 @@ if ($user_result) {
                             </div>
                             <div class="custom-control custom-radio">
                                 <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required value="MOMO">
-                                <label class="custom-control-label" for="debit">MOMO</label>
+                                <label class="custom-control-label" for="debit">VN Pay</label>
                             </div>
                             <div class="custom-control custom-radio">
                                 <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required value="Paypal">
@@ -85,29 +104,6 @@ if ($user_result) {
                 </div>
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="row">
-                        <div class="col-md-12 col-lg-12">
-                            <div class="shipping-method-box">
-                                <div class="title-left">
-                                    <h3>Shipping Method</h3>
-                                </div>
-                                <div class="mb-4">
-                                    <div class="custom-control custom-radio">
-                                        <input id="shippingOption1" name="shipping-option" class="custom-control-input" checked="checked" type="radio" value="Standard Delivery">
-                                        <label class="custom-control-label" for="shippingOption1">Standard Delivery</label> <span class="float-right font-weight-bold">FREE</span>
-                                    </div>
-                                    <div class="ml-4 mb-2 small">(3-7 business days)</div>
-                                    <div class="custom-control custom-radio">
-                                        <input id="shippingOption2" name="shipping-option" class="custom-control-input" type="radio" value="Express Delivery">
-                                        <label class="custom-control-label" for="shippingOption2">Express Delivery</label> <span class="float-right font-weight-bold">$10.00</span>
-                                    </div>
-                                    <div class="ml-4 mb-2 small">(2-4 business days)</div>
-                                    <div class="custom-control custom-radio">
-                                        <input id="shippingOption3" name="shipping-option" class="custom-control-input" type="radio" value="Next Business day">
-                                        <label class="custom-control-label" for="shippingOption3">Next Business day</label> <span class="float-right font-weight-bold">$20.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-12 col-lg-12">
                             <div class="odr-box">
                                 <div class="title-left">
@@ -142,16 +138,17 @@ if ($user_result) {
                                 <hr class="my-1">
                                 <div class="d-flex">
                                     <h4>Discount</h4>
-                                    <div class="ml-auto font-weight-bold"> $ </div>
+                                    <div class="ml-auto font-weight-bold"> </div>
                                 </div>
                                 <hr class="my-1">
                                 <div class="d-flex">
                                     <h4>Coupon Discount</h4>
-                                    <div class="ml-auto font-weight-bold"> $ </div>
+                                    <div class="ml-auto font-weight-bold"></div>
                                 </div>
+                                <hr class="my-1">
                                 <div class="d-flex">
                                     <h4>Shipping Cost</h4>
-                                    <div class="ml-auto font-weight-bold" id="shippingCost"> Free </div>
+                                    <div class="ml-auto font-weight-bold" id="shippingCost"> </div>
                                 </div>
                                 <hr>
                                 <div class="d-flex gr-total">
@@ -170,7 +167,47 @@ if ($user_result) {
     </div>
 </div>
 <!-- End Cart -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="js/address.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+
+        // Thay thế 'YOUR_API_KEY' bằng API key của bạn từ GHTK
+        const apiKey = "e1de32e29e0a4c4a372abdf8f7a7a0ca7d22a281";
+
+        // Hàm gọi API để tính phí ship
+        async function calculateShippingFee() {
+            const selectedProvince = provinceSelect.value;
+            const selectedDistrict = districtSelect.value;
+            const selectedWard = wardSelect.value;
+
+            if (selectedProvince && selectedDistrict && selectedWard) {
+                const apiUrl = `https://services.giaohangtietkiem.vn/services/shipment/fee?api_key=${apiKey}&to_district_id=${selectedDistrict}&to_ward_code=${selectedWard}`;
+
+                try {
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.json();
+                    // Xử lý dữ liệu
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                }
+            }
+        }
+
+        // Gọi hàm tính phí khi người dùng thay đổi lựa chọn
+        provinceSelect.addEventListener("change", calculateShippingFee);
+        districtSelect.addEventListener("change", calculateShippingFee);
+        wardSelect.addEventListener("change", calculateShippingFee);
+    });
+
     function validateForm() {
         var username = document.getElementById("username").value;
         var phone = document.getElementById("phone").value;
@@ -193,41 +230,7 @@ if ($user_result) {
         }
 
         return true;
-    }
-
-    $(document).ready(function() {
-        $("input[name='shipping-option']").on("change", function() {
-            var selectedShipping = $("input[name='shipping-option']:checked").val();
-
-            $.ajax({
-                url: "../admin/process-shipping-method.php",
-                type: "POST",
-                data: {
-                    shippingMethod: selectedShipping
-                },
-                success: function(response) {
-                    $("#shippingCost").text(response);
-                    updateTotalPrice(); // Gọi hàm cập nhật tổng giá trị
-                },
-                error: function() {
-                    $("#shippingCost").text("Lỗi khi truy xuất phí vận chuyển.");
-                }
-            });
-        });
-    });
-
-    // Hàm cập nhật tổng giá trị dựa trên phí vận chuyển và tổng giá trị sản phẩm
-    function updateTotalPrice() {
-        var shippingCost = $("#shippingCost").text();
-        var productTotal = <?php echo $totalPrice ?>;
-
-        if (shippingCost !== "N/A") {
-            var shippingCostValue = parseFloat(shippingCost.replace('$', '').trim());
-            var totalPrice = productTotal + shippingCostValue;
-            $("#totalPrice").text("$ " + totalPrice.toFixed(2));
-        }
-        $("#finalTotalPrice").val(totalPrice.toFixed(2))
-    }
+    } []
 </script>
 <?php
 include "footer.php";
