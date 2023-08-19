@@ -1565,7 +1565,7 @@
      border-bottom: 2px solid #d33b33;
 }
  .shop-box-inner{
-     padding: 70px 0px;
+     padding: 0px 0px;
 }
  .search-product {
      position: relative;
@@ -2322,8 +2322,8 @@
 .product-content-right-bottom-content-title-item{
     padding: 6px;
     cursor: pointer;
-    margin-right: 40px;
-    padding-left: 35px;
+    margin-right: 163px;
+    padding-left: 120px;
 }
 .product-content-right-bottom-content-title-item p{
     font-size: 17px;

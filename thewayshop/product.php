@@ -141,7 +141,7 @@ $brands = $product->show_brand();
                                                 echo '<div class="type-lb"><p class="new">New</p></div>';
                                             }
 
-                                            echo '<img src="../image/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
+                                            echo '<img src="../admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
                                             echo '<div class="mask-icon">';
                                             echo '<ul>';
                                             echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>';
@@ -174,6 +174,7 @@ $brands = $product->show_brand();
                         </ul>
                     </div>
                     <!-- End Pagination -->
+                    <br><br>
                 </div>
             </div>
         </div>

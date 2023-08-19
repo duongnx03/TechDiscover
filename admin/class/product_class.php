@@ -1,5 +1,5 @@
 <?php
-    include 'database.php';
+include 'database.php';
 ?>
 
 <?php
@@ -54,11 +54,12 @@ class product
 
     public function show_product()
     {
-        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name
-                      FROM tbl_product
-                      INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
-                      INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
-                      ORDER BY tbl_product.product_id DESC";
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+        FROM tbl_product
+        INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+        INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+        INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+        ORDER BY tbl_product.product_id DESC";
         $result = $this->db->select($query);
         return $result;
     }
@@ -71,8 +72,8 @@ class product
         $brand_id = $post_data['brand_id'];
         $product_price = $post_data['product_price'];
         $product_price_sale = $post_data['product_price_sale'];
-        $product_color = $post_data['product_color'];
-        $product_memory_ram = $post_data['product_memory_ram'];
+        $product_color = isset($_POST['product_colors']) ? implode(', ', $_POST['product_colors']) : '';
+        $product_memory_ram = isset($_POST['product_memory_rams']) ? implode(', ', $_POST['product_memory_rams']) : '';
         $product_quantity = $post_data['product_quantity'];
         $product_intro = $post_data['product_intro'];
         $product_detail = $post_data['product_detail'];
@@ -176,8 +177,8 @@ class product
         $brand_id = $post_data['brand_id'];
         $product_price = $post_data['product_price'];
         $product_price_sale = $post_data['product_price_sale'];
-        $product_color = $post_data['product_color'];
-        $product_memory_ram = $post_data['product_memory_ram'];
+        $product_color = isset($_POST['product_color']) ? implode(', ', $_POST['product_color']) : '';
+        $product_memory_ram = isset($_POST['product_memory_ram']) ? implode(', ', $_POST['product_memory_ram']) : '';
         $product_quantity = $post_data['product_quantity'];
         $product_intro = $post_data['product_intro'];
         $product_detail = $post_data['product_detail'];
@@ -277,7 +278,7 @@ class product
         return $result;
     }
 
-    //ham lay cartegory_id de show brand co id do
+    //ham lay cartegory_id de show brand 
     public function get_brands_by_category($cartegory_id)
     {
         $query = "SELECT * FROM tbl_brand WHERE cartegory_id = '$cartegory_id'";
@@ -288,6 +289,61 @@ class product
     public function get_cartegories_by_cartegory_main_id($cartegory_main_id)
     {
         $query = "SELECT * FROM tbl_cartegory WHERE cartegory_main_id = '$cartegory_main_id' ORDER BY cartegory_id DESC";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function get_colors_by_product_id($product_id)
+    {
+        $query = "SELECT product_color FROM tbl_product WHERE product_id = '$product_id'";
+        $result = $this->db->select($query)->fetch_assoc();
+        return explode(', ', $result['product_color']);
+    }
+
+
+    public function get_memory_rams_by_product_id($product_id)
+    {
+        $query = "SELECT product_memory_ram FROM tbl_product WHERE product_id = '$product_id'";
+        $result = $this->db->select($query)->fetch_assoc();
+        return explode(', ', $result['product_memory_ram']);
+    }
+
+    public function get_color_name_by_id($color_id)
+    {
+        $query = "SELECT color_name FROM tbl_color WHERE color_id = '$color_id'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['color_name'];
+        }
+        return '';
+    }
+
+    public function get_memory_ram_name_by_id($memory_ram_id)
+    {
+        $query = "SELECT memory_ram_name FROM tbl_memory_ram WHERE memory_ram_id = '$memory_ram_id'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['memory_ram_name'];
+        }
+        return '';
+    }
+
+    public function getProductIDByName($product_name)
+    {
+        $query = "SELECT product_id FROM tbl_product WHERE product_name = '$product_name'";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['product_id'];
+        }
+        return null;
+    }
+
+    public function showProductOptions()
+    {
+        $query = "SELECT product_id, product_name FROM tbl_product";
         $result = $this->db->select($query);
         return $result;
     }

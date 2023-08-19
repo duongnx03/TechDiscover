@@ -110,33 +110,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="product_color">Color <span style="color:red;">*</span></label>
-                    <select name="product_color" required class="form-control">
-                        <option value="">--Select--</option>
+                    <label>Choose Colors: <span style="color:red;">*</span></label>
+                    <div class="checkbox-list">
                         <?php
                         if ($color_list) {
+                            echo '<div class="checkbox-row">';
                             while ($color = $color_list->fetch_assoc()) {
-                                $selected = ($result['product_color'] == $color['color_name']) ? 'selected' : '';
-                                echo '<option ' . $selected . ' value="' . $color['color_name'] . '">' . $color['color_name'] . '</option>';
+                                echo '<div class="checkbox-item">';
+                                $isChecked = (in_array($color['color_id'], explode(', ', $result['product_color']))) ? 'checked' : '';
+                                echo '<input type="checkbox" name="product_color[]" value="' . $color['color_id'] . '" ' . $isChecked . '> ' . $color['color_name'];
+                                echo '</div>';
                             }
+                            echo '</div>';
                         }
                         ?>
-                    </select>
-                </div>
-
+                    </div>
+                </div><br><br>
                 <div class="form-group">
-                    <label for="product_memory_ram">Memory-Capacity <span style="color:red;">*</span></label>
-                    <select name="product_memory_ram" required class="form-control">
-                        <option value="">--Select--</option>
+                    <label>Choose Memory Capacities: <span style="color:red;">*</span></label>
+                    <div class="checkbox-list">
                         <?php
                         if ($memory_ram_list) {
+                            echo '<div class="checkbox-row">';
                             while ($memory_ram = $memory_ram_list->fetch_assoc()) {
-                                $selected = ($result['product_memory_ram'] == $memory_ram['memory_ram_name']) ? 'selected' : '';
-                                echo '<option ' . $selected . ' value="' . $memory_ram['memory_ram_name'] . '">' . $memory_ram['memory_ram_name'] . '</option>';
+                                echo '<div class="checkbox-item">';
+                                $isChecked = (in_array($memory_ram['memory_ram_id'], explode(', ', $result['product_memory_ram']))) ? 'checked' : '';
+                                echo '<input type="checkbox" name="product_memory_ram[]" value="' . $memory_ram['memory_ram_id'] . '" ' . $isChecked . '> ' . $memory_ram['memory_ram_name'];
+                                echo '</div>';
                             }
+                            echo '</div>';
                         }
                         ?>
-                    </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -267,5 +272,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </script>
 
 <?php
-    include "footer.php";
+include "footer.php";
 ?>

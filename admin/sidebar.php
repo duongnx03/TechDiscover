@@ -25,7 +25,7 @@
                             <a href="productlist.php" class="dropdown-item">Product</a>
                             <a href="colorlist.php" class="dropdown-item">Color</a>
                             <a href="memory_ramlist.php" class="dropdown-item">Memory-Ram</a>
-                            
+                            <a href="stocklist.php" class="dropdown-item">Stock</a> 
                         </div>
                     </div>
                     <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>

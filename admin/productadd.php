@@ -80,65 +80,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="product_name">Enter Product Name <span style="color:red;">*</span></label>
+                    <label for="product_name">Enter Product Name: <span style="color:red;">*</span></label>
                     <input name="product_name" type="text" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_price">Enter Product Price <span style="color:red;">*</span></label>
+                    <label for="product_price">Enter Product Price: <span style="color:red;">*</span></label>
                     <input required name="product_price" type="text" class="form-control" placeholder="">
                 </div>
 
                 <div class="form-group">
-                    <label for="product_price_sale">Enter Promotional Price<span style="color:red;">*</span></label>
+                    <label for="product_price_sale">Enter Promotional Price:<span style="color:red;">*</span></label>
                     <input required name="product_price_sale" type="text" class="form-control" placeholder="">
                 </div>
 
                 <div class="form-group">
-                    <label for="product_color">Enter color <span style="color:red;">*</span></label>
-                    <select name="product_color" required class="form-control">
-                        <option value="">--Choose--</option>
+                    <label>Choose Colors: <span style="color:red;">*</span></label>
+                    <div class="checkbox-list">
                         <?php
                         if ($color_list) {
+                            echo '<div class="checkbox-row">';
                             while ($color = $color_list->fetch_assoc()) {
-                                echo '<option value="' . $color['color_name'] . '">' . $color['color_name'] . '</option>';
+                                echo '<div class="checkbox-item">';
+                                echo '<input type="checkbox" name="product_colors[]" value="' . $color['color_id'] . '"> ' . $color['color_name'];
+                                echo '</div>';
                             }
+                            echo '</div>';
                         }
                         ?>
-                    </select>
-                </div>
-
+                    </div>
+                </div><br><br>
                 <div class="form-group">
-                    <label for="product_memory_ram">Memory-Capacity <span style="color:red;">*</span></label>
-                    <select name="product_memory_ram" required class="form-control">
-                        <option value="">--Choose--</option>
+                    <label>Choose Memory Capacities: <span style="color:red;">*</span></label>
+                    <div class="checkbox-list">
                         <?php
                         if ($memory_ram_list) {
+                            echo '<div class="checkbox-row">';
                             while ($memory_ram = $memory_ram_list->fetch_assoc()) {
-                                echo '<option value="' . $memory_ram['memory_ram_name'] . '">' . $memory_ram['memory_ram_name'] . '</option>';
+                                echo '<div class="checkbox-item">';
+                                echo '<input type="checkbox" name="product_memory_rams[]" value="' . $memory_ram['memory_ram_id'] . '"> ' . $memory_ram['memory_ram_name'];
+                                echo '</div>';
                             }
+                            echo '</div>';
                         }
                         ?>
-                    </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_quantity">Enter Stock <span style="color:red;">*</span></label>
+                    <label for="product_quantity">Enter Stock: <span style="color:red;">*</span></label>
                     <input required name="product_quantity" type="number" min="0" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="product_intro">Enter Product Introduce <span style="color:red;">*</span></label>
+                    <label for="product_intro">Enter Product Introduce: <span style="color:red;">*</span></label>
                     <textarea required name="product_intro" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_detail">Enter Product Detail <span style="color:red;">*</span></label>
+                    <label for="product_detail">Enter Product Detail: <span style="color:red;">*</span></label>
                     <textarea name="product_detail" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_accessory">Enter Product Accessory <span style="color:red;">*</span></label>
+                    <label for="product_accessory">Enter Product Accessory: <span style="color:red;">*</span></label>
                     <textarea name="product_accessory" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
@@ -148,13 +153,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="product_img">Product Image<span style="color:red;">*</span></label>
+                    <label for="product_img">Product Image:<span style="color:red;">*</span></label>
                     <input required name="product_img" type="file" class="form-control" onchange="previewImage(this, 'previewProductImg')">
                     <img id="previewProductImg" src="" alt="Preview Image" style="max-width: 200px; max-height: 200px; display: none;"><br>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_img_desc">Description Image<span style="color:red;">*</span></label>
+                    <label for="product_img_desc">Description Image:<span style="color:red;">*</span></label>
                     <input name="product_img_desc[]" multiple type="file" class="form-control" onchange="previewImages(this)">
                     <div class="image-previews">
                         <!-- Dùng để hiển thị các ảnh đã chọn -->
@@ -173,12 +178,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <style>
-    .admin-content-right-product-add{
-    display: flex;
-    flex-direction: column; /* Sắp xếp hàng dọc */
-    align-items: flex-start; /* Căn trái phần tử con */
-    gap: 20px; /* Khoảng cách giữa các phần tử con */
-}
+    .admin-content-right-product-add {
+        display: flex;
+        flex-direction: column;
+        /* Sắp xếp hàng dọc */
+        align-items: flex-start;
+        /* Căn trái phần tử con */
+        gap: 20px;
+        /* Khoảng cách giữa các phần tử con */
+    }
 
     .image-previews {
         display: grid;
@@ -206,20 +214,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
     //function for productadd to show cartegory with cartegory_main_id
     function getCategoriesByMainCategory() {
-    var cartegory_main_id = document.getElementById("cartegory_main_id").value;
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "get_cartegories_by_cartegory_main_id.php?cartegory_main_id=" + cartegory_main_id, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var selectCategory = document.getElementById("cartegory_id");
-            selectCategory.innerHTML = xhr.responseText;
+        var cartegory_main_id = document.getElementById("cartegory_main_id").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "get_cartegories_by_cartegory_main_id.php?cartegory_main_id=" + cartegory_main_id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var selectCategory = document.getElementById("cartegory_id");
+                selectCategory.innerHTML = xhr.responseText;
 
-            // Trigger the change event of the category select to update the brands select
-            getBrandsByCategory();
-        }
-    };
-    xhr.send();
-}
+                // Trigger the change event of the category select to update the brands select
+                getBrandsByCategory();
+            }
+        };
+        xhr.send();
+    }
 
     //function for productadd to show brand with cartegory_id
     function getBrandsByCategory() {
@@ -289,5 +297,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </script>
 
 <?php
-    include "footer.php";
+include "footer.php";
 ?>

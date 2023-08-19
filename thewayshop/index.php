@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../image/cate1.webp" alt="" />
+                        <img class="img-fluid" src="../admin/uploads/cate1.webp" alt="" />
                         <a class="btn hvr-hover" href="#">iPhone</a>
                     </div>
                     <div class="shop-cat-box">
@@ -82,7 +82,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate1.webp" class="img-fluid" alt="Image">
+                            <img src="../admin/uploads/cate1.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -104,7 +104,7 @@
                             <div class="type-lb">
                                 <p class="new">New</p>
                             </div>
-                            <img src="../image/cate3.webp" class="img-fluid" alt="Image">
+                            <img src="../admin/uploads/cate1-gold.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -126,7 +126,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate5.webp" class="img-fluid" alt="Image">
+                            <img src="../admin/uploads/cate5.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -148,7 +148,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate12.webp" class="img-fluid" alt="Image">
+                            <img src="../admin/uploads/cate12.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>

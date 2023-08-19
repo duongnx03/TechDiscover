@@ -45,8 +45,24 @@ $show_product = $product->show_product();
                                 <td><?php echo $result['product_name'] ?></td>
                                 <td><?php echo $result['product_price'] ?></td>
                                 <td><?php echo $result['product_price_sale'] ?></td>
-                                <td><?php echo $result['product_color'] ?></td>
-                                <td><?php echo $result['product_memory_ram'] ?></td>
+                                <td>
+                                    <?php
+                                    $product_colors = $product->get_colors_by_product_id($result['product_id']);
+                                    foreach ($product_colors as $color_id) {
+                                        $color_name = $product->get_color_name_by_id($color_id);
+                                        echo '<span class="badge badge-primary">' . $color_name . '</span> ';
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $product_memory_rams = $product->get_memory_rams_by_product_id($result['product_id']);
+                                    foreach ($product_memory_rams as $memory_ram_id) {
+                                        $memory_ram_name = $product->get_memory_ram_name_by_id($memory_ram_id);
+                                        echo '<span class="badge badge-primary">' . $memory_ram_name . '</span> ';
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php echo $result['product_quantity'] ?></td>
                                 <td>
                                     <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
