@@ -237,30 +237,12 @@ CREATE TABLE `tbl_product` (
 -- Dumping data for table `tbl_product`
 --
 
-INSERT INTO `tbl_product` (`product_id`, `product_name`, `cartegory_main_id`, `cartegory_id`, `brand_id`, `product_price`, `product_price_sale`, `product_color`, `product_memory_ram`, `product_quantity`, `product_intro`, `product_detail`, `product_accessory`, `product_guarantee`, `product_img`) VALUES
-(20, 'iPhone 13 PRO MAX', 3, 22, 32, '1299.79', '1209.79', '8, 6, 4, 1', '10, 9, 8, 7', 10, 'good', '', '', '', 'iphone13promaxden.jpg'),
-(21, 'iPhone 14 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '7, 6, 3, 1', '12, 10, 9, 8, 7', 1, 'nadscsd', 'dasvv', '', '', 'iphone14promax.png');-- --------------------------------------------------------
+INSERT INTO `tbl_product` (`product_id`, `product_name`, `cartegory_id`, `brand_id`, `product_price`, `product_price_sale`, `product_color`, `product_memory_ram`, `product_quantity`, `product_intro`, `product_detail`, `product_accessory`, `product_guarantee`, `product_img`, `cartegory_main_id`) VALUES
+(1, 'iPhone X', 8, 18, '70', '1800000', 'Black', '128GB', 10, 'ncc', '', '', '', 'iphone8plus.png', 1),
+(3, 'iPhone 13 PRO MAX', 8, 21, '60', '18000000', 'Blue', '128GB', 1, 'ok', '', '', '', 'iphone13promax.jpg', 1),
+(4, 'iPhone 14 PRO MAX', 8, 22, '50', '26.490.000', 'Gold', '128GB', 3, 'Good', '', '', '', 'iphone14promax.png', 1);
 
---
--- Table structure for table `tbl_stock`
---
-
-CREATE TABLE `tbl_stock` (
-  `stock_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `tbl_stock`
---
-ALTER TABLE `tbl_stock`
-  ADD PRIMARY KEY (`stock_id`);
-COMMIT;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `tbl_product_img_desc`
@@ -287,65 +269,13 @@ INSERT INTO `tbl_product_img_desc` (`product_id`, `product_img_desc`) VALUES
 (4, 'iphone14promax.png'),
 (4, 'iphone14promaxtrang.png'),
 (4, 'iphone14promaxvang.png'),
-(4, 'thongtiniphone14promax.png'),
-(7, 'iphone13promax.jpg'),
-(7, 'iphone13promaxden.jpg'),
-(7, 'iphone13promaxtrang.jpg'),
-(7, 'iphone13promaxvang.jpg'),
-(8, 'iphone8plus.png'),
-(8, 'iphone8plusda.png'),
-(8, 'iphone8plusden.png'),
-(8, 'iphone8plusminhhoa.png'),
-(9, 'iphone13promax.jpg'),
-(9, 'iphone13promaxden.jpg'),
-(9, 'iphone13promaxtrang.jpg'),
-(9, 'iphone13promaxvang.jpg'),
-(10, 'iphone13promax.jpg'),
-(10, 'iphone13promaxden.jpg'),
-(10, 'iphone13promaxtrang.jpg'),
-(10, 'iphone13promaxvang.jpg'),
-(11, 'iphone14promax.png'),
-(11, 'iphone14promaxtrang.png'),
-(11, 'iphone14promaxvang.png'),
-(12, 'iphone13promax.jpg'),
-(12, 'iphone13promaxden.jpg'),
-(12, 'iphone13promaxtrang.jpg'),
-(12, 'iphone13promaxvang.jpg'),
-(13, 'iphone13promax.jpg'),
-(13, 'iphone13promaxden.jpg'),
-(13, 'iphone13promaxtrang.jpg'),
-(13, 'iphone13promaxvang.jpg'),
-(14, 'iphone13promax.jpg'),
-(14, 'iphone13promaxden.jpg'),
-(14, 'iphone13promaxtrang.jpg'),
-(14, 'iphone13promaxvang.jpg'),
-(15, 'iphone13promax.jpg'),
-(15, 'iphone13promaxden.jpg'),
-(15, 'iphone13promaxtrang.jpg'),
-(15, 'iphone13promaxvang.jpg'),
-(16, 'cate1-black.webp'),
-(16, 'cate1-gold.webp'),
-(16, 'cate2.webp'),
-(16, 'cate3.webp'),
-(6, 'cate1-black.webp'),
-(6, 'cate1-gold.webp'),
-(6, 'cate1-sm-tim.webp'),
-(17, 'cate1-black.webp'),
-(17, 'cate1-gold.webp'),
-(17, 'cate2.webp'),
-(17, 'cate3.webp'),
-(18, 'cate1-white.webp'),
-(18, 'cate1.webp'),
-(18, 'cate6.webp'),
-(18, 'cate7.webp');
-COMMIT;
+(4, 'thongtiniphone14promax.png');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
 --
-
 
 CREATE TABLE `users` (
   `id` int(3) NOT NULL,
@@ -356,17 +286,19 @@ CREATE TABLE `users` (
   `address` varchar(255) NOT NULL,
   `phone` int(10) NOT NULL,
   `verification_code` int(6) NOT NULL,
-  `registration_time` datetime NOT NULL DEFAULT current_timestamp()
+  `registration_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `role` varchar(255) DEFAULT 'user',
+  `is_online` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`, `role`) VALUES
-(64, 'techdiscoverys@gmail.com', 'TechDiscovery', 'Abc123789', 'TechDiscovery', '666-666', 0, 198148, '2023-08-16 21:18:38', 'admin'),
-(91, 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 2123121223, 898047, '2023-08-18 09:17:05', 'user');
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`, `role`, `is_online`) VALUES
+(95, 'techdiscoverys@gmail.com', 'TechDiscovery', '$2y$10$Eq3ogqWuNsHqkQUPvimUi.09tp0gtFn9TbfUQC86OL7DPqrVqK5rq', 'TECHDISCOVERY', '666/666/666', 901020304, 339147, '2023-08-19 10:47:46', 'admin', 1),
+(98, 'phamphudien901@gmail.com', '22', '$2y$10$fD9MU.syKu4lUr2d8FTi2uvozCxJRT2ApFQqwTsMadwOFifP0jvq.', '22', '22', 2147483647, 295591, '2023-08-19 18:02:13', 'user', 1),
+(99, 'phamphudien801@gmail.com', '23', '$2y$10$2ntUp93mRFZGaOLM.zUl2eGTPgseJs.YahQQK7B0DNsGo1lHP3HLG', '23', '23', 2147483647, 328019, '2023-08-19 19:44:10', 'user', 1);
 
 
 --
