@@ -21,7 +21,7 @@ class User {
     }
 
     public function show_users() {
-        $query = "SELECT id, email, username, password , fullname, address, phone FROM users ORDER BY id DESC";
+        $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users ORDER BY id DESC";
         $result = $this->db->select($query);
         return $result;
     }
@@ -46,7 +46,7 @@ class User {
                   WHERE id = '$user_id'";
 
         $result = $this->db->update($query);
-        header('Location: userlist.php');
+
         return $result;
     }
 
@@ -54,6 +54,12 @@ class User {
         $query = "DELETE FROM users WHERE id = '$user_id'";
         $result = $this->db->delete($query);
         header('Location: userlist.php');
+        return $result;
+    }
+    public function update_user_status($user_id, $is_online) {
+        // Add code to update the user status
+        $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
+        $result = $this->db->update($sql);
         return $result;
     }
 }
