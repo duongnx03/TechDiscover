@@ -142,4 +142,11 @@ $loginLink = '<li><a href="../login.php">Login</a></li>';
             </div>
         </div>
     </div>
+    <script>
+    window.addEventListener('beforeunload', function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '../logout.php', false); // Thay đổi URL của trang logout.php của bạn
+        xhr.send();
+    });
+</script>
     <!-- End Main Top -->
