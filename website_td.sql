@@ -294,9 +294,10 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`) VALUES
-(52, 'phamphudien901@gmail.com', '23', '23', '23', '23', 23, 149061, '2023-08-14 21:32:38'),
-(57, 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 'phamphudien801@gmail.com', 0, 170272, '2023-08-14 22:14:07');
+
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`, `role`) VALUES
+(64, 'techdiscoverys@gmail.com', 'TechDiscovery', 'Abc123789', 'TechDiscovery', '666-666', 0, 198148, '2023-08-16 21:18:38', 'admin'),
+(91, 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 'phamphudien901@gmail.com', 2123121223, 898047, '2023-08-18 09:17:05', 'user');
 
 --
 -- Indexes for dumped tables
