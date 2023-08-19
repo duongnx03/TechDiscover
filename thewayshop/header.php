@@ -1,3 +1,49 @@
+<?php
+session_start();
+
+$myAccountLink = ''; // Khởi tạo giá trị mặc định cho liên kết "My Account"
+
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (isset($_SESSION["login"]) && isset($_SESSION["id"])) {
+    $userId = $_SESSION["id"];
+
+    require '../admin/config.php';
+
+    $hostname = 'localhost';
+    $username = 'root';
+    $password = '';
+    $database = 'website_td';
+
+    // Tạo kết nối đến cơ sở dữ liệu bằng MySQLi
+    $conn = mysqli_connect($hostname, $username, $password, $database);
+
+    // Kiểm tra xem kết nối có thành công không
+    if (!$conn) {
+        die("Database connection error: " . mysqli_connect_error());
+    }
+
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE id = '$userId'");
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        // Nếu người dùng tồn tại, hiển thị liên kết "My Account"
+        $myAccountLink = '<li><a href="my-account.php">My Account</a></li>';
+    } else {
+        // Nếu không tìm thấy người dùng, xóa phiên và đăng xuất
+        unset($_SESSION["login"]);
+        unset($_SESSION["id"]);
+        header("Location: ../login.php");
+        exit();
+    }
+
+    $conn->close();
+}
+
+$loginLink = '<li><a href="../login.php">Login</a></li>';
+?>
+
+<!-- Các phần còn lại của header.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <!-- Basic -->
@@ -59,7 +105,7 @@
                                     <i class="fab fa-opencart"></i> 5/9 Free full day shipping
                                 </li>
                                 <li>
-                                    <i class="fab fa-opencart"></i> Off 8%! Shop Now 
+                                    <i class="fab fa-opencart"></i> Off 8%! Shop Now
                                 </li>
                                 <li>
                                     <i class="fab fa-opencart"></i> 5% - 8% off on Apple
@@ -75,13 +121,21 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                  
-                
+
+
                     <div class="our-link">
                         <ul>
+
                             <li><a href="my-account.php">My Account</a></li>
                             <li><a href="https://www.google.com/maps/place/391A+%C4%90.+Nam+K%E1%BB%B3+Kh%E1%BB%9Fi+Ngh%C4%A9a,+Ph%C6%B0%E1%BB%9Dng+14,+Qu%E1%BA%ADn+3,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh+700000/@10.7907758,106.6818425,17z/data=!3m1!4b1!4m6!3m5!1s0x317528d4a8afdb7b:0x2e46c4ada94947dd!8m2!3d10.7907758!4d106.6818425!16s%2Fg%2F11h89s2mz2?hl=en&entry=ttu">Our location</a></li>
                             <li><a href="contact-us.php">Contact Us</a></li>
+                            <?php
+                            if (isset($_SESSION["login"])) {
+                                echo '<li><a href="../logout.php">Logout</a></li>';
+                            } else {
+                                echo '<li><a href="../login.php">Login</a></li>';
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
