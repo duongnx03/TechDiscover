@@ -23,19 +23,23 @@ if (isset($_POST["submit"])) {
     
     if (mysqli_num_rows($result) > 0) {
         if (password_verify($password, $row["password"])) { // Sử dụng password_verify để so sánh mật khẩu đã hash
-            // Cập nhật trạng thái online của người dùng
-            $user_id = $row["id"];
-            $is_online = 1; // Online
-            $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
-            mysqli_query($conn, $sql);
-
-            $_SESSION["login"] = true;
-            $_SESSION["id"] = $row["id"];
-            
-            if ($row["role"] == "admin") {
-                header("Location: admin/index.php");
+            if ($row["is_online"] == 2) {
+                echo "<script>alert('This account is banned. Please contact support for assistance.');</script>";
             } else {
-                header("Location: thewayshop/index.php");
+                // Tiếp tục xử lý đăng nhập bình thường
+                $user_id = $row["id"];
+                $is_online = 1; // Online
+                $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
+                mysqli_query($conn, $sql);
+    
+                $_SESSION["login"] = true;
+                $_SESSION["id"] = $row["id"];
+    
+                if ($row["role"] == "admin") {
+                    header("Location: admin/index.php");
+                } else {
+                    header("Location: thewayshop/index.php");
+                }
             }
         } else {
             echo "<script>alert('Wrong Password');</script>";
@@ -43,6 +47,11 @@ if (isset($_POST["submit"])) {
     } else {
         echo "<script>alert('Username Not Registered');</script>";
     }
+    
+    
+    
+    
+    
 }
 
 
