@@ -46,7 +46,7 @@ $show_user = $user->show_users_except_admin();
                             $i++;
                     ?>
                             <tr>
-                                
+
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $result['id'] ?></td>
                                 <td><?php echo $result['email'] ?></td>
@@ -66,7 +66,7 @@ $show_user = $user->show_users_except_admin();
                                 </td>
                                 <td><a href="../admin/userlistedit.php?id=<?php echo $result['id']; ?>">Edit</a></td>
                                 <td>
-                                    <a href="../admin/userlistdelete.php" onclick="confirmDelete(<?php echo $result['id']; ?>)">Delete</a>
+                                    <a href="userlistdelete.php?id=<?php echo $result['id']; ?>" onclick="return confirmDelete()">Delete</a>
                                 </td>
                                 <?php if ($result['is_online'] == 2) : ?>
                                     <td><a href="../admin/userlistunbanned.php?id=<?php echo $result['id']; ?>" onclick="confirmUnban(<?php echo $result['id']; ?>)">Unbaned</a></td>
@@ -127,4 +127,3 @@ $show_user = $user->show_users_except_admin();
 <?php
 include "footer.php";
 ?>
-
