@@ -1,5 +1,5 @@
 <?php
-    include 'admin/database.php';
+    include 'database.php';
 
 class danhgia {
     private $db;
