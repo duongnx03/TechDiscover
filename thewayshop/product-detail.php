@@ -213,12 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // $danhgia_id = md5($product_id . $user_id . $email . time());  // Generate a unique ID for each review
 
     $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
-    if ($result) {
-        // header("Location: danhgia.php");
-    } else {
-        // Review insertion failed
-        // Handle the error appropriately
-    }
+    return;
 }
 
 $reviews = $danhgia->show_danhgia();
