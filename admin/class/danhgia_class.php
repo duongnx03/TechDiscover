@@ -1,6 +1,7 @@
 <?php
     include 'database.php';
-
+?>
+<?php
 class danhgia {
     private $db;
 
@@ -23,3 +24,4 @@ class danhgia {
         return $result;
     }
 }
+?>
