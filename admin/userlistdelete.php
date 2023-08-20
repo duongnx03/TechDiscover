@@ -3,14 +3,22 @@ include "class/user_class.php";
 
 if (isset($_GET["id"])) {
     $user_id = $_GET["id"];
+    
     $user = new User();
-    $user->delete_user($user_id);
+    $result = $user->delete_user($user_id);
 
-    // Chuyển hướng về trang userlist.php sau khi xóa
-    header("Location: userlist.php");
-    exit;
-} else {
-    header("Location: userlist.php"); // Redirect if "id" is not set in URL
-    exit;
+    if ($result) {
+        // Xóa thành công, bạn có thể chuyển hướng về userlist.php hoặc hiển thị thông báo thành công
+        header("Location: userlist.php");
+        exit;
+    } else {
+        // Xóa thất bại, bạn có thể chuyển hướng về userlist.php hoặc hiển thị thông báo lỗi
+        header("Location: userlist.php");
+        exit;
+    }
 }
 ?>
+
+
+
+
