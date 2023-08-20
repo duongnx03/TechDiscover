@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../TechDiscovery/admin/config.php'; // Bao gồm tệp cấu hình kết nối đến cơ sở dữ liệu
+ // Bao gồm tệp cấu hình kết nối đến cơ sở dữ liệu
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
@@ -60,6 +60,7 @@ if (isset($_SESSION["id"])) {
     <![endif]-->
 
     <script src="https://kit.fontawesome.com/99cf1e4b98.js" crossorigin="anonymous"></script>
+    
 </head>
 
 <body>
