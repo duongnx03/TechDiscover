@@ -31,21 +31,26 @@ $("#province").change(() => {
     callApiDistrict(host + "p/" + $("#province").val() + "?depth=2");
     printResult();
 });
+
 $("#district").change(() => {
     callApiWard(host + "d/" + $("#district").val() + "?depth=2");
     printResult();
 });
+
 $("#ward").change(() => {
     printResult();
-})
+});
 
 var printResult = () => {
-    if ($("#district").val() != "" && $("#province").val() != "" &&
-        $("#ward").val() != "") {
-        let result = $("#province option:selected").text() +
-            " | " + $("#district option:selected").text() + " | " +
-            $("#ward option:selected").text();
-        $("#result").text(result)
-    }
+    const selectedProvinceText = $("#province option:selected").text();
+    const selectedDistrictText = $("#district option:selected").text();
+    const selectedWardText = $("#ward option:selected").text();
 
+    if (selectedDistrictText !== "" && selectedProvinceText !== "" && selectedWardText !== "") {
+        $("#selectedProvince").val(selectedProvinceText);
+        $("#selectedDistrict").val(selectedDistrictText);
+        $("#selectedWard").val(selectedWardText);
+    }
 }
+
+

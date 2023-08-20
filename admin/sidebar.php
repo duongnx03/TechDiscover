@@ -29,7 +29,14 @@
                         </div>
                     </div>
                     <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>
-                    <a href="order_list.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Order</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="order_list.php" class="dropdown-item">Order List</a>
+                            <a href="order_completed.php" class="dropdown-item">Order completed</a>
+                            <a href="order_cancle.php" class="dropdown-item">Order canceled</a>
+                        </div>
+                    </div>
                     <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>
                     <a href="../blog.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
                     <a href="widget.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>

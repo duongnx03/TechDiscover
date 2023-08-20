@@ -4,10 +4,10 @@ $database = new Database();
 
 if (isset($_GET['id']) && isset($_POST['quantity'])) {
     $cart_id = $_GET['id'];
-    $new_quantity = intval($_POST['quantity']); // Sanitize input
+    $new_quantity = intval($_POST['quantity']); 
     
     // Truy vấn để lấy thông tin sản phẩm
-    $get_product_query = "SELECT product_price, product_id FROM tbl_cart WHERE cart_id = ?";
+    $get_product_query = "SELECT product_price, product_id FROM tbl_cart WHERE cart_id = $cart_id";
     $product = $database->select($get_product_query, [$cart_id])->fetch_assoc();
     
     $get_product_info_query = "SELECT product_quantity FROM tbl_product WHERE product_id = {$product['product_id']}";
@@ -21,8 +21,8 @@ if (isset($_GET['id']) && isset($_POST['quantity'])) {
         $response = array(
             "error" => true,
             "message" => "Quantity exceeds quantity in stock!",
-            "old_quantity" => $old_data['quantity'], // Số lượng cũ
-            "old_total" => $old_data['total'] // Tổng cũ
+            "old_quantity" => $old_data['quantity'], 
+            "old_total" => $old_data['total']
         );
         echo json_encode($response);
         exit;

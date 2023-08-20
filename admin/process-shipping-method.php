@@ -1,19 +1,18 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $province = $_POST["province"];
-    $district = $_POST["district"];
-    $ward = $_POST["ward"];
-    $data = array(
-        "pick_province" => "Hà Nội",
-        "pick_district" => "Quận Hai Bà Trưng",
-        "province" => $province,
-        "district" => $district,
-        "ward" => $ward,
-        "weight" => 1000,
-        "transport" => "fly",
-        "deliver_option" => "xteam",
-        "tags"  => [1]
-    );
+$data = array(
+    "pick_province" => "Hồ Chí Minh",
+    "pick_district" => "Quận 3",
+    "pick_ward" => "Phường Võ Thị Sáu",
+    "pick_street" => "Nam Kỳ Khởi Nghĩa",
+    "province" => $_POST['province'],
+    "district" => $_POST['district'],
+    "ward" => $_POST['ward'],
+    "weight" => 500,
+    "value"=> 3000000,
+    "transport" => "road",
+    "deliver_option" => "xteam",
+    "tags"  => [1]
+);
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
@@ -29,4 +28,4 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 echo $response;
-}
+?>

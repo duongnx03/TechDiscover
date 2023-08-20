@@ -5,7 +5,7 @@ $user_query = "SELECT * FROM users where id = $user_id";
 $user_result = $database->select($user_query);
 if ($user_result) {
     $row = $user_result->fetch_assoc();
-    $user_name = $row['fullname'];
+    $fullname = $row['fullname'];
     $email = $row['email'];
     $address = $row['address'];
     $phone = $row['phone'];
@@ -38,10 +38,10 @@ if ($user_result) {
                             <h3>Billing address</h3>
                         </div>
                         <div class="mb-3">
-                            <label for="username">Username *</label>
+                            <label for="username">Full *</label>
                             <div class="input-group">
-                                <input type="text" name="username" class="form-control" id="username" required value="<?php if (!empty($user_name)) {
-                                                                                                                            echo $user_name;
+                                <input type="text" name="fullname" class="form-control" id="username" required value="<?php if (!empty($fullname)) {
+                                                                                                                            echo $fullname;
                                                                                                                         } ?>">
                             </div>
                         </div>
@@ -59,29 +59,37 @@ if ($user_result) {
                         </div>
                         <div class="mb-3">
                             <label for="provinceSelect">Province *</label>
-                            <select class="form-control" id="province" required name="province">
+                            <select class="form-control" id="province" required>
                                 <option value="">Select Province</option>
                             </select>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="districtSelect">District *</label>
-                                <select class="form-control" id="district" required name="district">
+                                <select class="form-control" id="district" required>
                                     <option value="">Select District</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="wardSelect">Ward *</label>
-                                <select class="form-control" id="ward" required name="ward">
+                                <select class="form-control" id="ward" required>
                                     <option value="">Select Ward</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="address">Address *</label>
-                            <input type="text" name="address" class="form-control" id="address" required value="<?php if (!empty($address)) {
-                                                                                                                    echo $address;
-                                                                                                                } ?>">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="address">Address *</label>
+                                <input type="text" name="address" class="form-control" id="address" required value="<?php if (!empty($address)) {
+                                                                                                                        echo $address;
+                                                                                                                    } ?>">
+                            </div>
+                            <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
+                                <input type="hidden" id="selectedProvince" name="province">
+                                <input type="hidden" id="selectedDistrict" name="district">
+                                <input type="hidden" id="selectedWard" name="ward">
+                                <div id="calculateShipping" class="btn btn-primary">Calculate Shipping</div>
+                            </div>
                         </div>
                         <hr class="mb-4">
                         <div class="title"> <span>Payment</span> </div>
@@ -172,40 +180,58 @@ if ($user_result) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/address.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const provinceSelect = document.getElementById("province");
-        const districtSelect = document.getElementById("district");
-        const wardSelect = document.getElementById("ward");
+    $(document).ready(function() {
+        $("#calculateShipping").click(function() {
+            var provinceId = $("#selectedProvince").val();
+            var districtId = $("#selectedDistrict").val();
+            var wardId = $("#selectedWard").val();
 
-        // Thay thế 'YOUR_API_KEY' bằng API key của bạn từ GHTK
-        const apiKey = "e1de32e29e0a4c4a372abdf8f7a7a0ca7d22a281";
+            // Tạo object chứa thông tin để gửi lên API GHTK
+            var requestData = {
+                "pick_province": "Hồ Chí Minh",
+                "pick_district": "Quận 3",
+                "pick_ward": "Phường Võ Thị Sáu",
+                "pick_street": "391a Đường Nam Kỳ Khởi Nghĩa",
+                "province": provinceId,
+                "district": districtId,
+                "ward": wardId,
+                "weight": 500,
+                "transport": "road",
+                "deliver_option": "xteam",
+                "tags": [1]
+            };
 
-        // Hàm gọi API để tính phí ship
-        async function calculateShippingFee() {
-            const selectedProvince = provinceSelect.value;
-            const selectedDistrict = districtSelect.value;
-            const selectedWard = wardSelect.value;
+            // Gửi yêu cầu Ajax tới API của GHTK
+            $.ajax({
+                url: "../admin/process-shipping-method.php", // Đường dẫn tới mã xử lý server
+                method: "POST",
+                data: requestData,
+                success: function(response) {
+                    var jsonResponse = JSON.parse(response);
 
-            if (selectedProvince && selectedDistrict && selectedWard) {
-                const apiUrl = `https://services.giaohangtietkiem.vn/services/shipment/fee?api_key=${apiKey}&to_district_id=${selectedDistrict}&to_ward_code=${selectedWard}`;
+                    // Extract fee from the JSON response (in VND)
+                    var shippingFeeVND = jsonResponse.fee.fee;
 
-                try {
-                    const response = await fetch(apiUrl);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const data = await response.json();
-                    // Xử lý dữ liệu
-                } catch (error) {
-                    console.error('Fetch error:', error);
+                    // Convert VND to USD using the exchange rate (e.g., 1 USD = 23000 VND)
+                    var exchangeRate = 23000;
+                    var shippingFeeUSD = shippingFeeVND / exchangeRate;
+
+                    // Display the shipping fee in USD in the specified <div>
+                    $("#shippingCost").text("$" + shippingFeeUSD.toFixed(2));
+
+                    // Update the grand total including shipping fee
+                    var totalOrder = parseFloat($("#finalTotalPrice").val());
+                    var grandTotal = totalOrder + shippingFeeUSD;
+                    $("#totalPrice").text("$ " + grandTotal.toFixed(2));
+
+                    // Calculate the total order value including shipping fee
+                    var totalOrderWithShipping = totalOrder + shippingFeeUSD;
+
+                    // Update the input value with the total order value including shipping fee
+                    $("#finalTotalPrice").val(totalOrderWithShipping.toFixed(2));
                 }
-            }
-        }
-
-        // Gọi hàm tính phí khi người dùng thay đổi lựa chọn
-        provinceSelect.addEventListener("change", calculateShippingFee);
-        districtSelect.addEventListener("change", calculateShippingFee);
-        wardSelect.addEventListener("change", calculateShippingFee);
+            });
+        });
     });
 
     function validateForm() {
