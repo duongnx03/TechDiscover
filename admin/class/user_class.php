@@ -9,17 +9,30 @@ class User {
     }
 
     public function insert_user($email, $username, $password, $fullname, $address, $phone) {
+        // Check if email or username already exist in the database
+        $checkQuery = "SELECT * FROM users WHERE email = '$email' OR username = '$username'";
+        $checkResult = $this->db->select($checkQuery);
+    
+        if ($checkResult && $checkResult->num_rows > 0) {
+            // Email or username already exists, show error message
+            return "Email or username already exists. Please choose a different one.";
+        }
+    
         // Add code to hash the password before storing it into the database
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $query = "INSERT INTO users (email, username, password, fullname, address, phone) 
-                  VALUES ('$email', '$username', '$hashedPassword', '$fullname', '$address', '$phone')";
-
-        $result = $this->db->insert($query);
-        header('Location: userlist.php');
-        return $result;
+    
+        $insertQuery = "INSERT INTO users (email, username, password, fullname, address, phone) 
+                        VALUES ('$email', '$username', '$hashedPassword', '$fullname', '$address', '$phone')";
+    
+        $result = $this->db->insert($insertQuery);
+    
+        if ($result) {
+            return true;
+        } else {
+            // Handle error
+            return "Error adding user. Please try again.";
+        }
     }
-
     public function show_users() {
         $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users ORDER BY id DESC";
         $result = $this->db->select($query);
