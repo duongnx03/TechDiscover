@@ -38,7 +38,7 @@ if (isset($_POST["submit"])) {
                 if ($row["role"] == "admin") {
                     header("Location: admin/index.php");
                 } else {
-                    header("Location: thewayshop/index.php");
+                    header("Location: index.php");
                 }
             }
         } else {
@@ -65,7 +65,7 @@ if (isset($_POST["submit"])) {
     <title>LOGIN</title>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="../TechDiscovery/css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 <body>
