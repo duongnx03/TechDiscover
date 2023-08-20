@@ -35,18 +35,25 @@ if (isset($_GET['id'])) {
                     <div class="col-xl-5 col-lg-5 col-md-6">
                         <div id="carousel-example-1" class="single-product-slider carousel slide" data-ride="carousel">
                             <div class="carousel-inner" role="listbox">
-                                <!-- Bạn có thể thay đổi mã này để hiển thị hình ảnh sản phẩm -->
                                 <?php
-                                $images = explode(',', $detail['product_img_desc']);
-                                $isFirst = true;
-                                foreach ($images as $image) {
-                                    echo '<div class="carousel-item ' . ($isFirst ? 'active' : '') . '">';
-                                    echo '<img class="d-block w-100" src="../admin/uploads/' . $image . '" alt="Product Image">';
-                                    echo '</div>';
-                                    $isFirst = false;
+                                $firstImage = true; // Đánh dấu phần tử đầu tiên là active
+                                $product_imgs_desc = $product->get_product_imgs_desc($product_id);
+
+                                if ($product_imgs_desc) {
+                                    while ($img_row = $product_imgs_desc->fetch_assoc()) {
+                                        $activeClass = $firstImage ? "active" : "";
+                                        $imagePath = '../admin/uploads/' . $img_row['product_img_desc'];
+
+                                        echo '<div class="carousel-item ' . $activeClass . '">';
+                                        echo '<img class="d-block w-100" src="' . $imagePath . '" />';
+                                        echo '</div>';
+
+                                        $firstImage = false;
+                                    }
                                 }
                                 ?>
                             </div>
+
                             <!-- Các điều khiển trượt -->
                             <a class="carousel-control-prev" href="#carousel-example-1" role="button" data-slide="prev">
                                 <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -58,14 +65,18 @@ if (isset($_GET['id'])) {
                             </a>
                             <!-- Điểm điều hướng -->
                             <ol class="carousel-indicators">
-                                <!-- Bạn có thể thay đổi mã này để tạo điểm điều hướng cho hình ảnh sản phẩm -->
                                 <?php
-                                $isFirst = true;
-                                foreach ($images as $key => $image) {
-                                    echo '<li data-target="#carousel-example-1" data-slide-to="' . $key . '" class="' . ($isFirst ? 'active' : '') . '">';
-                                    echo '<img class="d-block w-100 img-fluid" src="../admin/uploads/' . $image . '" alt="Product Image" />';
+                                $currentSlide = 0;
+                                $product_imgs_desc->data_seek(0); // Đặt con trỏ dữ liệu trở lại vị trí đầu tiên
+
+                                while ($img_row = $product_imgs_desc->fetch_assoc()) {
+                                    $activeClass = ($currentSlide === 0) ? "active" : "";
+
+                                    echo '<li data-target="#carousel-example-1" data-slide-to="' . $currentSlide . '" class="' . $activeClass . '">';
+                                    echo '<img class="d-block w-100 img-fluid" src="../admin/uploads/' . $img_row['product_img_desc'] . '" alt="" />';
                                     echo '</li>';
-                                    $isFirst = false;
+
+                                    $currentSlide++;
                                 }
                                 ?>
                             </ol>
@@ -79,7 +90,7 @@ if (isset($_GET['id'])) {
                             <h5> <del>$<?php echo $detail['product_price']; ?></del> $<?php echo $detail['product_price_sale']; ?></h5>
                             <!-- Hiển thị số lượng tồn kho và số lượng đã bán -->
                             <p class="available-stock">
-                                <span> Sold: 0 / <a href="#"> Stock: <?php echo $detail['product_quantity']; ?> </a></span>
+                                <span>Stock: <?php echo $detail['product_quantity']; ?> </span>
                             </p>
 
                             <!-- Hiển thị tùy chọn màu sắc -->
