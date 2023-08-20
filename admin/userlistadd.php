@@ -4,6 +4,8 @@ include "sidebar.php";
 include "navbar.php";
 include "class/user_class.php";
 
+$errors = array(); // Khởi tạo mảng chứa lỗi
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $username = $_POST["username"];
@@ -12,8 +14,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = $_POST["address"];
     $phone = $_POST["phone"];
 
+    // Kiểm tra số điện thoại, địa chỉ email và các trường khác
+
+    // Kiểm tra lỗi từ việc thêm người dùng vào cơ sở dữ liệu
     $user = new User();
-    $user->insert_user($email, $username, $password, $fullname, $address, $phone);
+    $insertResult = $user->insert_user($email, $username, $password, $fullname, $address, $phone);
+    
+    if (is_string($insertResult)) {
+        $errors['insert'] = $insertResult;
+    } elseif ($insertResult === true) {
+        $successMessage = "User added successfully!";
+    }
 }
 ?>
 
@@ -25,10 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="admin-content-right-category-add">
             <form action="" method="POST">
-                <div class="form-group">
-                    <label for="id">ID</label>
-                    <input name="id" type="text" class="form-control" required placeholder="Enter ID">
-                </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input name="email" type="email" class="form-control" required placeholder="Enter Email">
@@ -58,5 +65,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
+<?php
+if (!empty($errors)) {
+    echo '<div class="alert alert-danger" role="alert">';
+    foreach ($errors as $error) {
+        echo $error . "<br>";
+    }
+    echo '</div>';
+}
 
+if (isset($successMessage)) {
+    echo '<div class="alert alert-success" role="alert">' . $successMessage . '</div>';
+}
+?>
 <?php include "footer.php"; // Include your footer ?>
