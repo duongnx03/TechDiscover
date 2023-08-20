@@ -88,9 +88,13 @@ if (isset($_GET['id'])) {
                                 <select id="basic" class="selectpicker show-tick form-control">
                                     <!-- Bạn có thể thay đổi mã này để hiển thị tùy chọn màu sắc -->
                                     <?php
-                                    $colors = explode(',', $detail['product_color']);
-                                    foreach ($colors as $color) {
-                                        echo '<option value="' . $color . '">' . $color . '</option>';
+                                    // Lấy danh sách color_id từ trường product_color
+                                    $product_color_ids = explode(',', $detail['product_color']);
+
+                                    // Lặp qua danh sách color_id và chuyển thành color_name
+                                    foreach ($product_color_ids as $color_id) {
+                                        $color_name = $product->get_color_name_by_id($color_id);
+                                        echo '<option value="' . $color_name . '">' . $color_name . '</option>';
                                     }
                                     ?>
                                 </select>
@@ -102,9 +106,13 @@ if (isset($_GET['id'])) {
                                 <select id="basic" class="selectpicker show-tick form-control">
                                     <!-- Bạn có thể thay đổi mã này để hiển thị tùy chọn dung lượng -->
                                     <?php
-                                    $capacities = explode(',', $detail['product_memory_ram']);
-                                    foreach ($capacities as $capacity) {
-                                        echo '<option value="' . $capacity . '">' . $capacity . '</option>';
+                                    // Lấy danh sách memory_ram_id từ trường product_memory_ram
+                                    $product_memory_ram_ids = explode(',', $detail['product_memory_ram']);
+
+                                    // Lặp qua danh sách memory_ram_id và chuyển thành memory_ram_name
+                                    foreach ($product_memory_ram_ids as $memory_ram_id) {
+                                        $memory_ram_name = $product->get_memory_ram_name_by_id($memory_ram_id);
+                                        echo '<option value="' . $memory_ram_name . '">' . $memory_ram_name . '</option>';
                                     }
                                     ?>
                                 </select>

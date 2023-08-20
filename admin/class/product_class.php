@@ -72,8 +72,8 @@ class product
         $brand_id = $post_data['brand_id'];
         $product_price = $post_data['product_price'];
         $product_price_sale = $post_data['product_price_sale'];
-        $product_color = isset($_POST['product_colors']) ? implode(', ', $_POST['product_colors']) : '';
-        $product_memory_ram = isset($_POST['product_memory_rams']) ? implode(', ', $_POST['product_memory_rams']) : '';
+        $product_color = isset($_POST['product_color']) ? implode(', ', $_POST['product_color']) : '';
+        $product_memory_ram = isset($_POST['product_memory_ram']) ? implode(', ', $_POST['product_memory_ram']) : '';
         $product_quantity = $post_data['product_quantity'];
         $product_intro = $post_data['product_intro'];
         $product_detail = $post_data['product_detail'];
@@ -319,6 +319,12 @@ class product
         return '';
     }
 
+    public function get_all_colors() {
+        $query = "SELECT * FROM tbl_color";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
     public function get_memory_ram_name_by_id($memory_ram_id)
     {
         $query = "SELECT memory_ram_name FROM tbl_memory_ram WHERE memory_ram_id = '$memory_ram_id'";
@@ -346,6 +352,55 @@ class product
         $query = "SELECT product_id, product_name FROM tbl_product";
         $result = $this->db->select($query);
         return $result;
+    }
+
+    function Pagination($number, $page, $addition){
+        if ($number >1){
+            echo '<ul class="pagination">';			
+            if($page>1){
+                echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).$addition.'">Previous</a></li>';
+            }
+    
+            $avaiablePage = [1,$page-1,$page,$page+1,$number]; //mảng gồm trang đầu, trang cuối, trang hiện tại và 2 trang kế trang hiện tại 
+            $isFirst = $isLast = false; // 2 biến này để kiếm tra có dấu ... trước và sau trang hiện tại chưa
+            for($i=0; $i<$number; $i++){
+                if(!in_array($i+1,$avaiablePage)){ //nếu không có trong mảng thì ra khỏi vòng for
+                    if(!$isFirst && $page >3){//nếu chưa có dấu ... và số trang phải lớn hơn 3
+                        echo'<li class="page-item"><a class="page-link" href="?page='.($page-2).$addition.'">...</a></li>';
+                        $isFirst = true; //xác nhận đã có dấu ...
+                    }
+                    if(!$isLast && $i >$page){//nếu chưa có dấu ... và số trang phải lớn hơn 3
+                        echo'<li class="page-item"><a class="page-link" href="?page='.($page+2).$addition.'">...</a></li>';
+                        $isLast = true; //xác nhận đã có dấu ...
+                    }
+                    continue;
+                }
+                if($page==$i+1){
+                    echo'<li class="page-item active"><a class="page-link" href="#">'.($i+1).'</a></li>';
+                }else{
+                    echo'<li class="page-item"><a class="page-link" href="?page='.($i+1).$addition.'">'.($i+1).'</a></li>';
+                }		
+            }
+            if($page<$number){
+                echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).$addition.'">Next</a></li>';
+            }
+            echo '</ul>';    			
+        
+        }
+    }
+
+    public function getProductsForPage($limit, $offset)
+    {
+        $query = "SELECT * FROM tbl_product LIMIT $limit OFFSET $offset";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getTotalProducts()
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_product";
+        $result = $this->db->select($query)->fetch_assoc();
+        return $result['total'];
     }
 }
 

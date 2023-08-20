@@ -42,6 +42,17 @@
             header('Location: colorlist.php');
             return $result; 
         }
+
+        public function get_color_name_by_id($color_id){
+            $query = "SELECT color_name FROM tbl_color WHERE color_id = '$color_id'";
+            $result = $this->db->select($query);
+            if ($result) {
+                $color = $result->fetch_assoc();
+                return $color['color_name'];
+            } else {
+                return "Không tìm thấy màu sắc";
+            }
+        }
     }
 
    

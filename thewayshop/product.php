@@ -10,6 +10,18 @@ $product = new product();
 $category = new cartegory();
 $brand = new brand();
 
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$limit = 6; // Số sản phẩm trên mỗi trang
+$product->Pagination($totalPages, $page, '?page=');
+
+$offset = ($page - 1) * $limit; // Vị trí bắt đầu của sản phẩm trên trang hiện tại
+
+$products = $product->getProductsForPage($limit, $offset); // Hàm này cần phải được thay thế bằng hàm thích hợp của bạn để lấy sản phẩm theo trang.
+
+$totalProducts = $product->getTotalProducts(); // Tổng số sản phẩm
+
+$totalPages = ceil($totalProducts / $limit); // Tổng số trang
+
 $products = $product->show_product();
 $mainCategories = $category->show_cartegory_main();
 $cartegory = $product->show_cartegory();
@@ -167,12 +179,25 @@ $brands = $product->show_brand();
                     </div>
 
                     <!-- Start Pagination -->
-                    <div class="pagination-area">
+                   <!-- Start Pagination -->
+                   <div class="pagination-area">
                         <ul class="pagination">
-                            <p>Display 6 <span>|</span> 6 Product</p>
-                            <p class="alight-right"><span>&#171;</span>1 2 ... <span>&#187;</span>Last page</p>
+                            <p>Display <?php echo $offset + 1; ?> - <?php echo min($offset + $limit, $totalProducts); ?> of <?php echo $totalProducts; ?> Products</p>
+                            <br><br> 
+                            <?php if ($page > 1) : ?>
+                                <li>    <a href="?page=1">&laquo;</a></li>
+                            <?php endif; ?>
+                          
+                            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                                <li <?php echo ($page == $i) ? 'class="active"' : ''; ?>><a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            <?php endfor; ?>
+                            <br>
+                            <?php if ($page < $totalPages) : ?>
+                                <li><a href="?page=<?php echo $totalPages; ?>">&raquo;</a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
+                    <!-- End Pagination -->
                     <!-- End Pagination -->
                     <br><br>
                 </div>

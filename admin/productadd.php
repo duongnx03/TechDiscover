@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             echo '<div class="checkbox-row">';
                             while ($color = $color_list->fetch_assoc()) {
                                 echo '<div class="checkbox-item">';
-                                echo '<input type="checkbox" name="product_colors[]" value="' . $color['color_id'] . '"> ' . $color['color_name'];
+                                echo '<input type="checkbox" name="product_color[]" value="' . $color['color_id'] . '"> ' .$color['color_name'];
                                 echo '</div>';
                             }
                             echo '</div>';
@@ -134,22 +134,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="product_intro">Enter Product Introduce: <span style="color:red;">*</span></label>
-                    <textarea required name="product_intro" id="" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea required name="product_intro" id="summernote_intro" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_detail">Enter Product Detail: <span style="color:red;">*</span></label>
-                    <textarea name="product_detail" id="" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="product_detail" id="summernote_detail" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_accessory">Enter Product Accessory: <span style="color:red;">*</span></label>
-                    <textarea name="product_accessory" id="" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="product_accessory" id="summernote_accessory" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_guarantee">Enter Product Guarantee <span style="color:red;">*</span></label>
-                    <textarea name="product_guarantee" id="" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="product_guarantee" id="summernote_guarantee" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -212,6 +212,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 </style>
 <script>
+    $('#summernote_intro').summernote({
+        placeholder: 'Enter Product Introduce',
+        tabsize: 2,
+        height: 200
+    });
+
+    $('#summernote_detail').summernote({
+        placeholder: 'Enter Product Detail',
+        tabsize: 2,
+        height: 200
+    });
+
+    $('#summernote_accessory').summernote({
+        placeholder: 'Enter Product Accessory',
+        tabsize: 2,
+        height: 200
+    });
+    $('#summernote_guarantee').summernote({
+        placeholder: 'Enter Product Guarantee',
+        tabsize: 2,
+        height: 200
+    });
+
+
     //function for productadd to show cartegory with cartegory_main_id
     function getCategoriesByMainCategory() {
         var cartegory_main_id = document.getElementById("cartegory_main_id").value;
