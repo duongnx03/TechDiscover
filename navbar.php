@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include "admin/database.php";
 
 $totalPrice = 0;
