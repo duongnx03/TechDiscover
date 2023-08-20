@@ -124,19 +124,16 @@ $loginLink = '<li><a href="login.php">Login</a></li>';
 
 
                     <div class="our-link">
-                        <ul>
-
-                            <li><a href="profile.php">My Account</a></li>
-                            <li><a href="https://www.google.com/maps/place/391A+%C4%90.+Nam+K%E1%BB%B3+Kh%E1%BB%9Fi+Ngh%C4%A9a,+Ph%C6%B0%E1%BB%9Dng+14,+Qu%E1%BA%ADn+3,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh+700000/@10.7907758,106.6818425,17z/data=!3m1!4b1!4m6!3m5!1s0x317528d4a8afdb7b:0x2e46c4ada94947dd!8m2!3d10.7907758!4d106.6818425!16s%2Fg%2F11h89s2mz2?hl=en&entry=ttu">Our location</a></li>
-                            <li><a href="contact-us.php">Contact Us</a></li>
-                            <?php
-                            if (isset($_SESSION["login"])) {
-                                echo '<li><a href="logout.php">Logout</a></li>';
-                            } else {
-                                echo '<li><a href="login.php">Login</a></li>';
-                            }
-                            ?>
-                        </ul>
+                    <ul>
+        <?php
+        echo $myAccountLink; // Hiển thị liên kết "My Account"
+        ?>
+        <li><a href="https://www.google.com/maps/place/391A+%C4%90.+Nam+K%E1%BB%B3+Kh%E1%BB%9Fi+Ngh%C4%A9a,+Ph%C6%B0%E1%BB%9Dng+14,+Qu%E1%BA%ADn+3,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh+700000/@10.7907758,106.6818425,17z/data=!3m1!4b1!4m6!3m5!1s0x317528d4a8afdb7b:0x2e46c4ada94947dd!8m2!3d10.7907758!4d106.6818425!16s%2Fg%2F11h89s2mz2?hl=en&entry=ttu">Our location</a></li>
+        <li><a href="contact-us.php">Contact Us</a></li>
+        <?php
+        echo $loginLink;
+        ?>
+    </ul>
                     </div>
                 </div>
             </div>
