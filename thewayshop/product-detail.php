@@ -194,6 +194,7 @@ if (isset($_GET['id'])) {
                 </div>
             </div>
         </div>
+        <!------------- danh-gia ------------->
         <?php
 include '../admin/class/danhgia_class.php';
 
@@ -213,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
     if ($result) {
-        header("Location: danhgia.php");
+        // header("Location: danhgia.php");
     } else {
         // Review insertion failed
         // Handle the error appropriately
@@ -396,7 +397,7 @@ $reviewCount = mysqli_num_rows($reviews); // Đếm số lượng bình luận t
                     <input class="star star-1" id="star-1" type="radio" name="rating" value="1"/>
                     <label class="star star-1" for="star-1"></label>
                 </div>
-                <br>
+                
                 <label for="comment">Comment:</label>
                 <textarea name="comment" rows="4" required></textarea>
                 <br>
@@ -407,7 +408,7 @@ $reviewCount = mysqli_num_rows($reviews); // Đếm số lượng bình luận t
 </body>
 </html>
 
-
+<!-- -------------End Danh-gia ----------------- -->
 
 <?php
     } else {
