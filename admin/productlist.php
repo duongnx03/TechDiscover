@@ -15,6 +15,7 @@ $show_product = $product->show_product();
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Product List</h6>
             <a href="productadd.php">ADD Product</a>
+            <input class="form-control bg-dark border-0" type="search" placeholder="Search">
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">

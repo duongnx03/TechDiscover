@@ -1,202 +1,211 @@
 <?php
-session_start();
 include "header.php";
 include "navbar.php";
-include "admin/database.php";
-include "admin/config.php";
 include "admin/class/product_class.php";
+include "admin/class/cartegory_class.php";
+include "admin/class/brand_class.php";
 
-$_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
 
-if (isset($_GET['product_id'])) {
-    $product_id = $_GET['product_id'];
-    $product = new product;
-    $product_detail = $product->get_product_detail($product_id);
-}
-$result = '';
-if (isset($_SESSION["add_to_cart_result"])) {
-    $result = $_SESSION["add_to_cart_result"];
-    unset($_SESSION["add_to_cart_result"]);
-        echo "<script>
-                alert('$result');
-             </script>";
-    }
+$product = new product();
+$category = new cartegory();
+$brand = new brand();
+
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$limit = 6; // Số sản phẩm trên mỗi trang
+$product->Pagination($totalPages, $page, '?page=');
+
+$offset = ($page - 1) * $limit; // Vị trí bắt đầu của sản phẩm trên trang hiện tại
+
+$products = $product->getProductsForPage($limit, $offset); // Hàm này cần phải được thay thế bằng hàm thích hợp của bạn để lấy sản phẩm theo trang.
+
+$totalProducts = $product->getTotalProducts(); // Tổng số sản phẩm
+
+$totalPages = ceil($totalProducts / $limit); // Tổng số trang
+
+$products = $product->show_product();
+$mainCategories = $category->show_cartegory_main();
+$cartegory = $product->show_cartegory();
+$brands = $product->show_brand();
 ?>
 
-<section class="product">
+<!-- Start All Title Box -->
+<div class="all-title-box">
     <div class="container">
-        <form id="addToCartForm" action="admin/process-addToCart.php" method="post">
-            <?php if ($product_detail) {
-                $row = $product_detail->fetch_assoc();
-            ?>
-            <div class="product-top row">
-                <p>Home</p> <span>&#10148;</span>
-                <p>Điện Thoại</p><span>&#10148;</span>
-                <p>iPhone</p><span>&#10148;</span>
-                <p><?php echo $row['product_name']; ?></p>
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Shop</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Shop</li>
+                </ul>
             </div>
-            <div class="produc-content row">
-                <div class="product-content-left row">
-                    <div class="product-content-left-big-img">
-                        <img src="admin/uploads/<?php echo $row['product_img']; ?>">
-                    </div>
-                    <div class="product-content-left-small-img">
-                        <?php
-                        // Lấy danh sách ảnh mô tả sản phẩm
-                        $product_imgs_desc = $product->get_product_imgs_desc($product_id);
-                        if ($product_imgs_desc) {
-                            while ($img_row = $product_imgs_desc->fetch_assoc()) {
-                                echo '<img src="admin/uploads/' . $img_row['product_img_desc'] . '">';
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="product-content-right">
-                    <div class="product-content-right-product-name">
-                        <h2><?php echo $row['product_name']; ?></h2>
-                    </div>
-                    <div class="product-content-right-product-price">
-                        <p><?php echo number_format($row['product_price']); ?><span>₫</span></p>
-                    </div>
-                    <div class="product-content-right-product-color">
-                        <p><span style="font-weight: bold;">Màu Sắc</span>: <?php echo $row['product_color']; ?><span style="color: red;">*</span></p>
-                        <div class="product-content-right-product-color-img">
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
 
+<!-- Start Shop Page  -->
+<div class="shop-box-inner">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
+                <div class="product-categori">
+                    <div class="search-product">
+                        <form action="#">
+                            <input class="form-control" placeholder="Search here..." type="text">
+                            <button type="submit"> <i class="fa fa-search"></i> </button>
+                        </form>
+                    </div>
+                    <div class="filter-sidebar-left">
+                        <div class="title-left">
+                            <h3>Categories</h3>
                         </div>
-                    </div>
-
-                    <div class="product-content-right-product-size">
-                        <p style="font-weight: bold;">Bộ Nhớ, Ram: </p>
-                        <div class="size">
+                        <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
                             <?php
-                            // Chia các bộ nhớ - ram thành mảng và hiển thị
-                            $memory_ram_arr = explode(",", $row['product_memory_ram']);
-                            foreach ($memory_ram_arr as $memory_ram) {
-                                echo '<label><input type="radio" name="selected_ram" value="' . htmlspecialchars($memory_ram) . '"> ' . $memory_ram . '</label><br>';
+                            if ($mainCategories) {
+                                while ($mainCategory = $mainCategories->fetch_assoc()) {
+                                    echo '<div class="list-group-collapse sub-men">';
+                                    echo '<a class="list-group-item list-group-item-action" href="#sub-men' . $mainCategory['cartegory_main_id'] . '" data-toggle="collapse" aria-expanded="true" aria-controls="sub-men' . $mainCategory['cartegory_main_id'] . '">' . $mainCategory['cartegory_main_name'] . '</a>';
+                                    echo '<div class="collapse" id="sub-men' . $mainCategory['cartegory_main_id'] . '" data-parent="#list-group-men">';
+                                    echo '<div class="list-group">';
+
+                                    $subCategories = $category->get_cartegories_by_cartegory_main_id($mainCategory['cartegory_main_id']);
+                                    if ($subCategories) {
+                                        while ($subCategory = $subCategories->fetch_assoc()) {
+                                            echo '<a href="#" class="list-group-item list-group-item-action">' . $subCategory['cartegory_name'] . '</a>';
+                                        }
+                                    }
+
+                                    echo '</div>';
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
                             }
                             ?>
                         </div>
                     </div>
-                    <div class="quantity">
-                        <p style="font-weight: bold;">Số Lượng: </p>
-                        <input type="number" name="quantity" min="1" value="1">
-                    </div>
-                    <div class="quantity">
-                        <p>Kho:</p>
-                        <p><?php echo $row['product_quantity']; ?></p>
-                    </div>
-                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                    <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>">
-                    <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>">
-                    <input type="hidden" name="product_img" value="<?php echo $row['product_img']; ?>">
-                    <input type="hidden" name="product_color" value="<?php echo htmlspecialchars($row['product_color']); ?>">
-                    <input type="hidden" name="product_memory_ram" value="<?php echo htmlspecialchars($row['product_memory_ram']); ?>">
-                    <div class="product-content-right-product-button">
-                        <button type="submit" name="addToCart"><i class="fa fa-shopping-bag"></i>
-                            <p>Add To Cart</p>
-                        </button>
-                   </div>
-                    </form>
-                    <div class="product-content-right-product-icon row">
-                        <div class="product-content-right-product-icon-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <p>Hotline</p>
+
+                    <div class="filter-brand-left">
+                        <div class="title-left">
+                            <h3>Brand</h3>
                         </div>
-                        <div class="product-content-right-product-icon-item">
-                            <i class="fas fa-comments"></i>
-                            <p>Chat</p>
-                        </div>
-                        <div class="product-content-right-product-icon-item">
-                            <i class="fas fa-envelope"></i>
-                            <p>Mail</p>
+                        <div class="brand-box">
+                            <ul>
+                                <?php
+                                if ($brands) {
+                                    while ($brand = $brands->fetch_assoc()) {
+                                        echo '<li>';
+                                        echo '<div class="radio radio-danger">';
+                                        echo '<input name="survey" id="Radios' . $brand['brand_id'] . '" value="' . $brand['brand_name'] . '" type="radio">';
+                                        echo '<label for="Radios' . $brand['brand_id'] . '">' . $brand['brand_name'] . '</label>';
+                                        echo '</div>';
+                                        echo '</li>';
+                                    }
+                                }
+                                ?>
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="product-content-right-bottom">
-                        <div class="product-content-right-bottom-top">
-                            <span>&#812;</span>
-                        </div>
-                        <div class="product-content-right-bottom-content-big">
-                            <div class="product-content-right-bottom-content-title row">
-                                <div class="product-content-right-bottom-content-title-item introduce">
-                                    <p>Giới Thiệu</p>
-                                </div>
-                                <div class="product-content-right-bottom-content-title-item detail">
-                                    <p>Chi tiết</p>
-                                </div>
-                                <div class="product-content-right-bottom-content-title-item accessory">
-                                    <p>Phụ Kiện</p>
-                                </div>
-                                <div class="product-content-right-bottom-content-title-item guarantee">
-                                    <p>Bảo Hành</p>
-                                </div>
-                            </div>
-
-                            <div class="product-content-right-bottom-content">
-                                <div class="product-content-right-bottom-content-introduce active">
-                                    <?php echo $row['product_intro']; ?>
-                                    <h4></h4> 
-                                </div>
-                                <div class="product-content-right-bottom-content-detail">
-                                    <h4></h4>
-                                    <?php echo $row['product_detail']; ?>
-                                </div>
-                                <div class="product-content-right-bottom-content-accessory">
-                                    <?php echo $row['product_accessory']; ?>
-                                </div>
-                                <div class="product-content-right-bottom-content-guarantee">
-                                    <?php echo $row['product_guarantee']; ?> <span><a href="" style="color: rgb(105, 159, 235);">(Xem chi tiết)</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        <?php } else { ?>
-            <p>Sản phẩm không tồn tại.</p>
-        <?php } ?>
+            <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
+                <div class="right-product-box">
+                    <div class="product-item-filter row">
+                        <div class="col-12 col-sm-8 text-center text-sm-left">
+                            <div class="toolbar-sorter-right">
+                                <span>Sort by </span>
+                                <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+                                    <option data-display="Select">Nothing</option>
+                                    <option value="1">Popularity</option>
+                                    <option value="2">Low Price → High Price</option>
+                                    <option value="3">Hight Price → Low Price</option>
+                                    <option value="4">Best Selling</option>
+                                </select>
+                            </div>
+                            <p>Showing all <span>0</span> results</p>
+                        </div>
+                        <div class="col-12 col-sm-4 text-center text-sm-right">
+                            <ul class="nav nav-tabs ml-auto">
+                                <li>
+                                    <a class="nav-link active" href="#grid-view" data-toggle="tab"> <i class="fa fa-th"></i> </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row product-categorie-box">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
+                                <div class="row">
+                                    <?php
+                                    if ($products) {
+                                        while ($product = $products->fetch_assoc()) {
+                                            echo '<div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">';
+                                            echo '<div class="products-single fix">';
+                                            echo '<div class="box-img-hover">';
+
+                                            // Check if the product is on sale or new
+                                            if ($product['is_sale']) {
+                                                echo '<div class="type-lb"><p class="sale">Sale</p></div>';
+                                            } else {
+                                                echo '<div class="type-lb"><p class="new">New</p></div>';
+                                            }
+
+                                            echo '<img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
+                                            echo '<div class="mask-icon">';
+                                            echo '<ul>';
+                                            echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>';
+                                            echo '<li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>';
+                                            echo '</ul>';
+                                            echo '<a class="cart" href="cart.php">Add to Cart</a>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            echo '<div class="why-text">';
+                                            echo '<h4><a href="product-detail.php?id=' . $product['product_id'] . '">' . $product['product_name'] . '</a></h4>';
+                                            echo '<h5> <del> $' . $product['product_price'] . '</del> <a href="product-detail.php?id=' . $product['product_id'] . '"> $' . $product['product_price_sale'] . '</a></h5>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                        }
+                                    } else {
+                                        echo '<p>No products available in this category.</p>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Start Pagination -->
+                   <!-- Start Pagination -->
+                   <div class="pagination-area">
+                        <ul class="pagination">
+                            <p>Display <?php echo $offset + 1; ?> - <?php echo min($offset + $limit, $totalProducts); ?> of <?php echo $totalProducts; ?> Products</p>
+                            <br><br> 
+                            <?php if ($page > 1) : ?>
+                                <li>    <a href="?page=1">&laquo;</a></li>
+                            <?php endif; ?>
+                          
+                            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                                <li <?php echo ($page == $i) ? 'class="active"' : ''; ?>><a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            <?php endfor; ?>
+                            <br>
+                            <?php if ($page < $totalPages) : ?>
+                                <li><a href="?page=<?php echo $totalPages; ?>">&raquo;</a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <!-- End Pagination -->
+                    <!-- End Pagination -->
+                    <br><br>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
-<!----------------------------------------end-product-main------------------------------------------>
+    <!-- End Shop Page -->
 
-
-<!--------------------------------start-product-related------------------------>
-<section class="product-related container">
-    <div class="product-related-title">
-        <p>SẢN PHẨM TƯƠNG TỰ</p>
-    </div>
-    <div class="product-content row ">
-        <div class="product-related-item">
-            <img src="image/cate2.webp" alt="">
-            <h2>iPhone 14 128GB | Chính hãng VN/A</h2>
-            <p>19.090.000<span>₫</span><span class="sale-off">22.990.000<span>₫</span></span></p>
-        </div>
-        <div class="product-related-item">
-            <img src="image/cate3.webp">
-            <h2>iPhone 14 Pro 128GB | Chính hãng VN/A</h2>
-            <p>24.590.000<span>₫</span><span class="sale-off">27.990.000<span>₫</span></span></p>
-        </div>
-        <div class="product-related-item">
-            <img src="image/cate4.webp">
-            <h2>iPhone 14 Pro Max 256GB | Chính hãng VN/A</h2>
-            <p>29.750.000<span>₫</span><span class="sale-off">32.990.000<span>₫</span></span></p>
-        </div>
-        <div class="product-related-item">
-            <img src="image/cate5.webp">
-            <h2>iPhone 14 Plus 128GB | Chính hãng VN/A</h2>
-            <p>21.290.000<span>₫</span><span class="sale-off">24.990.000<span>₫</span></span></p>
-        </div>
-        <div class="product-related-item">
-            <img src="image/cate6.webp">
-            <h2>iPhone 14 Pro 256GB | Chính hãng VN/A</h2>
-            <p>27.590.000<span>₫</span><span class="sale-off">29.990.000<span>₫</span></span></p>
-        </div>
-    </div>
-</section>
-
-<!--------------------------------end-product-related------------------------>
-
-<?php
-include "footer.php";
-?>
+    <?php
+    include "footer.php";
+    ?>

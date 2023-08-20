@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../admin/database.php";
+include "admin/database.php";
 
 $totalPrice = 0;
 if (isset($_SESSION["id"])) {
@@ -47,7 +47,7 @@ if ($count_result) {
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="index.php"><img src="../image/logocr.png" class="logo" alt="" width="90px" height="80px"></a>
+                <a class="navbar-brand" href="index.php"><img src="image/logocr.png" class="logo" alt="" width="90px" height="80px"></a>
             </div>
             <!-- End Header Navigation -->
 
@@ -58,8 +58,8 @@ if ($count_result) {
                     <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="product-detail.php">Sale</a></li>
                     <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../survey.php">Survey</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../blog.php">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="survey.php">Survey</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.php">Blog</a></li>
                     <li class="dropdown">
                         <a href="shop.php" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">About Shop</a>
                         <ul class="dropdown-menu">
@@ -92,7 +92,7 @@ if ($count_result) {
                         foreach ($cartItems as $item) {
                     ?>
                             <li>
-                                <a href="#" class="photo"><img src="../admin/uploads/<?php echo $item['product_img']; ?>" class="cart-thumb" alt="" /></a>
+                                <a href="#" class="photo"><img src="admin/uploads/<?php echo $item['product_img']; ?>" class="cart-thumb" alt="" /></a>
                                 <h6><a href="#"><?php echo $item['product_name'] ?></a></h6>
                                 <p><?php echo $item['quantity']; ?>x - <span class="price">$<?php echo number_format($item['product_price']); ?></span></p>
                             </li>

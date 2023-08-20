@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             echo '<div class="checkbox-row">';
                             while ($memory_ram = $memory_ram_list->fetch_assoc()) {
                                 echo '<div class="checkbox-item">';
-                                echo '<input type="checkbox" name="product_memory_rams[]" value="' . $memory_ram['memory_ram_id'] . '"> ' . $memory_ram['memory_ram_name'];
+                                echo '<input type="checkbox" name="product_memory_ram[]" value="' . $memory_ram['memory_ram_id'] . '"> ' . $memory_ram['memory_ram_name'];
                                 echo '</div>';
                             }
                             echo '</div>';

@@ -1,7 +1,7 @@
 <?php
 include "header.php";
 include "navbar.php";
-include "../admin/class/product_class.php";
+include "admin/class/product_class.php";
 
 $product = new product();
 
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
                                 if ($product_imgs_desc) {
                                     while ($img_row = $product_imgs_desc->fetch_assoc()) {
                                         $activeClass = $firstImage ? "active" : "";
-                                        $imagePath = '../admin/uploads/' . $img_row['product_img_desc'];
+                                        $imagePath = 'admin/uploads/' . $img_row['product_img_desc'];
 
                                         echo '<div class="carousel-item ' . $activeClass . '">';
                                         echo '<img class="d-block w-100" src="' . $imagePath . '" />';
@@ -73,7 +73,7 @@ if (isset($_GET['id'])) {
                                     $activeClass = ($currentSlide === 0) ? "active" : "";
 
                                     echo '<li data-target="#carousel-example-1" data-slide-to="' . $currentSlide . '" class="' . $activeClass . '">';
-                                    echo '<img class="d-block w-100 img-fluid" src="../admin/uploads/' . $img_row['product_img_desc'] . '" alt="" />';
+                                    echo '<img class="d-block w-100 img-fluid" src="admin/uploads/' . $img_row['product_img_desc'] . '" alt="" />';
                                     echo '</li>';
 
                                     $currentSlide++;
@@ -228,7 +228,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/cate4.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate4.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -246,7 +246,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/cate1.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate1.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -264,7 +264,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/cate1-white.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate1-white.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -282,7 +282,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/cate5.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate5.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -300,7 +300,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/cate2.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate2.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -318,7 +318,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/iphone13promaxden.jpg" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/iphone13promaxden.jpg" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -336,7 +336,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/iphone14promaxtrang.png" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/iphone14promaxtrang.png" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -354,7 +354,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="../admin/uploads/iphone8plus.png" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/iphone8plus.png" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>

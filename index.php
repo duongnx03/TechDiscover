@@ -19,31 +19,31 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../admin/uploads/cate1.webp" alt="" />
+                        <img class="img-fluid" src="admin/uploads/cate1.webp" alt="" />
                         <a class="btn hvr-hover" href="#">iPhone</a>
                     </div>
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../admin/uploads/ipad2.webp" alt="" />
+                        <img class="img-fluid" src="admin/uploads/ipad2.webp" alt="" />
                         <a class="btn hvr-hover" href="#">Ipad</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../admin/uploads/vertu1.webp" alt="" />
+                        <img class="img-fluid" src="admin/uploads/vertu1.webp" alt="" />
                         <a class="btn hvr-hover" href="#">CellPhone</a>
                     </div>
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../admin/uploads/macbook_air_m2_1_1.webp" alt="" />
+                        <img class="img-fluid" src="admin/uploads/macbook_air_m2_1_1.webp" alt="" />
                         <a class="btn hvr-hover" href="#">Laptop</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../image/airpods3_3.webp" alt="" />
+                        <img class="img-fluid" src="image/airpods3_3.webp" alt="" />
                         <a class="btn hvr-hover" href="#">Accessory</a>
                     </div>
                     <div class="shop-cat-box">
-                        <img class="img-fluid" src="../image/s23-ultra-xanh-2.webp" alt="" />
+                        <img class="img-fluid" src="image/s23-ultra-xanh-2.webp" alt="" />
                         <a class="btn hvr-hover" href="#">Smartphone</a>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate1.webp" class="img-fluid" alt="Image">
+                            <img src="image/cate1.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -104,7 +104,7 @@
                             <div class="type-lb">
                                 <p class="new">New</p>
                             </div>
-                            <img src="../admin/uploads/cate1.webp" class="img-fluid" alt="Image">
+                            <img src="admin/uploads/cate1.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -126,7 +126,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate5.webp" class="img-fluid" alt="Image">
+                            <img src="image/cate5.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -148,7 +148,7 @@
                             <div class="type-lb">
                                 <p class="sale">Sale</p>
                             </div>
-                            <img src="../image/cate12.webp" class="img-fluid" alt="Image">
+                            <img src="image/cate12.webp" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>

@@ -2,7 +2,7 @@
   <div id="slides-shop" class="cover-slides">
         <ul class="slides-container">
             <li class="text-left">
-                <img src="../image/slide6.jpeg" alt="">
+                <img src="image/slide6.jpeg" alt="">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -14,7 +14,7 @@
                 </div>
             </li>
             <li class="text-center">
-                <img src="../image/slide4.jpeg" alt="">
+                <img src="image/slide4.jpeg" alt="">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -26,7 +26,7 @@
                 </div>
             </li>
             <li class="text-right">
-                <img src="../image/slide5.jpeg" alt="">
+                <img src="image/slide5.jpeg" alt="">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">

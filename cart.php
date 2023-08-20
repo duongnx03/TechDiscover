@@ -46,7 +46,7 @@ include "navbar.php";
                             ?>
                                     <tr>
                                         <td class="thumbnail-img">
-                                            <img class="img-fluid" src="../admin/uploads/<?php echo $item['product_img']; ?>" alt="" />
+                                            <img class="img-fluid" src="admin/uploads/<?php echo $item['product_img']; ?>" alt="" />
                                         </td>
                                         <td class="name-pr">
                                             <b><?php echo $item['product_name'] ?></b>
@@ -127,7 +127,7 @@ include "navbar.php";
     function confirmDelete(cartId) {
         var confirmation = confirm("Are you sure you want to delete this product from the cart?");
         if (confirmation) {
-            window.location.href = "../admin/process-cart-delete.php?id=" + cartId;
+            window.location.href = "admin/process-cart-delete.php?id=" + cartId;
         } else {
 
         }
@@ -145,7 +145,7 @@ include "navbar.php";
 
           // Update the database via Ajax
           const xhr = new XMLHttpRequest();
-        xhr.open("POST", "../admin/process-cart-edit.php?id=" + cartId, true);
+        xhr.open("POST", "admin/process-cart-edit.php?id=" + cartId, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function() {
