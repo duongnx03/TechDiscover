@@ -38,6 +38,10 @@ class User {
         $result = $this->db->select($query);
         return $result;
     }
+    public function search_users($search) {
+        $query = "SELECT * FROM users WHERE id LIKE '%$search%' OR email LIKE '%$search%' OR username LIKE '%$search%'";
+        return $this->db->select($query);
+    }
     public function show_users_except_admin() {
         $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users WHERE role != 'admin' ORDER BY id DESC";
         $result = $this->db->select($query);
