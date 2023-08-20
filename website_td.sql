@@ -253,16 +253,13 @@ CREATE TABLE `tbl_product` (
 
 INSERT INTO `tbl_product` (`product_id`, `product_name`, `cartegory_main_id`, `cartegory_id`, `brand_id`, `product_price`, `product_price_sale`, `product_color`, `product_memory_ram`, `product_quantity`, `product_intro`, `product_detail`, `product_accessory`, `product_guarantee`, `product_img`) VALUES
 (20, 'iPhone 13 PRO MAX', 3, 22, 32, '1299.79', '1209.79', '8, 6, 4, 1', '10, 9, 8, 7', 10, 'good', '', '', '', 'iphone13promaxden.jpg'),
-(21, 'iPhone 14 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '7, 6, 3, 1', '12, 10, 9, 8, 7', 1, 'nadscsd', 'dasvv', '', '', 'iphone14promax.png'),
 (22, 'iPhone 12 PRO MAX', 3, 22, 32, '749.49', '709.79', '8, 6, 3', '9, 8, 7', 2, 'ncc', '', '', '', 'cate2.webp'),
 (23, 'iPhone X', 3, 22, 32, '599.79', '549.79', '5', '9, 8, 7', 1, 'ktjbnrs', '', '', '', 'cate10.webp'),
 (24, 'iPhone 8', 3, 22, 32, '399.79', '359.79', '6, 4', '9, 8, 7', 2, 'jbkj', '', '', '', 'iphone8plusda.png'),
-(25, 'iPhone 13 PRO MAX', 3, 22, 32, '1499.79', '1449.99', '8, 6, 4, 3, 1', '10, 9, 8, 7', 3, 'dfsbad', '', '', '', 'iphone13promaxtrang.jpg'),
-(26, 'iPhone 14 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '6, 4, 3, 1', '12, 10, 9, 8, 7', 2, 'ncc', '', '', '', 'cate4.webp'),
-(27, 'Vertu', 3, 22, 30, '7999.79', '7779.79', '6, 4', '12, 10, 9, 8, 7', 2, '<p>v adfv df</p>', '<p>vdsfvsdfv</p>', '<p>vsdfvsd</p>', '<p>vsdfvsdvda</p>', 'vertu1.webp'),
-(28, 'iPhone 13 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '4', '8', 1, '<p>fdbvfv</p>', '', '', '', 'iphone13promaxden.jpg'),
-(29, 'iPhone X', 3, 22, 32, '1', '1', '3, 1', '8, 7', 12, '<p>c</p>', '', '', '', 'cate5.webp');
-
+(26, 'iPhone 14 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '7, 6, 1', '12, 10, 9, 8, 7', 2, 'ncc', '', '', '', 'cate1-gold.webp'),
+(30, 'iPad Pro 11 (2020)', 3, 20, 40, '1249.79', '1209.79', '6, 4', '8, 7', 2, '<p>tốt </p>', '', '', '', 'ipad2.webp'),
+(31, 'MacBook Air M2', 2, 25, 36, '1499.79', '1449.99', '6, 4', '10', 1, '<p>grvdvd</p>', '', '', '', 'macbook_air_m2_1_1.webp'),
+(32, 'Vertu Signature S Full Gold Diamond', 3, 21, 38, '48999.79', '48699.79', '1', '8, 7', 1, '<p>dfsbsdb</p>', '', '', '', 'vertu1.webp');
 -- --------------------------------------------------------
 
 --
