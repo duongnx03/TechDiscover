@@ -1,48 +1,32 @@
 <?php
 session_start();
+$hostname = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'website_td';
 
-if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
-    $user_id = $_SESSION["id"];
+// Tạo lại kết nối tới cơ sở dữ liệu
+$conn = mysqli_connect($hostname, $username, $password, $database);
 
-    $hostname = 'localhost';
-    $username = 'root';
-    $password = '';
-    $database = 'website_td';
-
-    // Create a connection to the database using MySQLi.
-    $conn = mysqli_connect($hostname, $username, $password, $database);
-
-    // Check if the connection was successful or display an error message.
-    if (!$conn) {
-        die("Database connection error: " . mysqli_connect_error());
-    }
-
-    // Cập nhật trạng thái offline của người dùng
-    $is_online = 0;
-    $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
-    
-    if (mysqli_query($conn, $sql)) {
-        // Hủy phiên đăng nhập bằng cách xóa tất cả các biến phiên
-        session_unset();
-
-        // Hủy phiên
-        session_destroy();
-
-        // Nếu role là "admin", chuyển hướng người dùng đến trang đăng nhập admin
-        if ($_SESSION["role"] === "admin") {
-            header("Location: admin/login.php");
-        } else {
-            // Chuyển hướng người dùng đến trang đăng nhập bình thường
-            header("Location: login.php");
-        }
-        exit();
-    } else {
-        echo "SQL error: " . mysqli_error($conn);
-    }
-} else {
-    // Không có phiên đăng nhập hoặc các giá trị trong phiên không đúng
-    header("Location: login.php");
-    exit();
+// Check nếu kết nối thành công
+if (!$conn) {
+    die("Database connection error: " . mysqli_connect_error());
 }
 
+
+if (isset($_SESSION["id"])) {
+    $user_id = $_SESSION["id"];
+    $is_online = 0; // Trạng thái offline
+    $sql_update_offline = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
+    mysqli_query($conn, $sql_update_offline);
+
+    session_unset(); // Xóa tất cả các biến session
+    session_destroy(); // Hủy session
+}
+
+// Đóng kết nối
+mysqli_close($conn);
+
+header("Location: index.php"); // Chuyển hướng về trang chính
+exit();
 ?>
