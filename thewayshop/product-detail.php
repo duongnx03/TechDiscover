@@ -205,6 +205,7 @@ if (isset($_GET['id'])) {
                 </div>
             </div>
         </div>
+        
 <?php
     } else {
         echo '<p>Không tìm thấy sản phẩm.</p>';

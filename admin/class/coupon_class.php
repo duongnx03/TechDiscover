@@ -1,6 +1,7 @@
 <?php
     include 'database.php';
-
+?>
+<?php
 class coupon {
     private $db;
 
