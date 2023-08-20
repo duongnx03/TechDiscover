@@ -6,10 +6,30 @@ include "class/user_class.php";
 ?>
 
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "website_td";
+
+// Create connection
+$db = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
+}
 $user = new user;
 $show_user = $user->show_users();
 $user = new user;
 $show_user = $user->show_users_except_admin();
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+// Query to get users based on search criteria
+$query = "SELECT * FROM users 
+          WHERE id LIKE '%$search%' OR email LIKE '%$search%' OR username LIKE '%$search%'";
+
+$show_user = $db->query($query); // Use the query() method to perform the query
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -37,6 +57,7 @@ $show_user = $user->show_users_except_admin();
 
                     </tr>
                 </thead>
+                
 
                 <body>
                     <?php
