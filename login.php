@@ -1,5 +1,5 @@
-
 <?php
+
 require '../TechDiscovery/admin/config.php';
 session_start();
 $hostname = 'localhost';
@@ -7,39 +7,39 @@ $username = 'root';
 $password = '';
 $database = 'website_td';
 
-// Create a connection to the database using MySQLi.
+// Tạo lại kết nối tới cơ sở dữ liệu
 $conn = mysqli_connect($hostname, $username, $password, $database);
 
-// Check if the connection was successful or display an error message.
+// Check nếu kết nối thành công
 if (!$conn) {
     die("Database connection error: " . mysqli_connect_error());
 }
 if (isset($_POST["submit"])) {
     $emailusername = $_POST["emailusername"];
-    $password = $_POST["password"]; 
-    $result = mysqli_query($conn, "SELECT * FROM users WHERE username ='$emailusername' OR email ='$emailusername'");
-    $row = mysqli_fetch_assoc($result);
-    
-    
+    $password = $_POST["password"];
+
+    $sql = "SELECT * FROM users WHERE username ='$emailusername' OR email ='$emailusername'";
+    $result = mysqli_query($conn, $sql);
+
     if (mysqli_num_rows($result) > 0) {
-        if (password_verify($password, $row["password"])) { // Sử dụng password_verify để so sánh mật khẩu đã hash
-            if ($row["is_online"] == 2) {
-                echo "<script>alert('This account is banned. Please contact support for assistance.');</script>";
-            } else {
-                // Tiếp tục xử lý đăng nhập bình thường
-                $user_id = $row["id"];
-                $is_online = 1; // Online
-                $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
-                mysqli_query($conn, $sql);
-    
-                $_SESSION["login"] = true;
+        $row = mysqli_fetch_assoc($result);
+
+        if (password_verify($password, $row["password"])) {
+            if ($row["is_online"] != 2) {
                 $_SESSION["id"] = $row["id"];
-    
+                $user_id = $row["id"];
+                $is_online = 1; // Trạng thái online
+                $sql_update_online = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
+                mysqli_query($conn, $sql_update_online);
+
                 if ($row["role"] == "admin") {
                     header("Location: admin/index.php");
                 } else {
-                    header("Location: thewayshop/index.php");
+                    header("Location: index.php");
                 }
+                exit();
+            } else {
+                echo "<script>alert('This account is banned. Please contact support for assistance.');</script>";
             }
         } else {
             echo "<script>alert('Wrong Password');</script>";
@@ -47,15 +47,10 @@ if (isset($_POST["submit"])) {
     } else {
         echo "<script>alert('Username Not Registered');</script>";
     }
-    
-    
-    
-    
-    
 }
 
-
-
+// Đóng kết nối
+mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +60,8 @@ if (isset($_POST["submit"])) {
     <title>LOGIN</title>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="../TechDiscovery/css/styles.css">
+
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 <body>

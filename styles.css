@@ -12,7 +12,7 @@ section{
     align-items: center;
     width: 100%;
     height: 100vh;
-    background: url('anhne.jpg') no-repeat;
+    background: url('image/imglogin.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     animation: animateBg 5s linear infinite;
