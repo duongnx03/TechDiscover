@@ -25,6 +25,11 @@ class User {
         $result = $this->db->select($query);
         return $result;
     }
+    public function show_users_except_admin() {
+        $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users WHERE role != 'admin' ORDER BY id DESC";
+        $result = $this->db->select($query);
+        return $result;
+    }
 
     public function get_user_by_id($user_id) {
         $query = "SELECT id, email, username, password , fullname, address, phone FROM users WHERE id = '$user_id'";
