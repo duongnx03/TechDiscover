@@ -1,7 +1,4 @@
 <?php
-
-include "admin/database.php";
-
 $totalPrice = 0;
 if (isset($_SESSION["id"])) {
     $user_id = $_SESSION['id'];

@@ -1,18 +1,7 @@
 <?php
 session_start();
- // Bao gồm tệp cấu hình kết nối đến cơ sở dữ liệu
-$hostname = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'website_td';
-
-// Create a connection to the database using MySQLi.
-$conn = mysqli_connect($hostname, $username, $password, $database);
-
-// Check if the connection was successful or display an error message.
-if (!$conn) {
-    die("Database connection error: " . mysqli_connect_error());
-}
+include "admin/database.php";
+$db = new Database();
 $loginLink = '<li><a href="login.php">Login</a></li>'; // Mặc định là liên kết đăng nhập
 
 // Kiểm tra nếu người dùng đã đăng nhập
@@ -111,7 +100,7 @@ if (isset($_SESSION["id"])) {
 
                             // Cập nhật trạng thái trực tuyến của người dùng
                             $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
-                            mysqli_query($conn, $sql);
+                            $result = $db->update($sql);
 
                             echo '<ul>';
                             echo '<li><a href="my-account.php">My Account</a></li>';
