@@ -20,7 +20,10 @@ if (isset($_POST["submit"])) {
 
     $sql = "SELECT * FROM users WHERE username ='$emailusername' OR email ='$emailusername'";
     $result = mysqli_query($conn, $sql);
-
+    if (isset($_POST["remember"])) {
+        // Thiết lập cookie để lưu tên người dùng trong 30 ngày
+        setcookie("remembered_username", $emailusername, time() + (30 * 24 * 60 * 60), "/");
+    }
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
@@ -62,7 +65,19 @@ mysqli_close($conn);
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <link rel="stylesheet" href="styles.css">
+    <style>
+    .toggle-password-icon {
+        position: absolute;
+        top: 30px;
+        right: 35px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
 
+    .eye-icon {
+        color: white; /* Đổi màu biểu tượng thành màu trắng */
+    }
+</style>
 </head>
 <body>
     <section>
@@ -73,7 +88,8 @@ mysqli_close($conn);
                 <span class="icon">
                     <ion-icon name="mail"></ion-icon>
                 </span>
-                <input type="text" name="emailusername" id="emailusername" required >
+                <input type="text" name="emailusername" id="emailusername" required value="<?php echo isset($_COOKIE['remembered_username']) ? $_COOKIE['remembered_username'] : ''; ?>">
+              
                 <label for="emailusername">Username</label>
             </div>
             <div class="input-box">
@@ -82,9 +98,12 @@ mysqli_close($conn);
                 </span>
                 <input type="password" name="password" id="password" required>
                 <label for="password">Password</label>
+                <span id="togglePassword" class="toggle-password-icon">
+                <ion-icon class="eye-icon" name="eye"></ion-icon>
+                </span>
             </div>
             <div class="remember-forgot">
-                <label><input type="checkbox">Remember me</label>
+            <label><input type="checkbox" name="remember">Remember me</label>
                 <a href="forgotpassword.php">Forgot Password?</a>
             </div>
             <button type="submit" name="submit">Login</button>
@@ -94,6 +113,20 @@ mysqli_close($conn);
         </form>
     </div>
     </section>
- 
+    <script>
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const eyeIcon = togglePassword.querySelector(".eye-icon");
+
+        togglePassword.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.setAttribute("name", "eye-off");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.setAttribute("name", "eye");
+            }
+        });
+    </script>
 </body>
 </html>
