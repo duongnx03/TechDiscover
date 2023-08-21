@@ -1,148 +1,88 @@
 <?php
-include "header.php";
-include "sidebar.php";
-include "navbar.php";
-include "class/user_class.php";
-?>
+include 'database.php';
 
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "website_td";
+class User {
+    private $db;
 
-// Create connection
-$db = new mysqli($servername, $username, $password, $dbname);
+    public function __construct() {
+        $this->db = new Database();
+    }
 
-// Check connection
-if ($db->connect_error) {
-    die("Connection failed: " . $db->connect_error);
+    public function insert_user($email, $username, $password, $fullname, $address, $phone) {
+        // Check if email or username already exist in the database
+        $checkQuery = "SELECT * FROM users WHERE email = '$email' OR username = '$username'";
+        $checkResult = $this->db->select($checkQuery);
+    
+        if ($checkResult && $checkResult->num_rows > 0) {
+            // Email or username already exists, show error message
+            return "Email or username already exists. Please choose a different one.";
+        }
+    
+        // Add code to hash the password before storing it into the database
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
+        $insertQuery = "INSERT INTO users (email, username, password, fullname, address, phone) 
+                        VALUES ('$email', '$username', '$hashedPassword', '$fullname', '$address', '$phone')";
+    
+        $result = $this->db->insert($insertQuery);
+    
+        if ($result) {
+            return true;
+        } else {
+            // Handle error
+            return "Error adding user. Please try again.";
+        }
+    }
+    public function show_users() {
+        $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users ORDER BY id DESC";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    public function search_users($search) {
+        $query = "SELECT * FROM users WHERE id LIKE '%$search%' OR email LIKE '%$search%' OR username LIKE '%$search%'";
+        return $this->db->select($query);
+    }
+    public function show_users_except_admin() {
+        $query = "SELECT id, email, username, password, fullname, address, phone, is_online FROM users WHERE role != 'admin' ORDER BY id DESC";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function get_user_by_id($user_id) {
+        $query = "SELECT id, email, username, password , fullname, address, phone FROM users WHERE id = '$user_id'";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function update_user($user_id, $email, $username, $password, $fullname, $address, $phone) {
+        // Add code to hash the password before updating it into the database
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $query = "UPDATE users SET 
+                  email = '$email', 
+                  username = '$username', 
+                  password = '$hashedPassword', 
+                  fullname = '$fullname', 
+                  address = '$address', 
+                  phone = '$phone' 
+                  WHERE id = '$user_id'";
+
+        $result = $this->db->update($query);
+
+        return $result;
+    }
+
+    public function delete_user($user_id) {
+        $query = "DELETE FROM users WHERE id = '$user_id'";
+        $result = $this->db->delete($query);
+        header('Location: userlist.php');
+        return $result;
+    }
+    public function update_user_status($user_id, $is_online) {
+        // Add code to update the user status
+        $sql = "UPDATE users SET is_online = $is_online WHERE id = $user_id";
+        $result = $this->db->update($sql);
+        return $result;
+    }
 }
-$user = new user;
-$show_user = $user->show_users();
-$user = new user;
-$show_user = $user->show_users_except_admin();
-
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-
-// Query to get users based on search criteria
-$query = "SELECT * FROM users 
-          WHERE id LIKE '%$search%' OR email LIKE '%$search%' OR username LIKE '%$search%'";
-
-$show_user = $db->query($query); // Use the query() method to perform the query
-?>
-
-<div class="container-fluid pt-4 px-4">
-    <div class="bg-secondary text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">User List</h6>
-            <a href="userlistadd.php">ADD User</a>
-        </div>
-        <div class="table-responsive">
-            <table class="table text-start align-middle table-bordered table-hover mb-0">
-                <thead>
-                    <tr class="text-white">
-                        <th scope="col">STT</th>
-                        <th scope="col">ID</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Password</th>
-                        <th scope="col">Fullname</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Status</th> <!-- Thêm cột Status -->
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <body>
-                    <?php
-                    if ($show_user) {
-                        $i = 0;
-                        while ($result = $show_user->fetch_assoc()) {
-                            if ($result['role'] !== 'admin') {
-                                $i++;
-                    ?>
-                            <tr>
-                                <td><?php echo $i ?></td>
-                                <td><?php echo $result['id'] ?></td>
-                                <td><?php echo $result['email'] ?></td>
-                                <td><?php echo $result['username'] ?></td>
-                                <td><?php echo $result['password'] ?></td>
-                                <td><?php echo $result['fullname'] ?></td>
-                                <td><?php echo $result['address'] ?></td>
-                                <td><?php echo $result['phone'] ?></td>
-                                <td>
-                                    <?php
-                                    if ($result['is_online'] == 2) {
-                                        echo 'Banned';
-                                    } else {
-                                        echo $result['is_online'] ? 'Online' : 'Offline';
-                                    }
-                                    ?>
-                                </td>
-                                <td><a href="../admin/userlistedit.php?id=<?php echo $result['id']; ?>">Edit</a></td>
-                                <td>
-                                    <a href="userlistdelete.php?id=<?php echo $result['id']; ?>" onclick="return confirmDelete()">Delete</a>
-                                </td>
-                                <?php if ($result['is_online'] == 2) : ?>
-                                    <td><a href="../admin/userlistunbanned.php?id=<?php echo $result['id']; ?>" onclick="confirmUnban(<?php echo $result['id']; ?>)">Unbaned</a></td>
-                                <?php else : ?>
-                                    <td><a href="../admin/userlistbanned.php?id=<?php echo $result['id']; ?>" onclick="confirmBan(<?php echo $result['id']; ?>)">Ban</a></td>
-                                <?php endif; ?>
-                            </tr>
-                    <?php
-                        }
-                    }
-                }
-                    ?>
-                </body>
-            </table>
-        </div>
-    </div>
-</div>
-<script>
-    function confirmDelete(userId) {
-        if (confirm('Are you sure you want to delete this user?')) {
-            window.location.href = 'userlistdelete.php?id=' + userId;
-        }
-    }
-</script>
-<script>
-    function confirmBan(userId) {
-        if (confirm('Are you sure you want to ban this user?')) {
-            window.location.href = 'userlistbanned.php?id=' + userId;
-        }
-    }
-</script>
-<script>
-    function confirmUnban(userId) {
-        if (confirm('Are you sure you want to unban this user?')) {
-            window.location.href = 'userlistunbanned.php?id=' + userId;
-        }
-    }
-</script>
-
-<script>
-    function updateStatus(userId, isOnline) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'update_user_status.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // Cập nhật thành công, có thể thực hiện thao tác khác nếu cần
-                } else {
-                    // Xử lý lỗi nếu cần
-                }
-            }
-        };
-        var data = 'user_id=' + userId + '&is_online=' + isOnline;
-        xhr.send(data);
-    }
-</script>
-
-<?php
-include "footer.php";
 ?>
