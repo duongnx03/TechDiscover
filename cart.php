@@ -32,7 +32,7 @@ include "navbar.php";
                                 <th>Images</th>
                                 <th>Product Name</th>
                                 <th>Color</th>
-                                <th>Memory</th>
+                                <th>Memory Storage</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>

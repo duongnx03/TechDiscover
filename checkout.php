@@ -38,7 +38,7 @@ if ($user_result) {
                             <h3>Billing address</h3>
                         </div>
                         <div class="mb-3">
-                            <label for="username">Full *</label>
+                            <label for="username">Full name *</label>
                             <div class="input-group">
                                 <input type="text" name="fullname" class="form-control" id="username" required value="<?php if (!empty($fullname)) {
                                                                                                                             echo $fullname;
@@ -77,19 +77,16 @@ if ($user_result) {
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-8 mb-3">
-                                <label for="address">Address *</label>
-                                <input type="text" name="address" class="form-control" id="address" required value="<?php if (!empty($address)) {
-                                                                                                                        echo $address;
-                                                                                                                    } ?>">
-                            </div>
-                            <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
-                                <input type="hidden" id="selectedProvince" name="province">
-                                <input type="hidden" id="selectedDistrict" name="district">
-                                <input type="hidden" id="selectedWard" name="ward">
-                                <div id="calculateShipping" class="btn btn-primary">Calculate Shipping</div>
-                            </div>
+                        <div class=" mb-3">
+                            <label for="address">Address *</label>
+                            <input type="text" name="address" class="form-control" id="address" required value="<?php if (!empty($address)) {
+                                                                                                                    echo $address;
+                                                                                                                } ?>">
+                        </div>
+                        <div>
+                            <input type="hidden" id="selectedProvince" name="province">
+                            <input type="hidden" id="selectedDistrict" name="district">
+                            <input type="hidden" id="selectedWard" name="ward">
                         </div>
                         <hr class="mb-4">
                         <div class="title"> <span>Payment</span> </div>
@@ -124,7 +121,7 @@ if ($user_result) {
                                         <div class="rounded p-2 bg-light">
                                             <div class="media mb-2 border-bottom">
                                                 <div class="media-body"><?php echo $item['product_name'] ?> | <?php echo $item['product_color'] ?> | <?php echo $item['product_memory_ram'] ?></a>
-                                                    <div class="small text-muted">Price: $<?php echo number_format($item['product_price']); ?> <span class="mx-2">|</span> Qty: <?php echo $item['quantity']; ?> <span class="mx-2">|</span> Subtotal: $<?php echo number_format($item['total']); ?></div>
+                                                    <div class="small text-muted">Price: $<?php echo $item['product_price']; ?> <span class="mx-2">|</span> Qty: <?php echo $item['quantity']; ?> <span class="mx-2">|</span> Subtotal: $<?php echo $item['total']?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +158,7 @@ if ($user_result) {
                                 <hr>
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
-                                    <div class="ml-auto h5" id="totalPrice"> $ <?php echo number_format($totalPrice) ?> </div>
+                                    <div class="ml-auto h5" id="totalPrice"> $ <?php echo $totalPrice?> </div>
                                     <input type="hidden" name="total_order" id="finalTotalPrice" value="<?php echo $totalPrice; ?>">
                                 </div>
                                 <hr>
@@ -181,12 +178,36 @@ if ($user_result) {
 <script src="js/address.js"></script>
 <script>
     $(document).ready(function() {
-        $("#calculateShipping").click(function() {
+        var provinceSelected = false;
+        var districtSelected = false;
+        var wardSelected = false;
+
+        $("#province").change(function() {
+            provinceSelected = true;
+            trySendAjax();
+        });
+
+        $("#district").change(function() {
+            districtSelected = true;
+            trySendAjax();
+        });
+
+        $("#ward").change(function() {
+            wardSelected = true;
+            trySendAjax();
+        });
+
+        function trySendAjax() {
+            if (provinceSelected && districtSelected && wardSelected) {
+                calculateShipping();
+            }
+        }
+        // Function to calculate shipping
+        function calculateShipping() {
             var provinceId = $("#selectedProvince").val();
             var districtId = $("#selectedDistrict").val();
             var wardId = $("#selectedWard").val();
 
-            // Tạo object chứa thông tin để gửi lên API GHTK
             var requestData = {
                 "pick_province": "Hồ Chí Minh",
                 "pick_district": "Quận 3",
@@ -203,7 +224,7 @@ if ($user_result) {
 
             // Gửi yêu cầu Ajax tới API của GHTK
             $.ajax({
-                url: "../admin/process-shipping-method.php", // Đường dẫn tới mã xử lý server
+                url: "admin/process-shipping-method.php", // Đường dẫn tới mã xử lý server
                 method: "POST",
                 data: requestData,
                 success: function(response) {
@@ -231,15 +252,19 @@ if ($user_result) {
                     $("#finalTotalPrice").val(totalOrderWithShipping.toFixed(2));
                 }
             });
-        });
+        }
+        calculateShipping();
     });
 
     function validateForm() {
         var username = document.getElementById("username").value;
         var phone = document.getElementById("phone").value;
         var email = document.getElementById("email").value;
+        var province = document.getElementById("province").value;
+        var district = document.getElementById("district").value;
+        var ward = document.getElementById("ward").value;
         var address = document.getElementById("address").value;
-        if (username === "" || phone === "" || email === "" || address === "") {
+        if (username === "" || phone === "" || email === "" || province === "" || district === "" || ward === "" || address === ""){
             alert("All fields are required.");
             return false;
         }

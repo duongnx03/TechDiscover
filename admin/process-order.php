@@ -1,6 +1,16 @@
 <?php
 session_start();
+include "../mail/PHPMailer.php";
+include "../mail/Exception.php";
+include "../mail/OAuth.php";
+include "../mail/POP3.php";
+include "../mail/SMTP.php";
 include "database.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 $database = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,9 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ward = $_POST['ward'];
     $address = $_POST['address'];
     $total_order = $_POST['total_order'];
-    $order_status = 'Order processing';
+    $order_status = 'order_processing';
     $selectedPaymentMethod = $_POST['paymentMethod'];
-    $tatus_payment = 'unspaid';
+    $status_payment = 'unpaid order';
 
     if ($selectedPaymentMethod == "Paypal") {
         echo "
@@ -48,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     onApprove: function(data, actions) {
                         return actions.order.capture().then(function(orderData) {
                             console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                            $tatus_payment = 'successful payment';  
                         });
                     }
                 }).render('#paypal-button-container');
@@ -108,6 +117,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    // $delete_query = "delete from tbl_cart where user_id = $user_id";
-    // $delete_result = $database->delete($delete_query);
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->SMTPSecure = "tls";
+        $mail->SMTPAuth = true;
+        $mail->Username = 'techdiscoverys@gmail.com';
+        $mail->Password = 'gzgkpyvjmuoovenp'; // sử dụng mật khẩu ứng dụng
+        $mail->FromName = "TechDiscovery Notice of successful order";
+
+        $mail->setFrom('techdiscoverys@gmail.com');
+        $mail->addAddress($email, $fullname); // Thêm email và tên người nhận
+
+        $mail->Subject = 'Notice of successful order';
+
+        // Tạo nội dung email bao gồm thông tin người nhận hàng, sản phẩm đã đặt và tổng đơn hàng
+        $emailContent = "<p>Hello $fullname.</p>";
+        $emailContent .= "<p>Thank you for your order with TechDiscovery. Here are the details of your order:</p>";
+
+        // Lặp qua từng sản phẩm đã đặt
+        foreach ($cartItems as $item) {
+            $productName = $item['product_name'];
+            $productColor = $item['product_color'];
+            $productMemoryRam = $item['product_memory_ram'];
+            $quantity = $item['quantity'];
+            $emailContent .= "<p>Product: $productName | $productColor | $productMemoryRam | Quantity: $quantity.</p>";
+        }
+
+        $emailContent .= "<p>Phone: $phone</p>";
+        $emailContent .= "<p>Shipping Address: $address, $ward, $district, $province.</p>";
+        $emailContent .= "<p>Total Order: $ $total_order</p>";
+        $emailContent .= "<p>Time Order: $currentDateTime</p>";
+        $emailContent .= "<p>Payment status: $status_payment</p>";
+
+        // Thêm trạng thái đơn hàng vào nội dung email
+        $emailContent .= "<p>Order Status: $order_status</p>";
+        $mail->IsHTML(true);
+        $mail->Body = $emailContent;
+
+        // Gửi email
+        $mail->send();
+    } catch (Exception $e) {
+        echo $e;
+    }
+    $delete_query = "delete from tbl_cart where user_id = $user_id";
+    $delete_result = $database->delete($delete_query);
 }

@@ -3,15 +3,6 @@ include "header.php";
 include "navbar.php";
 include "admin/class/product_class.php";
 
-$result = '';
-if (isset($_SESSION["add_to_cart_result"])) {
-    $result = $_SESSION["add_to_cart_result"];
-    unset($_SESSION["add_to_cart_result"]);
-        echo "<script>
-                alert('$result');
-            </script>";
-    }
-
 $product = new product();
 
 $_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
@@ -149,28 +140,41 @@ if (isset($_GET['id'])) {
                             <!-- Hiển thị nút mua hàng và thêm vào giỏ hàng -->
                             <div class="price-box-bar">
                                 <div class="cart-and-bay-btn">
-                                    <form action="">
-                                        <a class="btn hvr-hover" data-fancybox-close="" href="cart.php">Buy Now</a>
-                                    </form>
-                                    <br>
-                                    <form action="admin/process-addToCart.php" method="post">
+                                    <form action="admin/process_buynow.php" method="post" class="price-box-bar">
                                         <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
                                         <input type="hidden" name="product_name" value="<?php echo $detail['product_name'] ?>">
                                         <input type="hidden" name="product_img" value="<?php echo $detail['product_img'] ?>">
                                         <input type="hidden" name="product_price" value="<?php echo $detail['product_price_sale'] ?>">
-                                        <input type="hidden" name="product_color" value="<?php echo $color_name ?>">
-                                        <input type="hidden" name="product_memory_ram" value="<?php echo $memory_ram_name ?>">
-                                        <input value="1" min="1" max="20" type="hidden" name="product_quantity">
+                                        <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
+                                        <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
+                                        <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
+                                        <button type="submit" class="btn hvr-hover btn-primary">Buy Now</button>
+                                    </form>
+                                    <form action="admin/process-addToCart.php" method="post" class="price-box-bar">
+                                        <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
+                                        <input type="hidden" name="product_name" value="<?php echo $detail['product_name'] ?>">
+                                        <input type="hidden" name="product_img" value="<?php echo $detail['product_img'] ?>">
+                                        <input type="hidden" name="product_price" value="<?php echo $detail['product_price_sale'] ?>">
+                                        <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
+                                        <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
+                                        <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
                                         <button type="submit" class="btn hvr-hover btn-primary">Add to cart</button>
+                                    </form>
+                                    <form action="admin/process-addToWishlist.php" method="post" class="price-box-bar">
+                                        <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
+                                        <input type="hidden" name="product_name" value="<?php echo $detail['product_name'] ?>">
+                                        <input type="hidden" name="product_img" value="<?php echo $detail['product_img'] ?>">
+                                        <input type="hidden" name="product_price" value="<?php echo $detail['product_price_sale'] ?>">
+                                        <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
+                                        <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
+                                        <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
+                                        <button type="submit" class="btn hvr-hover btn-primary"><i class="fas fa-heart"></i> Add to wishlist</button>
                                     </form>
                                 </div>
                             </div>
 
                             <!-- Hiển thị nút thêm vào danh sách yêu thích và chia sẻ -->
                             <div class="add-to-btn">
-                                <div class="add-comp">
-                                    <a class="btn hvr-hover" href="#"><i class="fas fa-heart"></i> Add to wishlist</a>
-                                </div>
                                 <div class="share-bar">
                                     <a class="btn hvr-hover" href="https://www.facebook.com/groups/1249874295731488"><i class="fab fa-facebook" aria-hidden="true"></i></a>
                                     <a class="btn hvr-hover" href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a>
@@ -401,30 +405,33 @@ if (isset($_GET['id'])) {
 <!-- End Cart -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var selectElement = document.getElementById("basic");
-        var inputElement = document.querySelector('input[name="product_color"]');
-
-        selectElement.addEventListener("change", function() {
-            var selectedColor = selectElement.value;
-            inputElement.value = selectedColor;
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        var selectElement = document.getElementById("basic2");
-        var inputElement = document.querySelector('input[name="product_memory_ram"]');
-
-        selectElement.addEventListener("change", function() {
-            var selectedMemoryRam = selectElement.value;
-            inputElement.value = selectedMemoryRam;
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function() {
+        console.log("DOM content loaded.");
+        var colorSelect = document.getElementById("basic");
+        var memoryRamSelect = document.getElementById("basic2");
         var quantityInput = document.querySelector('input[name="quantity"]');
-        var otherInput = document.querySelector('input[name="product_quantity"]');
-        quantityInput.value = 1;
+        var productForms = document.querySelectorAll('.price-box-bar form');
+
+        colorSelect.addEventListener("change", function() {
+            var selectedColor = colorSelect.value;
+            productForms.forEach(function(form) {
+                form.querySelector('input[name="product_color"]').value = selectedColor;
+            });
+        });
+
+        memoryRamSelect.addEventListener("change", function() {
+            var selectedMemoryRam = memoryRamSelect.value;
+            productForms.forEach(function(form) {
+                form.querySelector('input[name="product_memory_ram"]').value = selectedMemoryRam;
+            });
+        });
+
         quantityInput.addEventListener("input", function() {
             var quantityValue = quantityInput.value;
-            otherInput.value = quantityValue;
+            productForms.forEach(function(form) {
+                form.querySelectorAll('.product_quantity').forEach(function(inputElement) {
+                    inputElement.value = quantityValue;
+                });
+            });
         });
     });
 </script>

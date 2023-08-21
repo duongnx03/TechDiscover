@@ -31,7 +31,7 @@ $show_order = $order->show_order_list();
                     if ($show_order) {
                         $i = 0;
                         while ($result = $show_order->fetch_assoc()) {
-                            if ($result['order_status'] == 'order_processing') {
+                            if ($result['order_status'] == 'delivered_carrier') {
                             $i++;
                     ?>
                             <tr>

@@ -6,7 +6,7 @@ if (isset($_SESSION["id"])) {
     $user_id = -1;
 }
 $database = new Database();
-$cart_query = "SELECT * FROM tbl_cart where user_id = $user_id";
+$cart_query = "SELECT * FROM tbl_cart where user_id = $user_id ORDER BY cart_id DESC";
 $cart_result = $database->select($cart_query);
 if ($cart_result) {
     while ($row = $cart_result->fetch_assoc()) {
@@ -24,7 +24,7 @@ if ($cart_result) {
         $totalPrice += $row['total'];
     }
 }
-$count_query  = "SELECT COUNT(*) as total_items FROM tbl_cart WHERE user_id = $user_id;";
+$count_query  = "SELECT COUNT(*) as total_items FROM tbl_cart WHERE user_id = $user_id ORDER BY cart_id DESC";
 $count_result = $database->select($count_query);
 if ($count_result) {
     $count_row = $count_result->fetch_assoc();

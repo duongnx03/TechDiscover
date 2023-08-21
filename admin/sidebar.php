@@ -33,6 +33,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Order</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="order_list.php" class="dropdown-item">Order List</a>
+                            <a href="order_processed.php" class="dropdown-item">Order processed</a>
                             <a href="order_completed.php" class="dropdown-item">Order completed</a>
                             <a href="order_cancle.php" class="dropdown-item">Order canceled</a>
                         </div>

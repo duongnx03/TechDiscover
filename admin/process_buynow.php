@@ -14,7 +14,7 @@ if (isset($_SESSION["id"])) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $product_id = $_POST['product_id'];
-    $product_name = $_POST['product_name']; 
+    $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
     $product_img = $_POST['product_img'];
     $product_color = $_POST['product_color'];
@@ -34,11 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $query = "INSERT INTO tbl_cart (user_id, product_name, product_price, product_color, product_memory_ram, product_img, quantity, total, product_id) 
               VALUES ('$user_id', '$product_name', '$product_price', '$product_color', '$product_memory_ram', '$product_img', '$quantity', '$total', '$product_id') ORDER BY cart_id DESC";
             $result = $db->insert($query);
-            if ($result) {
-                $_SESSION["add_to_cart_result"] = "Add to Cart success!";
-                header("Location: ../product-detail.php?id=$product_id");
-                exit();
-            }
+            header("Location: ../cart.php");
         }
     }
 }

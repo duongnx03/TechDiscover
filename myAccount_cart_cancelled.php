@@ -52,9 +52,9 @@ if ($order_result) {
                             <h3>Purchase Order</h3>
                         </div>
                         <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
-                            <a href="myAccount_cart.php" class="list-group-item list-group-item-action active">Purchase</a>
+                            <a href="myAccount_cart.php" class="list-group-item list-group-item-action">Purchase</a>
                             <a href="myAccount_cart_complete.php" class="list-group-item list-group-item-action">Complete</a>
-                            <a href="myAccount_cart_cancelled.php" class="list-group-item list-group-item-action">Cancelled</a>
+                            <a href="myAccount_cart_cancelled.php" class="list-group-item list-group-item-action active">Cancelled</a>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ if ($order_result) {
                                 <?php
                                 if (!empty($orderItems)) {
                                     foreach ($orderItems as $item) {
-                                        if ($item['order_status'] == 'order_processing' || $item['order_status'] == 'delivered_carrier') {
+                                        if ($item['order_status'] == 'cancelled') {
                                 ?>
                                         <tr>
                                             <td class="info">
