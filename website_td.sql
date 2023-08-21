@@ -398,16 +398,21 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `phone` int(10) NOT NULL
+  `phone` int(10) NOT NULL,
+  `verification_code` int(6) NOT NULL,
+  `registration_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `role` varchar(255) DEFAULT 'user',
+  `is_online` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`) VALUES
-(1, '123@', '123', '123', '123', '123', 123),
-(2, '321@gmail.com', '321', '321', '321', '321', 321);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `fullname`, `address`, `phone`, `verification_code`, `registration_time`, `role`, `is_online`) VALUES
+(1, 'techdiscoverys@gmail.com', 'TechDiscovery', '$2y$10$Eq3ogqWuNsHqkQUPvimUi.09tp0gtFn9TbfUQC86OL7DPqrVqK5rq', 'TECHDISCOVERY', '666/666/666', 901020304, 339147, '2023-08-19 10:47:46', 'admin', 1),
+(2, 'phamphudien601@gmail.com', '44', '$2y$10$GMpRtdb0ONzPl1KETLGqIuTqs97euRbOy7WxNn32KOR16WhDeKeQ2', '44', '44', 44, 0, '2023-08-21 03:58:45', 'user', 0),
+(3, 'phamphudien701@gmail.com', '4444', '$2y$10$V9MXBeC2Eub2vioWWaK0iOpMSVbppSbbHtV7T6XCcyBuoqXvYLK2C', '4444', '4444', 4444, 0, '2023-08-21 04:01:03', 'user', 0);
 
 --
 -- Indexes for dumped tables

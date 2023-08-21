@@ -60,7 +60,7 @@ if (isset($_SESSION["add_to_cart_result"])) {
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                    <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="product-detail.php">Sale</a></li>
                     <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>

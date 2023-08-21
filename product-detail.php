@@ -251,7 +251,7 @@ if (isset($_GET['id'])) {
             <div class="item">
                 <div class="products-single fix">
                     <div class="box-img-hover">
-                        <img src="admin/uploads/cate4.webp" class="img-fluid" alt="Image">
+                        <img src="admin/uploads/cate1-gold.webp" class="img-fluid" alt="Image">
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>

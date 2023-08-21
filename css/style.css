@@ -118,7 +118,7 @@
 }
  ul, li, ol{
      list-style: none;
-     margin: 3px;
+     margin: 0px;
      padding: 0px;
 }
  button:focus{
@@ -163,8 +163,8 @@
 }
 /*------------------------------------------------------------------ HEADER -------------------------------------------------------------------*/
  .main-top{
-     background: #010101;
-     padding: 10px 0px;
+     background: white;
+     padding: 0px 0px;
 }
  .custom-select-box{
      float: right;
@@ -224,13 +224,13 @@
      line-height: 30px;
 }
  .right-phone-box p a{
-     color: #ffffff;
+     color: #e54949;
 }
  .right-phone-box p a:hover{
      color: #d33b33;
 }
  .offer-box,.slide {
-     color: #FFFFFF;
+     color: #de4a4a;
      font-size: 13px;
      padding: 2px 15px;
      font-family: 'Montserrat', sans-serif;
@@ -1330,6 +1330,7 @@
      background: #2c2c2c;
      padding: 20px 0px;
      position: relative;
+     margin-bottom: 0px;
 }
  .footer-copyright p {
      text-align: center;
@@ -2257,6 +2258,7 @@
 }
  .shop-detail-box-main{
      padding: 70px 0px;
+     background-color: white;
 }
  .single-product-slider .carousel-control-prev {
      bottom: auto;
