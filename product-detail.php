@@ -3,7 +3,18 @@ include "header.php";
 include "navbar.php";
 include "admin/class/product_class.php";
 
+$result = '';
+if (isset($_SESSION["add_to_cart_result"])) {
+    $result = $_SESSION["add_to_cart_result"];
+    unset($_SESSION["add_to_cart_result"]);
+        echo "<script>
+                alert('$result');
+            </script>";
+    }
+
 $product = new product();
+
+$_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
 
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
@@ -114,7 +125,7 @@ if (isset($_GET['id'])) {
                             <!-- Hiển thị tùy chọn dung lượng -->
                             <div class="form-group size-st">
                                 <label class="size-label">Memory-Capacity</label>
-                                <select id="basic" class="selectpicker show-tick form-control">
+                                <select id="basic2" class="selectpicker show-tick form-control">
                                     <!-- Bạn có thể thay đổi mã này để hiển thị tùy chọn dung lượng -->
                                     <?php
                                     // Lấy danh sách memory_ram_id từ trường product_memory_ram
@@ -132,14 +143,26 @@ if (isset($_GET['id'])) {
                             <!-- Hiển thị số lượng sản phẩm để mua -->
                             <div class="form-group quantity-box">
                                 <label class="control-label">Quantity</label>
-                                <input class="form-control" value="1" min="1" max="20" type="number">
+                                <input class="form-control" value="1" min="1" max="20" type="number" name="quantity">
                             </div>
 
                             <!-- Hiển thị nút mua hàng và thêm vào giỏ hàng -->
                             <div class="price-box-bar">
                                 <div class="cart-and-bay-btn">
-                                    <a class="btn hvr-hover" data-fancybox-close="" href="cart.php">Buy Now</a>
-                                    <a class="btn hvr-hover" data-fancybox-close="" href="#">Add to cart</a>
+                                    <form action="">
+                                        <a class="btn hvr-hover" data-fancybox-close="" href="cart.php">Buy Now</a>
+                                    </form>
+                                    <br>
+                                    <form action="admin/process-addToCart.php" method="post">
+                                        <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
+                                        <input type="hidden" name="product_name" value="<?php echo $detail['product_name'] ?>">
+                                        <input type="hidden" name="product_img" value="<?php echo $detail['product_img'] ?>">
+                                        <input type="hidden" name="product_price" value="<?php echo $detail['product_price_sale'] ?>">
+                                        <input type="hidden" name="product_color" value="<?php echo $color_name ?>">
+                                        <input type="hidden" name="product_memory_ram" value="<?php echo $memory_ram_name ?>">
+                                        <input value="1" min="1" max="20" type="hidden" name="product_quantity">
+                                        <button type="submit" class="btn hvr-hover btn-primary">Add to cart</button>
+                                    </form>
                                 </div>
                             </div>
 
@@ -205,7 +228,7 @@ if (isset($_GET['id'])) {
                 </div>
             </div>
         </div>
-        
+
 <?php
     } else {
         echo '<p>Không tìm thấy sản phẩm.</p>';
@@ -376,7 +399,35 @@ if (isset($_GET['id'])) {
 </div>
 </div>
 <!-- End Cart -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var selectElement = document.getElementById("basic");
+        var inputElement = document.querySelector('input[name="product_color"]');
 
+        selectElement.addEventListener("change", function() {
+            var selectedColor = selectElement.value;
+            inputElement.value = selectedColor;
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var selectElement = document.getElementById("basic2");
+        var inputElement = document.querySelector('input[name="product_memory_ram"]');
+
+        selectElement.addEventListener("change", function() {
+            var selectedMemoryRam = selectElement.value;
+            inputElement.value = selectedMemoryRam;
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var quantityInput = document.querySelector('input[name="quantity"]');
+        var otherInput = document.querySelector('input[name="product_quantity"]');
+        quantityInput.value = 1;
+        quantityInput.addEventListener("input", function() {
+            var quantityValue = quantityInput.value;
+            otherInput.value = quantityValue;
+        });
+    });
+</script>
 <?php
 include "footer.php";
 ?>

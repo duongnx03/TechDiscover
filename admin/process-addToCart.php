@@ -1,6 +1,5 @@
 <?php
 session_start();
-include("config.php");
 include("database.php");
 
 if (isset($_SESSION["id"])) {
@@ -13,24 +12,39 @@ if (isset($_SESSION["id"])) {
         exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['addToCart'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
     $product_img = $_POST['product_img'];
     $product_color = $_POST['product_color'];
     $product_memory_ram = $_POST['product_memory_ram'];
-    $quantity = $_POST['quantity'];
+    $quantity = $_POST['product_quantity'];
     $total = $product_price * $quantity;
+    echo $product_id;
+    echo $product_name;
+    echo $product_price;
+    echo $product_img;
+    echo $product_color;
+    echo $product_memory_ram;
     $db = new Database();
-    $query = "INSERT INTO tbl_cart (user_id, product_name, product_price, product_color, product_memory_ram, product_img, quantity, total, product_id) 
+    $product_query = "select product_quantity from tbl_product where product_id = $product_id";
+    $product_result = $db->select($product_query);
+    if($row = $product_result->fetch_assoc()){
+        $product_quantity = $row["product_quantity"];
+        if($quantity > $product_quantity){
+            $_SESSION["add_to_cart_result"] = "Quantity exceeds quantity in stock!";
+            header("Location: ../product-detail.php?id=$product_id");
+            exit();
+        }else{
+            $query = "INSERT INTO tbl_cart (user_id, product_name, product_price, product_color, product_memory_ram, product_img, quantity, total, product_id) 
               VALUES ('$user_id', '$product_name', '$product_price', '$product_color', '$product_memory_ram', '$product_img', '$quantity', '$total', '$product_id') ORDER BY cart_id DESC";
-    $result = $db->insert($query);
-    if ($result) {
-        $_SESSION["add_to_cart_result"] = "Add to Cart success!";
-        header("Location: ../product.php?product_id=$product_id");
-        exit();
+            $result = $db->insert($query);
+            if ($result) {
+                $_SESSION["add_to_cart_result"] = "Add to Cart success!";
+                header("Location: ../product-detail.php?id=$product_id");
+                exit();
+            }
+        }
     }
 }
-?>
-

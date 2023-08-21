@@ -32,6 +32,15 @@ if ($count_result) {
 } else {
     $total_items = 0;
 }
+
+$result = '';
+if (isset($_SESSION["add_to_cart_result"])) {
+    $result = $_SESSION["add_to_cart_result"];
+    unset($_SESSION["add_to_cart_result"]);
+        echo "<script>
+                alert('$result');
+            </script>";
+    }
 ?>
 
 <!-- Start Main Top -->
