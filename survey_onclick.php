@@ -60,7 +60,7 @@
 
     <div id="popup">
         <h1>Dear Customers!</h1><br>
-        <p>Welcome to DealZone survey site.</p>
+        <p>Welcome to TechDiscovery survey site.</p>
         <p>We would like to collect your opinions on our future products.</p>
         <p>Even when you give us your opinion, you will receive a promotion code!</p>
         <p>We hope this little gift makes you happy during your purchasing.</p><br>

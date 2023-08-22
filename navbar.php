@@ -62,7 +62,7 @@ if (isset($_SESSION["add_to_cart_result"])) {
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product-detail.php">Sale</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="product-detail.php">Sale</a></li> -->
                     <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
                     <li class="nav-item"><a class="nav-link" href="survey.php">Survey</a></li>
                     <li class="nav-item"><a class="nav-link" href="blog.php">Blog</a></li>

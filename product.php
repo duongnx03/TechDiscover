@@ -5,31 +5,58 @@ include "admin/class/product_class.php";
 include "admin/class/cartegory_class.php";
 include "admin/class/brand_class.php";
 
-
 $product = new product();
 $category = new cartegory();
 $brand = new brand();
 
+// Kiểm tra xem trang có được yêu cầu từ tham số URL không, nếu không thì mặc định là trang 1
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $limit = 6; // Số sản phẩm trên mỗi trang
 
-$totalProducts = $product->getTotalProducts(); // Tổng số sản phẩm
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+$selectedSort = isset($_GET['sort']) ? $_GET['sort'] : '';
+$selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+$selectedBrand = isset($_GET['selected_brand']) ? $_GET['selected_brand'] : '';
+
+// Lưu thông tin phân trang vào Session
+$_SESSION['current_page'] = $page;
+
+$offset = ($page - 1) * $limit; // Tính toán offset
+
+// Lấy danh sách các danh mục và thương hiệu để hiển thị bên trái (không thay đổi)
+$mainCategories = $category->show_cartegory_main();
+$cartegory = $product->show_cartegory();
+$brands = $product->show_brand();
+
+if (!empty($search_query)) {
+    // Tìm kiếm sản phẩm dựa trên từ khóa
+    $products = $product->searchProductsByName($search_query);
+    $totalProducts = $product->getTotalSearchProducts($search_query); // Tổng số sản phẩm từ kết quả tìm kiếm
+} elseif (!empty($selectedCategory)) {
+    // Lọc sản phẩm theo danh mục
+    $products = $product->getProductsByCategory($selectedCategory);
+    $totalProducts = $product->getTotalProductsByCategory($selectedCategory); // Tổng số sản phẩm theo danh mục
+} elseif (!empty($selectedBrand)) {
+    // Lọc sản phẩm theo thương hiệu
+    $products = $product->getProductsByBrand($selectedBrand);
+    $totalProducts = $product->getTotalProductsByBrand($selectedBrand);
+} else {
+    // Sắp xếp sản phẩm theo giá hoặc hiển thị tất cả sản phẩm
+    if ($selectedSort === 'low-to-high') {
+        $products = $product->getProductsByPriceLowToHigh($limit, $offset);
+    } elseif ($selectedSort === 'high-to-low') {
+        $products = $product->getProductsByPriceHighToLow($limit, $offset);
+    } else {
+        $products = $product->getProductsForPage($limit, $offset);
+    }
+
+    $totalProducts = $product->getTotalProducts(); // Tổng số sản phẩm
+}
+
 $totalPages = ceil($totalProducts / $limit); // Tổng số trang
 
-// Đảm bảo rằng $page nằm trong khoảng từ 1 đến $totalPages
-$page = max(1, min($page, $totalPages));
-
-$offset = ($page - 1) * $limit; // Vị trí bắt đầu của sản phẩm trên trang hiện tại
-
-$products = $product->getProductsForPage($limit, $offset); // Lấy sản phẩm cho trang hiện tại
-
-$mainCategories = $category->show_cartegory_main();
-$cartegory = $product->show_cartegory();
-$brands = $product->show_brand();
-$mainCategories = $category->show_cartegory_main();
-$cartegory = $product->show_cartegory();
-$brands = $product->show_brand();
 ?>
+
 
 <!-- Start All Title Box -->
 <div class="all-title-box">
@@ -38,8 +65,8 @@ $brands = $product->show_brand();
             <div class="col-lg-12">
                 <h2>Shop</h2>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Shop</li>
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="product.php"> Shop</a></li>
                 </ul>
             </div>
         </div>
@@ -54,8 +81,8 @@ $brands = $product->show_brand();
             <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                 <div class="product-categori">
                     <div class="search-product">
-                        <form action="#">
-                            <input class="form-control" placeholder="Search here..." type="text">
+                        <form action="product.php" method="GET"> <!-- Sử dụng phương thức GET để truyền từ khóa tìm kiếm -->
+                            <input class="form-control" placeholder="Search here..." type="text" name="search"> <!-- Thêm name="search" để lấy từ khóa tìm kiếm -->
                             <button type="submit"> <i class="fa fa-search"></i> </button>
                         </form>
                     </div>
@@ -75,7 +102,7 @@ $brands = $product->show_brand();
                                     $subCategories = $category->get_cartegories_by_cartegory_main_id($mainCategory['cartegory_main_id']);
                                     if ($subCategories) {
                                         while ($subCategory = $subCategories->fetch_assoc()) {
-                                            echo '<a href="#" class="list-group-item list-group-item-action">' . $subCategory['cartegory_name'] . '</a>';
+                                            echo '<a href="?category=' . $subCategory['cartegory_name'] . '" class="list-group-item list-group-item-action">' . $subCategory['cartegory_name'] . '</a>';
                                         }
                                     }
 
@@ -93,37 +120,38 @@ $brands = $product->show_brand();
                             <h3>Brand</h3>
                         </div>
                         <div class="brand-box">
-                            <ul>
-                                <?php
-                                if ($brands) {
-                                    while ($brand = $brands->fetch_assoc()) {
-                                        echo '<li>';
-                                        echo '<div class="radio radio-danger">';
-                                        echo '<input name="survey" id="Radios' . $brand['brand_id'] . '" value="' . $brand['brand_name'] . '" type="radio">';
-                                        echo '<label for="Radios' . $brand['brand_id'] . '">' . $brand['brand_name'] . '</label>';
-                                        echo '</div>';
-                                        echo '</li>';
+                            <form action="#" method="GET"> <!-- Thay đổi action và method theo cần thiết -->
+                                <ul>
+                                    <?php
+                                    if ($brands) {
+                                        while ($brand = $brands->fetch_assoc()) {
+                                            echo '<li>';
+                                            echo '<div class="radio radio-danger">';
+                                            echo '<input name="selected_brand" id="Radios' . $brand['brand_id'] . '" value="' . $brand['brand_name'] . '" type="radio">';
+                                            echo '<label for="Radios' . $brand['brand_id'] . '">' . $brand['brand_name'] . '</label>';
+                                            echo '</div>';
+                                            echo '</li>';
+                                        }
                                     }
-                                }
-                                ?>
-                            </ul>
+                                    ?>
+                                </ul>
+                                <button type="submit" class="btn btn-primary">Filter</button> <!-- Nút gửi form -->
+                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
+
             <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
                 <div class="right-product-box">
                     <div class="product-item-filter row">
                         <div class="col-12 col-sm-8 text-center text-sm-left">
                             <div class="toolbar-sorter-right">
                                 <span>Sort by </span>
-                                <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+                                <select id="sortSelect" class="selectpicker show-tick form-control" data-placeholder="$ USD">
                                     <option data-display="Select">Nothing</option>
-                                    <option value="1">Popularity</option>
-                                    <option value="2">Low Price → High Price</option>
-                                    <option value="3">Hight Price → Low Price</option>
-                                    <option value="4">Best Selling</option>
+                                    <option value="low-to-high">Low Price → High Price</option>
+                                    <option value="high-to-low">High Price → Low Price</option>
                                 </select>
                             </div>
                             <p>Showing all <span>0</span> results</p>
@@ -165,7 +193,7 @@ $brands = $product->show_brand();
                                             echo '</div>';
                                         }
                                     } else {
-                                        echo '<p>No products available in this category.</p>';
+                                        echo '<p>No products found.</p>';
                                     }
                                     ?>
                                 </div>
@@ -221,6 +249,15 @@ $brands = $product->show_brand();
         </div>
     </div>
     <!-- End Shop Page -->
+
+    <script>
+        document.getElementById("sortSelect").addEventListener("change", function() {
+            var selectedSort = this.value;
+            if (selectedSort !== "Nothing") {
+                window.location.href = "product.php?sort=" + selectedSort;
+            }
+        });
+    </script>
 
     <?php
     include "footer.php";

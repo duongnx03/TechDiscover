@@ -8,14 +8,23 @@ include "class/product_class.php";
 <?php
 $product = new product;
 $show_product = $product->show_product();
+
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
+if (!empty($searchTerm)) {
+    $show_product = $product->searchProductsByName($searchTerm);
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Product List</h6>
-            <a href="productadd.php">ADD Product</a>
-            <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+            <form class="form-inline row" action="productlist.php" method="GET">
+                <input class="form-control bg-dark border-0" type="search" placeholder="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> 
+            <a href="productadd.php">ADD Product</a>          
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -75,6 +84,8 @@ $show_product = $product->show_product();
                             </tr>
                     <?php
                         }
+                    } else {
+                        echo '<tr><td colspan="10">No products found.</td></tr>';
                     }
                     ?>
                 </tbody>
@@ -82,10 +93,6 @@ $show_product = $product->show_product();
         </div>
     </div>
 </div>
-
-<style>
-    /* ... */
-</style>
 
 <script>
     // Function for product-delete

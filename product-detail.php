@@ -7,12 +7,18 @@ $product = new product();
 
 $_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
 
+
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
     $productDetail = $product->get_product($product_id);
 
     if ($productDetail) {
         $detail = $productDetail->fetch_assoc();
+
+        $brand_id = $detail['product_brand'];
+
+        // Lấy danh sách các sản phẩm cùng brand
+        $relatedProducts = $product->get_products_by_brand($brand_id);
 ?>
         <!-- Start All Title Box -->
         <div class="all-title-box">
@@ -235,7 +241,7 @@ if (isset($_GET['id'])) {
 
 <?php
     } else {
-        echo '<p>Không tìm thấy sản phẩm.</p>';
+        echo '<p>No products found.</p>';
     }
 } else {
     echo '<p>Không có ID sản phẩm được cung cấp.</p>';
@@ -266,7 +272,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -284,7 +290,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -302,7 +308,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -320,7 +326,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -338,7 +344,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -356,7 +362,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -374,7 +380,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>
@@ -392,7 +398,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="why-text">
                         <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $9.79</h5>
+                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
                     </div>
                 </div>
             </div>

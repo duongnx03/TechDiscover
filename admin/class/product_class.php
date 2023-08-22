@@ -144,6 +144,19 @@ class product
         return $result;
     }
 
+    public function getProductsByCategory($category)
+    {
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+    FROM tbl_product
+    INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+    INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+    INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+    WHERE tbl_cartegory.cartegory_name = '$category'
+    ORDER BY tbl_product.product_id DESC";
+
+        $result = $this->db->select($query);
+        return $result;
+    }
 
     public function get_product_detail($product_id)
     {
@@ -356,17 +369,17 @@ class product
     }
 
     public function getProductsForPage($limit, $offset)
-    {
-        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
-    FROM tbl_product
-    INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
-    INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
-    INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
-    ORDER BY tbl_product.product_id DESC LIMIT $limit OFFSET $offset";
+{
+    $query = "SELECT p.*, c.cartegory_name, b.brand_name, cm.cartegory_main_name
+              FROM tbl_product AS p
+              INNER JOIN tbl_cartegory AS c ON p.cartegory_id = c.cartegory_id
+              INNER JOIN tbl_brand AS b ON p.brand_id = b.brand_id
+              INNER JOIN tbl_cartegory_main AS cm ON c.cartegory_main_id = cm.cartegory_main_id
+              ORDER BY p.product_id DESC LIMIT $limit OFFSET $offset";
 
-        $result = $this->db->select($query);
-        return $result;
-    }
+    $result = $this->db->select($query);
+    return $result;
+}
 
 
     public function getTotalProducts()
@@ -375,6 +388,127 @@ class product
         $result = $this->db->select($query)->fetch_assoc();
         return $result['total'];
     }
+
+    public function getTotalProductsByCategory($category)
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_product
+              INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+              WHERE tbl_cartegory.cartegory_name = '$category'";
+
+        $result = $this->db->select($query)->fetch_assoc();
+        return $result['total'];
+    }
+
+    public function searchProductsByName($search_query)
+    {
+        // Sử dụng câu truy vấn SQL để tìm kiếm sản phẩm theo tên
+        $query = "SELECT * FROM tbl_product WHERE product_name LIKE '%$search_query%'";
+
+        // Sử dụng phương thức select của lớp Database để thực hiện truy vấn
+        $result = $this->db->select($query);
+
+        return $result;
+    }
+
+    // Hàm để lấy tổng số sản phẩm từ kết quả tìm kiếm
+    public function getTotalSearchProducts($search_query)
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_product WHERE product_name LIKE '%$search_query%'";
+        $result = $this->db->select($query);
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function getProductsByBrand($selectedBrand)
+    {
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+    FROM tbl_product
+    INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+    INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+    INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+    WHERE tbl_brand.brand_name = '$selectedBrand'
+    ORDER BY tbl_product.product_id DESC";
+
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getTotalProductsByBrand($selectedBrand)
+    {
+        $query = "SELECT COUNT(*) as total FROM tbl_product
+    INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+    WHERE tbl_brand.brand_name = '$selectedBrand'";
+
+        $result = $this->db->select($query);
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function getProductsByPriceLowToHigh($limit, $offset)
+    {
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+              FROM tbl_product
+              INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+              INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+              INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+              ORDER BY tbl_product.product_price ASC
+              LIMIT $limit OFFSET $offset";
+
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getProductsByPriceHighToLow($limit, $offset)
+    {
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+              FROM tbl_product
+              INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+              INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+              INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+              ORDER BY tbl_product.product_price DESC
+              LIMIT $limit OFFSET $offset";
+
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getSimilarProductsByCategory($product_id) {
+        $query = "SELECT * FROM tbl_product WHERE cartegory_id = (SELECT cartegory_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id'";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getSimilarProductsByBrand($product_id) {
+        $query = "SELECT * FROM tbl_product WHERE brand_id = (SELECT brand_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id'";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getSimilarProductsByCustomCriteria($product_id, $color, $memory_ram) {
+        $query = "SELECT * FROM tbl_product WHERE product_id != '$product_id' AND product_color = '$color' AND product_memory_ram = '$memory_ram'";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getSimilarProductsByCategoryLimit($product_id, $limit) {
+        $query = "SELECT * FROM tbl_product WHERE cartegory_id = (SELECT cartegory_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id' LIMIT $limit";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function get_products_by_brand($brand_name) {
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+                  FROM tbl_product
+                  INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+                  INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+                  INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+                  WHERE tbl_brand.brand_name = '$brand_name'
+                  ORDER BY tbl_product.product_id DESC";
+    
+        $result = $this->db->select($query);
+        return $result;
+    }
+    
 }
 
 

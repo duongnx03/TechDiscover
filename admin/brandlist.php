@@ -7,13 +7,26 @@ include "class/brand_class.php";
 
 <?php
 $brand = new brand;
-$show_brand = $brand->show_brand();
+
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
+if (!empty($searchTerm)) {
+    // Thực hiện tìm kiếm theo brand_name
+    $foundBrands = $brand->searchBrandsByName($searchTerm);
+} else {
+    // Nếu không có tham số tìm kiếm, hiển thị tất cả thương hiệu
+    $show_brand = $brand->show_brand();
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Brand List</h6>
+            <form class="form-inline" action="brandlist.php" method="GET">
+                <input class="form-control bg-dark border-0" type="search" placeholder="Search by Brand Name" name="search" value="<?php echo $searchTerm; ?>">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
             <a href="brand_add.php">ADD Brand</a>
         </div>
         <div class="table-responsive">
@@ -30,7 +43,25 @@ $show_brand = $brand->show_brand();
                 </thead>
                 <tbody>
                     <?php
-                    if ($show_brand) {
+                    if (!empty($searchTerm) && $foundBrands) {
+                        $i = 0;
+                        while ($result = $foundBrands->fetch_assoc()) {
+                            $i++;
+                    ?>
+                            <tr>
+                                <td><?php echo $i ?></td>
+                                <td><?php echo $result['brand_id'] ?></td>
+                                <td><?php echo $result['cartegory_main_name'] ?></td>
+                                <td><?php echo $result['cartegory_name'] ?></td>
+                                <td><?php echo $result['brand_name'] ?></td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="brandedit.php?brand_id=<?php echo $result['brand_id'] ?>">Update</a> |
+                                    <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['brand_id'] ?>)">Delete</a>
+                                </td>
+                            </tr>
+                    <?php
+                        }
+                    } elseif (!$searchTerm && $show_brand) {
                         $i = 0;
                         while ($result = $show_brand->fetch_assoc()) {
                             $i++;
@@ -48,6 +79,9 @@ $show_brand = $brand->show_brand();
                             </tr>
                     <?php
                         }
+                    } else {
+                        // Hiển thị thông báo nếu không tìm thấy kết quả
+                        echo '<tr><td colspan="6">No brands found.</td></tr>';
                     }
                     ?>
                 </tbody>

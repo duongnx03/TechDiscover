@@ -163,7 +163,6 @@
 }
 /*------------------------------------------------------------------ HEADER -------------------------------------------------------------------*/
  .main-top{
-     background: white;
      padding: 0px 0px;
 }
  .custom-select-box{
@@ -2258,7 +2257,6 @@
 }
  .shop-detail-box-main{
      padding: 70px 0px;
-     background-color: white;
 }
  .single-product-slider .carousel-control-prev {
      bottom: auto;

@@ -229,13 +229,14 @@ CREATE TABLE `tbl_order_items` (
 -- Table structure for table `tbl_product`
 --
 
+
 CREATE TABLE `tbl_product` (
   `product_id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
   `cartegory_main_id` int(11) NOT NULL,
   `cartegory_id` int(11) NOT NULL,
   `brand_id` int(11) NOT NULL,
-  `product_price` varchar(255) NOT NULL,
+  `product_price` float NOT NULL,
   `product_price_sale` varchar(255) NOT NULL,
   `product_color` varchar(255) NOT NULL,
   `product_memory_ram` varchar(255) NOT NULL,
@@ -252,14 +253,14 @@ CREATE TABLE `tbl_product` (
 --
 
 INSERT INTO `tbl_product` (`product_id`, `product_name`, `cartegory_main_id`, `cartegory_id`, `brand_id`, `product_price`, `product_price_sale`, `product_color`, `product_memory_ram`, `product_quantity`, `product_intro`, `product_detail`, `product_accessory`, `product_guarantee`, `product_img`) VALUES
-(20, 'iPhone 13 PRO MAX', 3, 22, 32, '1299.79', '1209.79', '8, 6, 4, 1', '10, 9, 8, 7', 10, 'good', '', '', '', 'iphone13promaxden.jpg'),
-(22, 'iPhone 12 PRO MAX', 3, 22, 32, '749.49', '709.79', '8, 6, 3', '9, 8, 7', 2, 'ncc', '', '', '', 'cate2.webp'),
-(23, 'iPhone X', 3, 22, 32, '599.79', '549.79', '5', '9, 8, 7', 1, 'ktjbnrs', '', '', '', 'cate10.webp'),
-(24, 'iPhone 8', 3, 22, 32, '399.79', '359.79', '6, 4', '9, 8, 7', 2, 'jbkj', '', '', '', 'iphone8plusda.png'),
-(26, 'iPhone 14 PRO MAX', 3, 22, 32, '1699.79', '1609.79', '7, 6, 1', '12, 10, 9, 8, 7', 2, 'ncc', '', '', '', 'cate1-gold.webp'),
-(30, 'iPad Pro 11 (2020)', 3, 20, 40, '1249.79', '1209.79', '6, 4', '8, 7', 2, '<p>tốt </p>', '', '', '', 'ipad2.webp'),
-(31, 'MacBook Air M2', 2, 25, 36, '1499.79', '1449.99', '6, 4', '10', 1, '<p>grvdvd</p>', '', '', '', 'macbook_air_m2_1_1.webp'),
-(32, 'Vertu Signature S Full Gold Diamond', 3, 21, 38, '48999.79', '48699.79', '1', '8, 7', 1, '<p>dfsbsdb</p>', '', '', '', 'vertu1.webp');
+(20, 'iPhone 13 PRO MAX', 3, 22, 32, 1299.79, '1209.79', '8, 6, 4, 1', '10, 9, 8, 7', 10, 'good', '', '', '', 'iphone13promaxden.jpg'),
+(22, 'iPhone 12 PRO MAX', 3, 22, 32, 749.49, '709.79', '8, 6, 3', '9, 8, 7', 2, 'ncc', '', '', '', 'cate2.webp'),
+(23, 'iPhone X', 3, 22, 32, 599.79, '549.79', '5', '9, 8, 7', 1, 'ktjbnrs', '', '', '', 'cate10.webp'),
+(24, 'iPhone 8', 3, 22, 32, 399.79, '359.79', '6, 4', '9, 8, 7', 2, 'jbkj', '', '', '', 'iphone8plusda.png'),
+(26, 'iPhone 14 PRO MAX', 3, 22, 32, 1699.79, '1609.79', '7, 6, 1', '12, 10, 9, 8, 7', 2, 'ncc', '', '', '', 'cate1-gold.webp'),
+(30, 'iPad Pro 11 (2020)', 3, 20, 40, 1249.79, '1209.79', '6, 4', '8, 7', 2, '<p>tốt </p>', '', '', '', 'ipad2.webp'),
+(31, 'MacBook Air M2', 2, 25, 36, 1499.79, '1449.99', '6, 4', '10', 1, '<p>grvdvd</p>', '', '', '', 'macbook_air_m2_1_1.webp'),
+(32, 'Vertu Signature S Full Gold', 3, 21, 38, 48999.8, '48699.79', '4', '8, 7', 1, '<p>dfsbsdb</p>', '', '', '', 'vertu1.webp');
 -- --------------------------------------------------------
 
 --
