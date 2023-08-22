@@ -166,4 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $delete_query = "delete from tbl_cart where user_id = $user_id";
     $delete_result = $database->delete($delete_query);
+    if ($delete_result) {
+        $_SESSION["add_to_cart_result"] = "Your order has been successfully place";
+        header("Location: ../myAccount_cart.php");
+        exit();
+    }
 }
