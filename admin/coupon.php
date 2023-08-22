@@ -14,6 +14,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['coupon
 }
     $coupons = $coupon->show_coupon(); 
 ?>
+
 <style>
     /* Tạo giao diện cho bảng */
 .coupon-table {
@@ -54,7 +55,13 @@ h3{
     text-align: right;
     margin-right: 30px;
 }
-
+.expired {
+    color: red;
+}
+.out-of-stock {
+    color: red;
+    font-weight: bold;
+}
 </style>
 
 <div class="admin-content-right">
@@ -67,17 +74,32 @@ h3{
             <th>Code</th>
             <th>Discount Amount</th>
             <th>Expiry Date</th>
-            <!-- <th>Status</th> -->
+            <th>Quantity</th>
             <th>Action</th>
         </tr>
         <?php  $stt = 1; foreach ($coupons as $row) : ?>
+            <?php
+                $expiry_date = $row['expiry_date'];
+                $expiry_date = $row['expiry_date']; // Lấy ngày/giờ từ cơ sở dữ liệu
+$expiry_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $expiry_date); // Chuyển đổi thành đối tượng DateTime
+$current_datetime = new DateTime(); // Lấy thời gian hiện tại
+
+if ($expiry_datetime < $current_datetime) {
+    $expired_class = 'expired'; // Đã hết hạn
+} else {
+    $expired_class = ''; // Còn hiệu lực
+}
+                $quantity = $row['quantity'];
+                $out_of_stock_class = ($quantity <= 0) ? 'out-of-stock' : '';
+            ?>
             <tr>
                 <td><?php echo $stt++; ?></td>
                 <td><?php echo $row['code']; ?></td>
                 <td><?php echo $row['amount']; ?></td>
-                <td><?php echo $row['expiry_date']; ?></td>
+                <td class="<?php echo $expired_class; ?>"><?php echo $row['expiry_date']; ?></td>
+                <td class="<?php echo $out_of_stock_class; ?>"><?php echo $quantity; ?></td>
                 <td>
-                <!-- <a class="btn-update" href="coupon_update.php?id=">Update</a> -->
+                <a class="btn-update" href="coupon_update.php?coupon_id=<?php echo $row['coupon_id']; ?>">Update</a>
 
                     <a class="btn-delete" href="coupon.php?action=delete&coupon_id=<?php echo $row['coupon_id']; ?>" onclick="return confirm('Are you sure you want to delete this coupon?')">Delete</a>
                 </td>
