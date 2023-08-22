@@ -419,7 +419,7 @@ if ($reviews) {
         margin-top: 20px;
     }
 
-    button[type="submit"] {
+    .send{
         background-color: #007BFF;
         color: #fff;
         padding: 10px 20px;
@@ -500,7 +500,7 @@ if ($reviews) {
                 <label for="comment">Comment:</label>
                 <textarea name="comment" rows="4" required></textarea>
                 <br>
-                <button type="submit" name="submit_danhgia">Send</button>
+                <button class="send" type="submit" name="submit_danhgia">Send</button>
             </form>
         </div>
     </div>
