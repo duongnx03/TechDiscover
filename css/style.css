@@ -247,19 +247,19 @@
 }
  .our-link ul li{
      display: inline-block;
-     border-right: 1px solid #ffffff;
+     border-right: 1px solid blue;
      padding: 0px 10px;
      line-height: 14px;
 }
  .our-link ul{
      line-height: 30px;
 }
- .our-link ul li a{
+ /* .our-link ul li a{
      color: #ffffff;
      font-weight: 700;
      text-transform: uppercase;
      font-size: 14px;
-}
+} */
  .our-link ul li a:hover{
      color: #d33b33;
 }

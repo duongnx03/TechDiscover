@@ -108,7 +108,7 @@ if (isset($_POST["register"])) {
                     $currentTime = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hash the password
                     $query = "INSERT INTO users (email, username, password, fullname, address, phone, registration_time, verification_code) 
-                            VALUES ('$email', '$username', '$hashedPassword', '$fullname', '$address', '$phone', '$currentTime', '$verificationCode')";
+                    VALUES ('$email', '$username', '$hashedPassword', '$fullname', '$address', '$phone', '$currentTime', '$verificationCode')";
 
                     if (mysqli_query($conn, $query)) {
                         header("Location: ../TechDiscovery/mail/verify_code.php");

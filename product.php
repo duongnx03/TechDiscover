@@ -170,11 +170,9 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                             echo '<div class="box-img-hover">';
 
                                             // Check if the product is on sale or new
-                                            if ($product['is_sale']) {
-                                                echo '<div class="type-lb"><p class="sale">Sale</p></div>';
-                                            } else {
+                                            
                                                 echo '<div class="type-lb"><p class="new">New</p></div>';
-                                            }
+                                            
 
                                             echo '<img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
                                             echo '<div class="mask-icon">';
