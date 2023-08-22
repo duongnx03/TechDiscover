@@ -183,7 +183,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-4">
                     <div class="blog-box">
                         <div class="blog-img">
-                            <img class="img-fluid" src="images/blog-img.jpg" alt="" />
+                            <img class="img-fluid" src="image/blog-img.jpg" alt="" />
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
@@ -201,7 +201,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-4">
                     <div class="blog-box">
                         <div class="blog-img">
-                            <img class="img-fluid" src="images/blog-img-01.jpg" alt="" />
+                            <img class="img-fluid" src="image/blog-img-01.jpg" alt="" />
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
@@ -219,7 +219,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-4">
                     <div class="blog-box">
                         <div class="blog-img">
-                            <img class="img-fluid" src="images/blog-img-02.jpg" alt="" />
+                            <img class="img-fluid" src="image/blog-img-02.jpg" alt="" />
                         </div>
                         <div class="blog-content">
                             <div class="title-blog">
