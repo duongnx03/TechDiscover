@@ -23,7 +23,7 @@ if (!empty($searchTerm)) {
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Brand List</h6>
-            <form class="form-inline" action="brandlist.php" method="GET">
+            <form class="form-inline row" action="brandlist.php" method="GET">
                 <input class="form-control bg-dark border-0" type="search" placeholder="Search by Brand Name" name="search" value="<?php echo $searchTerm; ?>">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
