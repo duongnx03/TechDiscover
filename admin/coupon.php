@@ -81,8 +81,9 @@ h3{
             <?php
                 $expiry_date = $row['expiry_date'];
                 $expiry_date = $row['expiry_date']; // Lấy ngày/giờ từ cơ sở dữ liệu
-$expiry_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $expiry_date); // Chuyển đổi thành đối tượng DateTime
-$current_datetime = new DateTime(); // Lấy thời gian hiện tại
+                $expiry_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $expiry_date, new DateTimeZone('Asia/Ho_Chi_Minh'));
+                $current_datetime = new DateTime('now', new DateTimeZone('Asia/Ho_Chi_Minh'));
+                 // Lấy thời gian hiện tại
 
 if ($expiry_datetime < $current_datetime) {
     $expired_class = 'expired'; // Đã hết hạn
