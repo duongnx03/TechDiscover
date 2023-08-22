@@ -243,6 +243,256 @@ if (isset($_GET['id'])) {
 ?>
 <br><br><br><br>
 
+<!-- ---------------danh gia ------------------- -->
+<?php
+// include 'admin/database.php';
+// include 'admin/config.php';
+class danhgia {
+    private $db;
+   
+    public function __construct() {
+        $this->db = new Database();
+    }
+
+    public function insert_danhgia($danhgia_id, $product_id, $user_id, $name, $email, $rating, $comment, $created_at) {
+        $query = "INSERT INTO danhgia (danhgia_id, product_id, user_id, name, email, rating, comment, created_at) 
+                  VALUES ('$danhgia_id', '$product_id', '$user_id', '$name', '$email', '$rating', '$comment', '$created_at')";
+
+        $result = $this->db->insert($query);
+        // header('Location: coupon.php');
+        return $result;
+    }
+    public function show_danhgia() {
+        $query = "SELECT danhgia_id, product_id, name, rating, comment, created_at FROM danhgia ORDER BY danhgia_id ASC";
+        $result = $this->db->select($query);
+
+        return $result;
+    }
+}
+$danhgia = new danhgia();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require_once 'admin/database.php'; // Đảm bảo đường dẫn đúng
+
+    $db = new Database();
+    $product_id = isset($_GET['id']) ? $_GET['id'] : null;
+    $user_id = $_POST["user_id"];
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $rating = $_POST["rating"];
+    $comment = $_POST["comment"];
+    $created_at = date('Y-m-d H:i:s');
+
+    // Tạo đối tượng danhgia và thực hiện thêm đánh giá vào cơ sở dữ liệu
+    if (empty($product_id) || empty($user_id) || empty($name) || empty($email) || empty($rating) || empty($comment)) {
+        echo "Vui lòng điền đầy đủ thông tin đánh giá.";
+    } else {
+        $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
+        
+    }
+}
+$reviews = $danhgia->show_danhgia();
+$reviewCount = 0;
+$reviewArray = array();
+
+if ($reviews) {
+    // Truy vấn thành công
+    $reviewArray = array_reverse(mysqli_fetch_all($reviews, MYSQLI_ASSOC));
+    foreach ($reviewArray as $review) {
+        // Chỉ đếm các đánh giá của sản phẩm có product_id trùng khớp
+        if ($review['product_id'] == $product_id) {
+            $reviewCount++;
+        }
+    }
+}
+?>
+    <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
+    <style>
+        .body_danhgia {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        
+        .danhgia {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        div.stars {
+            width: 270px;
+            display: inline-block;
+        }
+
+        input.star { display: none; }
+
+        label.star {
+            float: right;
+            padding: 10px;
+            font-size: 36px;
+            color: #444;
+            transition: all .2s;
+        }
+
+        input.star:checked ~ label.star:before {
+            content: '\f005';
+            color: #FD4;
+            transition: all .25s;
+        }
+
+        input.star-5:checked ~ label.star:before {
+            color: #FE7;
+            text-shadow: 0 0 20px #952;
+        }
+
+        input.star-1:checked ~ label.star:before { color: #F62; }
+
+        label.star:hover { transform: rotate(-15deg) scale(1.3); }
+
+        label.star:before {
+            content: '\f006';
+            font-family: FontAwesome;
+        }
+
+        /* Additional CSS for the form and review section */
+        .danhgia {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .existing-reviews {
+            margin-top: 20px;
+        }
+
+        .review {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* CSS for the comment textarea */
+        label[for="comment"] {
+            display: block;
+            margin-top: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        textarea[name="comment"] {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 600px;
+            margin-left: 24%;
+            padding: 20px;
+        }
+
+        /* CSS for the submit button */
+        .submit-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-left: 47%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        span.star {
+            color: #FFCC00;
+        }
+    </style>
+</head>
+<div clas="body_danhgia">
+    <div class="container">
+        <div class="danhgia">
+            <div class="existing-reviews">
+                <h2><?php echo $reviewCount; ?> Comment</h2>
+                <?php
+    if ($reviewCount > 0) {
+        foreach ($reviewArray as $review) {
+            // Chỉ hiển thị các đánh giá của sản phẩm có product_id trùng khớp
+            if ($review['product_id'] == $product_id) {
+    ?>
+                <div class="review">
+                    <p><strong>Name:</strong> <?php echo $review['name']; ?> - <?php echo date('M d,Y', strtotime($review['created_at'])); ?></p>
+                    <p>
+                        <?php
+                        $ratingValue = intval($review['rating']);
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $ratingValue) {
+                                echo '<span class="star star-' . $i . '">&#9733;</span>';
+                            } else {
+                                echo '<span class="star star-' . $i . '">&#9734;</span>';
+                            }
+                        }
+                        ?>
+                    </p>
+                    <p><?php echo isset($review['comment']) ? $review['comment'] : ''; ?></p>
+                </div>
+    <?php
+            }
+        }
+    } else {
+        echo "<p></p>";
+    }
+    ?>
+            </div>
+            <!-- Review form -->
+          
+            <h2>Leave a comment</h2>
+            <form class="review-form" action="" method="POST">
+                <input type="hidden" name="product_id" value="1"> <!-- Adjust the product ID accordingly -->
+                <input type="hidden" name="user_id" value="1"> <!-- Adjust the user ID accordingly -->
+                <label for="name">Name:</label>
+                <input type="text" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" name="email" required>
+                <label for="rating">Rating:</
+                <div class="stars">
+                    <input class="star star-5" id="star-5" type="radio" name="rating" value="5"/>
+                    <label class="star star-5" for="star-5"></label>
+                    <input class="star star-4" id="star-4" type="radio" name="rating" value="4"/>
+                    <label class="star star-4" for="star-4"></label>
+                    <input class="star star-3" id="star-3" type="radio" name="rating" value="3"/>
+                    <label class="star star-3" for="star-3"></label>
+                    <input class="star star-2" id="star-2" type="radio" name="rating" value="2"/>
+                    <label class="star star-2" for="star-2"></label>
+                    <input class="star star-1" id="star-1" type="radio" name="rating" value="1"/>
+                    <label class="star star-1" for="star-1"></label>
+                </div>
+                <br>
+                <label for="comment">Comment:</label>
+                <textarea name="comment" rows="4" required></textarea>
+                <br>
+                <button type="submit" name="submit_danhgia">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ------------------end danh gia -------------------- -->
 
 
 
