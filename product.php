@@ -154,7 +154,9 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                     <option value="high-to-low">High Price → Low Price</option>
                                 </select>
                             </div>
-                            <p>Showing all <span>0</span> results</p>
+                            <?php
+                           echo '<p>Showing all <span>' . $totalProducts . '</span> results</p>';
+                           ?>
                         </div>
                     </div>
 
