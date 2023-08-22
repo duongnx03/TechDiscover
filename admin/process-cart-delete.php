@@ -1,5 +1,4 @@
 <?php
-include("config.php");
 include("database.php");
 $database = new Database();
 

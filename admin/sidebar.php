@@ -35,7 +35,7 @@
                             <a href="order_list.php" class="dropdown-item">Order List</a>
                             <a href="order_processed.php" class="dropdown-item">Order processed</a>
                             <a href="order_completed.php" class="dropdown-item">Order completed</a>
-                            <a href="order_cancle.php" class="dropdown-item">Order canceled</a>
+                            <a href="order_canceled.php" class="dropdown-item">Order canceled</a>
                         </div>
                     </div>
                     <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>

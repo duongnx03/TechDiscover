@@ -10,7 +10,7 @@ $show_order = $order->show_order_list();
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Order processed</h6>
+            <h6 class="mb-0">Order has been canceled</h6>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -31,30 +31,23 @@ $show_order = $order->show_order_list();
                     if ($show_order) {
                         $i = 0;
                         while ($result = $show_order->fetch_assoc()) {
-                            if ($result['order_status'] == 'delivered_carrier') {
-                            $i++;
+                            if ($result['order_status'] == 'canceled') {
+                                $i++;
                     ?>
-                            <tr>
-                                <td><?php echo $i ?></td>
-                                <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
-                                <td><?php echo $result['order_date'] ?></td>
-                                <td><?php echo $result['payment_method'] ?></td>
-                                <td class="status">
-                                    <form action="order_edit.php?order_id=<?php echo $result['order_id'] ?>" method="post">
-                                        <select name="order_status" class="form-select">
-                                            <option value="order_processing" <?php if ($result['order_status'] == 'order_processing') echo 'selected' ?>>Order processing</option>
-                                            <option value="delivered_carrier" <?php if ($result['order_status'] == 'delivered_carrier') echo 'selected' ?>>Delivered to the carrier</option>
-                                            <option value="delivered" <?php if ($result['order_status'] == 'delivered') echo 'selected' ?>>Delivered</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-link view-details">UPDATE</button>
-                                    </form>
-                                </td>
-                                <td>$<?php echo $result['total_order'] ?></td>
-                                <td><?php echo $result['status_payment'] ?></td>
-                                <td>
-                                    <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><?php echo $i ?></td>
+                                    <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
+                                    <td><?php echo $result['order_date'] ?></td>
+                                    <td><?php echo $result['payment_method'] ?></td>
+                                    <td class="status">
+                                        <?php echo $result['order_status'] ?>
+                                    </td>
+                                    <td>$<?php echo $result['total_order'] ?></td>
+                                    <td><?php echo $result['status_payment'] ?></td>
+                                    <td>
+                                        <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
+                                    </td>
+                                </tr>
                     <?php
                             }
                         }
