@@ -203,8 +203,17 @@ CREATE TABLE `tbl_order` (
   `order_date` varchar(50) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
   `order_status` varchar(50) NOT NULL,
-  `user_info` varchar(400) NOT NULL
+  `fullname` varchar(250) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `province` varchar(250) NOT NULL,
+  `district` varchar(250) NOT NULL,
+  `ward` varchar(250) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `status_payment` varchar(250) NOT NULL,
+  `total_order` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 
@@ -215,12 +224,12 @@ CREATE TABLE `tbl_order` (
 CREATE TABLE `tbl_order_items` (
   `order_item_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
   `product_img` varchar(250) NOT NULL,
   `product_name` varchar(250) NOT NULL,
   `product_color` varchar(50) NOT NULL,
   `product_memory_ram` varchar(50) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -386,6 +395,22 @@ CREATE TABLE `tbl_stock` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Table structure for table `tbl_wishlist`
+--
+
+CREATE TABLE `tbl_wishlist` (
+  `wishlist_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_name` varchar(250) NOT NULL,
+  `product_price` int(11) NOT NULL,
+  `product_color` varchar(250) NOT NULL,
+  `product_memory_ram` varchar(50) NOT NULL,
+  `product_img` varchar(50) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- --------------------------------------------------------
 
 --
@@ -485,6 +510,12 @@ ALTER TABLE `tbl_product`
 ALTER TABLE `tbl_stock`
   ADD PRIMARY KEY (`stock_id`);
 
+  --
+-- Indexes for table `tbl_wishlist`
+--
+ALTER TABLE `tbl_wishlist`
+  ADD PRIMARY KEY (`wishlist_id`);
+
 --
 -- Indexes for table `users`
 --
@@ -554,6 +585,12 @@ ALTER TABLE `tbl_order_items`
 --
 ALTER TABLE `tbl_product`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `tbl_wishlist`
+--
+ALTER TABLE `tbl_wishlist`
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`

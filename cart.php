@@ -58,13 +58,13 @@ include "navbar.php";
                                             <b><?php echo $item['product_memory_ram'] ?></b>
                                         </td>
                                         <td class="price-pr">
-                                            <p>$ <?php echo number_format($item['product_price']); ?></p>
+                                            <p>$ <?php echo $item['product_price'] ?></p>
                                         </td>
                                         <td class="quantity-box">
                                             <input type="number" size="4" value="<?php echo $item['quantity']; ?>" min="1" step="1" class="c-input-text qty text quantity-input" data-cart-id="<?php echo $item['cart_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" id="quantity-<?php echo $item['cart_id']; ?>" oninput="updateQuantity(this)">
                                         </td>
                                         <td class="total-pr">
-                                            <p id="total-<?php echo $item['cart_id']; ?>">$ <?php echo number_format($item['total']); ?></p>
+                                            <p id="total-<?php echo $item['cart_id']; ?>">$ <?php echo $item['total'] ?></p>
                                         </td>
                                         <td class="remove-pr">
                                             <div class="button-remove" onclick="confirmDelete(<?php echo $item['cart_id'] ?>)">
@@ -111,7 +111,7 @@ include "navbar.php";
                     <hr>
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
-                        <div class="ml-auto h5" id="grand-total"> $ <?php echo number_format($totalPrice) ?> </div>
+                        <div class="ml-auto h5" id="grand-total"> $ <?php echo $totalPrice ?> </div>
                     </div>
                     <hr>
                 </div>
