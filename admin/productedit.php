@@ -151,22 +151,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="product_intro">Product Introduce <span style="color:red;">*</span></label>
-                    <textarea required name="product_intro" id="" cols="30" rows="10" class="form-control"><?php echo $result['product_intro']; ?></textarea>
+                    <textarea required name="product_intro" id="summernote_intro" cols="30" rows="10" class="form-control"><?php echo $result['product_intro']; ?></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_detail">Product Detail <span style="color:red;">*</span></label>
-                    <textarea name="product_detail" id="" cols="30" rows="10" class="form-control"><?php echo $result['product_detail']; ?></textarea>
+                    <textarea name="product_detail" id="summernote_detail" cols="30" rows="10" class="form-control"><?php echo $result['product_detail']; ?></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_accessory">Product Accessory <span style="color:red;">*</span></label>
-                    <textarea name="product_accessory" id="" cols="30" rows="10" class="form-control"><?php echo $result['product_accessory']; ?></textarea>
+                    <textarea name="product_accessory" id="summernote_accessory" cols="30" rows="10" class="form-control"><?php echo $result['product_accessory']; ?></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="product_guarantee">Product Guarantee <span style="color:red;">*</span></label>
-                    <textarea name="product_guarantee" id="" cols="30" rows="10" class="form-control"><?php echo $result['product_guarantee']; ?></textarea>
+                    <textarea name="product_guarantee" id="summernote_guarantee" cols="30" rows="10" class="form-control"><?php echo $result['product_guarantee']; ?></textarea>
                 </div>
 
                 <div class="form-group">
@@ -232,6 +232,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!--  <script> của trang productedit.php -->
 <!-- Đoạn mã JavaScript -->
 <script>
+     $('#summernote_intro').summernote({
+        placeholder: 'Enter Product Introduce',
+        tabsize: 2,
+        height: 200
+    });
+
+    $('#summernote_detail').summernote({
+        placeholder: 'Enter Product Detail',
+        tabsize: 2,
+        height: 200
+    });
+
+    $('#summernote_accessory').summernote({
+        placeholder: 'Enter Product Accessory',
+        tabsize: 2,
+        height: 200
+    });
+    $('#summernote_guarantee').summernote({
+        placeholder: 'Enter Product Guarantee',
+        tabsize: 2,
+        height: 200
+    });
+
     function previewImagesOnEdit(input) {
         var imagesContainer = document.querySelector('.image-previews');
         imagesContainer.innerHTML = '';
