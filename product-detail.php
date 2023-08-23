@@ -280,7 +280,6 @@ class danhgia
     }
 }
 $danhgia = new danhgia();
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once 'admin/database.php'; // Đảm bảo đường dẫn đúng
 
@@ -293,13 +292,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comment = $_POST["comment"];
     $created_at = date('Y-m-d H:i:s');
 
-    // Tạo đối tượng danhgia và thực hiện thêm đánh giá vào cơ sở dữ liệu
-    if (empty($product_id) || empty($user_id) || empty($name) || empty($email) || empty($rating) || empty($comment)) {
-        echo "Vui lòng điền đầy đủ thông tin đánh giá.";
-    } else {
-        $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
+    // Kiểm tra xem có đánh giá từ cùng một người (dựa vào email) đã tồn tại hay chưa
+    $existing_review_query = "SELECT COUNT(*) AS review_count FROM danhgia WHERE email = '$email'";
+    $existing_review_result = $db->select($existing_review_query);
+    if ($existing_review_result) {
+        $existing_review_data = $existing_review_result->fetch_assoc();
+        $existing_review_count = $existing_review_data['review_count'];
+        if ($existing_review_count > 0) {
+            echo "Bạn đã đánh giá trước đó. Vui lòng không thêm đánh giá mới.";
+        } else {
+            // Thêm đánh giá mới vào cơ sở dữ liệu
+            if (empty($product_id) || empty($user_id) || empty($name) || empty($email) || empty($rating) || empty($comment)) {
+                echo "Vui lòng điền đầy đủ thông tin đánh giá.";
+            } else {
+                $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
+            }
+        }
     }
 }
+
 $reviews = $danhgia->show_danhgia();
 $reviewCount = 0;
 $reviewArray = array();
