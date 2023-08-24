@@ -4,147 +4,130 @@ include "navbar.php";
 
 ?>
 
-<!-------------------------------------------blog--------------------------------------------------->
-<section class="blog">
+<section id="cta" class="section">
     <div class="container">
-        <div class="blog_area">
-            <div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-1.html"><img src="image/img-blog-1.jpg" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-1.html">iOS 17 will have some special features exclusive to dual-SIM iPhones, try it now!</a></h3>
-                            <p>Not long ago, Apple released the latest versions of iOS 17 and iPadOS 17 operating systems. Besides, it also
-                                released the first Public Beta for all compatible iPhone models. In the latest beta version, Apple has added
-                                new features to iPhone models that support dual SIM, helping users have a better user experience.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-1.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-2.html"><img src="image/img-blog-2.webp" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-2.html">When will iPhone 15 be released?</a></h3>
-                            <p>According to Apple's traditional strategy, new iPhones will usually be introduced in mid-September to timely arrive in key markets before December. Therefore, it is possible that this year's iPhone 15 will be released on Tuesday. September 12, 2023. The product will then hit the shelves ten days later, on Friday, September 22, 2023.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-2.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-3.html"><img src="image/img-blog-3.webp" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-3.html">On hand OPPO A78: 67W fast charging, 256GB "huge" memory, beautiful design, "soft" price</a></h3>
-                            <p> OPPO A78 is its rookie in the mid-range segment. This new phone model promises to be loved by many young users when fully converging with modern features and "soft" price.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-3.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-4.html"><img src="image/img-blog-4.webp" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-4.html">The most effective solution to add a connection port for a laptop</a></h3>
-                            <p>Distinctively simplify dynamic resources whereas prospective core competencies. Objectively pursue multidisciplinary human capital for interoperable.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-4.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-5.html"><img src="image/img-blog-5.jpg" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-5.html">How to fix We can't find your camera error on Windows computer is very easy</a></h3>
-                            <p>When you need to use the camera on your laptop for personal purposes, the system says "We can't find your camera" error. Does this make you feel confused and do not know how to fix it? Don't worry too much, the article below will guide you to fix it in detail!.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-5.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_blog">
-                        <div class="blog_thumb">
-                            <a href="blog/blog-details-6.html"><img src="image/img-blog-6.webp" alt="" width="850px" height="400px"></a>
-                        </div>
-                        <div class="blog_content">
-                            <h3><a href="blog/blog-details-6.html">4 Windows laptop models to challenge the MacBook in the price range of VND 20 million</a></h3>
-                            <p> MacBook no longer holds a unique position in the high-end laptop segment when there are now many beautifully designed, powerfully configured Windows laptop models and even owns an OLED screen in the price range of less than VND 20 million.</p>
-                            <div class="post_footer">
-                                <div class="post_meta">
-                                    <ul>
-                                        <li>July 19, 2023</li>
-                                    </ul>
-                                </div>
-                                <div class="Read_more">
-                                    <a href="blog/blog-details-6.html">Read more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-12 align-self-center">
+                <h2>TechDiscovery Blog</h2>
+                <p class="lead">Welcome to the TechDiscovery Blog- where we take you on an endless journey of discovery in the world of innovative technology. Here, immerse us in stories, reviews, and the latest trends in the tech industry - all shared from the heart of the passionate and professional team at TechDiscovery Innovation never stops, and together we will discover great things there this world of technology.</p>
+                <a href="#" class="btn btn-primary">Try for free</a>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="newsletter-widget text-center align-self-center">
+                    <h3>Subscribe Today!</h3>
+                    <p>Subscribe to our weekly Newsletter and receive updates via email.</p>
+                    <form class="form-inline" method="post">
+                        <input type="text" name="email" placeholder="Add your email here.." required class="form-control" />
+                        <input type="submit" value="Subscribe" class="btn btn-default btn-block" />
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!----------------------------------------end-blog------------------------------------------>
 
+<!-- Blog Content -->
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Go</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Categories Widget -->
+            <div class="card mt-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Category 1</a></li>
+                        <li><a href="#">Category 2</a></li>
+                        <li><a href="#">Category 3</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recent Posts Widget -->
+            <div class="card mt-4">
+                <h5 class="card-header">Recent Posts</h5>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="#">
+                                <h6>Recent Post 1</h6>
+                                <p class="small">Posted on January 3, 2023 by Author Name</p>
+                            </a>
+                        </li>
+                        <br>
+                        <li>
+                            <a href="#">
+                                <h6>Recent Post 2</h6>
+                                <p class="small">Posted on January 4, 2023 by Author Name</p>
+                            </a>
+                        </li>
+                        <!-- Thêm các mục khác tương tự cho các bài viết gần đây khác -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- Blog Post 1 -->
+            <div class="card mb-4">
+                <a href="blog-detail.php"><img class="card-img-top" src="image/img-blog-1.jpg" alt="Blog Post 1"></a>
+                <div class="card-body text-center">
+                    <h2 class="card-title"><a href="blog-detail.php"> iOS 17 will have some special features exclusive to dual-SIM iPhones, try it now!</a></h2>
+                    <p class="card-text">Not long ago, Apple released the latest versions of iOS 17 and iPadOS 17 operating systems. Besides, it also
+                                released the first Public Beta for all compatible iPhone models. In the latest beta version, Apple has added
+                                new features to iPhone models that support dual SIM, helping users have a better user experience.</p>
+                    <a href="blog-detail.php" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    <a href="">Category</a> / <a href=""> 24 August, 2023</a> / <a href="">By DuongNX</a> 
+                </div>
+            </div>
+
+            <!-- Blog Post 2 -->
+            <div class="card mb-4">
+            <a href="blog-detail.php"><img class="card-img-top" src="image/img-blog-2.webp" alt="Blog Post 2"></a>
+                <div class="card-body text-center">
+                    <h2 class="card-title"><a href="blog-detail.php"> When will iPhone 15 be released?</a></h2>
+                    <p class="card-text">According to Apple's traditional strategy, new iPhones will usually be introduced in mid-September to timely arrive in key markets before December. Therefore, it is possible that this year's iPhone 15 will be released on Tuesday. September 12, 2023. The product will then hit the shelves ten days later, on Friday, September 22, 2023..</p>
+                    <a href="blog-detail.php" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    <a href="">Category</a> / <a href=""> 24 August, 2023</a> / <a href="">By DuongNX</a> 
+                </div>
+            </div><br>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<br><br>
 
 <?php
-  include "footer.php";
+include "footer.php";
 ?>
