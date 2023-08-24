@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>window.location.href = 'coupon.php';</script>";
         exit(); // Đảm bảo kết thúc luồng xử lý sau khi chuyển hướng
     } else {
-        $error_message = "Cập nhật không thành công.";
+        $error_message = "Update failed.";
     }
 } elseif (isset($_GET['coupon_id'])) {
     $coupon_id = $_GET['coupon_id'];

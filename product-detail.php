@@ -202,16 +202,16 @@ if (isset($_GET['id'])) {
                 <div class="product-content-right-bottom-content-big">
                     <div class="product-content-right-bottom-content-title row">
                         <div class="product-content-right-bottom-content-title-item introduce">
-                            <p>Giới Thiệu</p>
+                            <p>Introduce</p>
                         </div>
                         <div class="product-content-right-bottom-content-title-item detail">
-                            <p>Chi tiết</p>
+                            <p>Detail</p>
                         </div>
                         <div class="product-content-right-bottom-content-title-item accessory">
-                            <p>Phụ Kiện</p>
+                            <p>Accessory</p>
                         </div>
                         <div class="product-content-right-bottom-content-title-item guarantee">
-                            <p>Bảo Hành</p>
+                            <p>Guarantee</p>
                         </div>
                     </div>
                     <div class="product-content-right-bottom-content">
@@ -244,7 +244,7 @@ if (isset($_GET['id'])) {
         echo '<p>No products found.</p>';
     }
 } else {
-    echo '<p>Không có ID sản phẩm được cung cấp.</p>';
+    echo '<p>No product ID provided.</p>';
 }
 ?>
 <br><br><br><br>
@@ -293,17 +293,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $created_at = date('Y-m-d H:i:s');
 
     // Kiểm tra xem có đánh giá từ cùng một người (dựa vào email) đã tồn tại hay chưa
-    $existing_review_query = "SELECT COUNT(*) AS review_count FROM danhgia WHERE email = '$email'";
+    $existing_review_query = "SELECT COUNT(*) AS review_count, product_id FROM danhgia WHERE email = '$email' AND product_id = '$product_id'";
     $existing_review_result = $db->select($existing_review_query);
     if ($existing_review_result) {
         $existing_review_data = $existing_review_result->fetch_assoc();
         $existing_review_count = $existing_review_data['review_count'];
         if ($existing_review_count > 0) {
-            echo "Bạn đã đánh giá trước đó. Vui lòng không thêm đánh giá mới.";
+            // Lấy product_id của đánh giá hiện có
+            $existing_review_product_id = $existing_review_data['product_id'];
+
+            // Kiểm tra nếu product_id trùng khớp với product_id hiện tại
+            if ($existing_review_product_id == $product_id) {
+                echo "You have previously rated this product. Please do not add new reviews.";
+            } else {
+            $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
+            }
         } else {
             // Thêm đánh giá mới vào cơ sở dữ liệu
             if (empty($product_id) || empty($user_id) || empty($name) || empty($email) || empty($rating) || empty($comment)) {
-                echo "Vui lòng điền đầy đủ thông tin đánh giá.";
+                echo "Please complete the review information.";
             } else {
                 $result = $danhgia->insert_danhgia(null, $product_id, $user_id, $name, $email, $rating, $comment, $created_at);
             }

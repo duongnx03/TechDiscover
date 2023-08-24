@@ -129,10 +129,18 @@ include "navbar.php";
                 }
     }}}
     }
+    if ($totalPrice === 0) {
+    echo "<p>You cannot use the coupon code as there are no products in your cart.</p>";
+    $couponAmount = $totalPrice;
+} else {
     $giadagiam = $totalPrice - $couponAmount;
     // Lưu giá trị vào session
-$_SESSION['amountDiscount'] = $couponAmount;
-$_SESSION['giadagiam'] = $giadagiam;?>
+    $_SESSION['amountDiscount'] = $couponAmount;
+    $_SESSION['giadagiam'] = $giadagiam;
+    if ($couponAmount !== 0) {
+        $_SESSION['code'] = $code;
+    }
+}?>
     <form action="cart.php" method="POST">
         <div class="row my-5">
             <div class="col-lg-6 col-sm-6">
