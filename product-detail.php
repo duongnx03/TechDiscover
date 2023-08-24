@@ -154,7 +154,7 @@ if (isset($_GET['id'])) {
                                         <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
                                         <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
                                         <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
-                                        <button type="submit" class="btn hvr-hover">Buy Now</button>
+                                        <button type="submit" class="btn hvr-hover btn-danger">Buy Now</button>
                                     </form>
                                     <form action="admin/process-addToCart.php" method="post" class="price-box-bar">
                                         <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
@@ -164,7 +164,7 @@ if (isset($_GET['id'])) {
                                         <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
                                         <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
                                         <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
-                                        <button type="submit" class="btn hvr-hover">Add to cart</button>
+                                        <button type="submit" class="btn hvr-hover btn-danger">Add to cart</button>
                                     </form>
                                     <form action="admin/process-addToWishlist.php" method="post" class="price-box-bar">
                                         <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
@@ -174,7 +174,7 @@ if (isset($_GET['id'])) {
                                         <input type="hidden" name="product_color" class="product_color" value="<?php echo $color_name ?>">
                                         <input type="hidden" name="product_memory_ram" class="product_memory_ram" value="<?php echo $memory_ram_name ?>">
                                         <input value="1" min="1" max="20" type="hidden" class="product_quantity" name="product_quantity">
-                                        <button type="submit" class="btn hvr-hover"><i class="fas fa-heart"></i> Add to wishlist</button>
+                                        <button type="submit" class="btn hvr-hover btn-danger"><i class="fas fa-heart"></i> Add to wishlist</button>
                                     </form>
                                 </div>
                             </div>

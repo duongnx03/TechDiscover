@@ -53,11 +53,11 @@ if (!empty($code)) {
     </div>
 </div>
 <!-- End All Title Box -->
-
+<script src='https://www.paypal.com/sdk/js?client-id=AUbOEvIMIXKSLOwnIgiCu0q7iRKK2hJtW55odcvAgtYO7heyQAa2ZDIv7ziZkzD-sGM3L2rKH5SIaxad&currency=USD'></script>
 <!-- Start Cart  -->
 <div class="cart-box-main">
     <div class="container">
-        <form action="admin/process-order.php" method="post" onsubmit="return validateForm();">
+        <form id="order-form" onsubmit="return validateForm();" action="admin/process-order.php" method="post">
             <div class="row">
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="checkout-address">
@@ -116,22 +116,6 @@ if (!empty($code)) {
                             <input type="hidden" id="selectedWard" name="ward">
                         </div>
                         <hr class="mb-4">
-                        <div class="title"> <span>Payment</span> </div>
-                        <div class="d-block my-3">
-                            <div class="custom-control custom-radio">
-                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required value="COD">
-                                <label class="custom-control-label" for="credit">COD</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required value="MOMO">
-                                <label class="custom-control-label" for="debit">VN Pay</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required value="Paypal">
-                                <label class="custom-control-label" for="paypal">Paypal</label>
-                            </div>
-                        </div>
-                        <hr class="mb-1">
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-6 mb-3">
@@ -148,7 +132,7 @@ if (!empty($code)) {
                                         <div class="rounded p-2 bg-light">
                                             <div class="media mb-2 border-bottom">
                                                 <div class="media-body"><?php echo $item['product_name'] ?> | <?php echo $item['product_color'] ?> | <?php echo $item['product_memory_ram'] ?></a>
-                                                    <div class="small text-muted">Price: $<?php echo $item['product_price']; ?> <span class="mx-2">|</span> Qty: <?php echo $item['quantity']; ?> <span class="mx-2">|</span> Subtotal: $<?php echo $item['total']?></div>
+                                                    <div class="small text-muted">Price: $<?php echo $item['product_price']; ?> <span class="mx-2">|</span> Qty: <?php echo $item['quantity']; ?> <span class="mx-2">|</span> Subtotal: $<?php echo $item['total'] ?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,16 +175,17 @@ if (!empty($code)) {
                                 <hr>
                             </div>
                         </div>
-                        <div class="col-12 d-flex shopping-box"><button type="submit" class="ml-auto btn hvr-hover">Place Order</button></div>
-                    </div>
-                </div>
-            </div>
+                        <input type="hidden" name="payment_method" id="payment_method" value="">
+                        <input type="hidden" name="status_payment" id="status_payment" value="">
+                        <div class="col-12 d-flex shopping-box"><button type="submit" class="btn btn-danger cod" onclick="setPaymentMethod()">Confirm and place order | COD</button></div>
+                        <div class="col-12 d-flex shopping-box" id='paypal-button-container'></div>
         </form>
     </div>
 </div>
 
 <!-- End Cart -->
 
+<!-- End Cart -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/address.js"></script>
@@ -209,19 +194,23 @@ if (!empty($code)) {
         var provinceSelected = false;
         var districtSelected = false;
         var wardSelected = false;
+        var originalTotalPrice = <?php echo $totalPrice; ?>;
 
         $("#province").change(function() {
             provinceSelected = true;
+            resetTotalOrder();
             trySendAjax();
         });
 
         $("#district").change(function() {
             districtSelected = true;
+            resetTotalOrder();
             trySendAjax();
         });
 
         $("#ward").change(function() {
             wardSelected = true;
+            resetTotalOrder();
             trySendAjax();
         });
 
@@ -230,6 +219,11 @@ if (!empty($code)) {
                 calculateShipping();
             }
         }
+
+        function resetTotalOrder() {
+            $("#finalTotalPrice").val(originalTotalPrice.toFixed(2));
+        }
+
         // Function to calculate shipping
         function calculateShipping() {
             var provinceId = $("#selectedProvince").val();
@@ -292,7 +286,7 @@ if (!empty($code)) {
         var district = document.getElementById("district").value;
         var ward = document.getElementById("ward").value;
         var address = document.getElementById("address").value;
-        if (username === "" || phone === "" || email === "" || province === "" || district === "" || ward === "" || address === ""){
+        if (username === "" || phone === "" || email === "" || province === "" || district === "" || ward === "" || address === "") {
             alert("All fields are required.");
             return false;
         }
@@ -309,7 +303,60 @@ if (!empty($code)) {
         }
 
         return true;
-    } []
+    }
+
+    document.getElementById('payment_method').value = 'PayPal';
+    document.getElementById('status_payment').value = 'uncompleted';
+
+    function setPaymentMethod() {
+        document.getElementById('payment_method').value = 'COD';
+    }
+
+    paypal.Buttons({
+        onClick: function(details) {
+            var username = document.getElementById("username").value;
+            var phone = document.getElementById("phone").value;
+            var email = document.getElementById("email").value;
+            var province = document.getElementById("province").value;
+            var district = document.getElementById("district").value;
+            var ward = document.getElementById("ward").value;
+            var address = document.getElementById("address").value;
+            if (username === "" || phone === "" || email === "" || province === "" || district === "" || ward === "" || address === "") {
+                alert("All fields are required.");
+                return false;
+            }
+            var phonePattern = /^[0-9]{10}$/;
+            if (!phone.match(phonePattern)) {
+                alert("Phone must be a 10-digit numeric value.");
+                return false;
+            }
+
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email.match(emailPattern)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            return true;
+        },
+        createOrder: function(data, actions) {
+            var paypalAmount = parseFloat(document.getElementById('finalTotalPrice').value);
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: paypalAmount
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                document.getElementById('status_payment').value = 'completed';
+                document.getElementById("order-form").submit();
+            });
+        }
+    }).render('#paypal-button-container');
 </script>
 <?php
 include "footer.php";

@@ -10,7 +10,7 @@ $data = array(
     "weight" => 500,
     "value"=> 3000000,
     "transport" => "road",
-    "deliver_option" => "xteam",
+    "deliver_option" => "none",
     "tags"  => [1]
 );
 $curl = curl_init();

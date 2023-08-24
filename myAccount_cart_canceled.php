@@ -2,7 +2,7 @@
 include "header.php";
 include "navbar.php";
 
-$order_query = "SELECT * FROM tbl_order where user_id = $user_id";
+$order_query = "SELECT * FROM tbl_order where user_id = $user_id order by order_id desc";
 $order_result = $database->select($order_query);
 if ($order_result) {
     while ($row = $order_result->fetch_assoc()) {
