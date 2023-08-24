@@ -728,6 +728,78 @@ ALTER TABLE `users`
   MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
+
+-- Table structure for table `tbl_blog_category`
+--
+
+CREATE TABLE `tbl_blog_category` (
+  `blog_cate_id` int(11) NOT NULL,
+  `blog_cate_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_blog_category`
+--
+
+INSERT INTO `tbl_blog_category` (`blog_cate_id`, `blog_cate_name`) VALUES
+(1, 'Technology');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_blog_category`
+--
+ALTER TABLE `tbl_blog_category`
+  ADD PRIMARY KEY (`blog_cate_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tbl_blog_category`
+--
+ALTER TABLE `tbl_blog_category`
+  MODIFY `blog_cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
+--
+-- Table structure for table `tbl_blog`
+--
+
+CREATE TABLE `tbl_blog` (
+  `blog_id` int(11) NOT NULL,
+  `blog_cate_id` int(11) NOT NULL,
+  `blog_title` varchar(255) NOT NULL,
+  `blog_author` varchar(255) NOT NULL,
+  `blog_date` varchar(255) NOT NULL,
+  `blog_content` longtext NOT NULL,
+  `blog_image` varchar(255) NOT NULL,
+  `blog_tags` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_blog`
+--
+ALTER TABLE `tbl_blog`
+  ADD PRIMARY KEY (`blog_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tbl_blog`
+--
+ALTER TABLE `tbl_blog`
+  MODIFY `blog_id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
