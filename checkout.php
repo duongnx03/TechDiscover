@@ -10,6 +10,13 @@ if ($user_result) {
     $address = $row['address'];
     $phone = $row['phone'];
 }
+// Lấy giá trị từ session
+$amountDiscount = isset($_SESSION['amountDiscount']) ? $_SESSION['amountDiscount'] : 0;
+$giadagiam = isset($_SESSION['giadagiam']) ? $_SESSION['giadagiam'] : $totalPrice;
+
+// Xóa dữ liệu trong session sau khi sử dụng
+unset($_SESSION['amountDiscount']);
+unset($_SESSION['giadagiam']);
 ?>
 <!-- Start All Title Box -->
 <div class="all-title-box">
@@ -148,7 +155,7 @@ if ($user_result) {
                                 <hr class="my-1">
                                 <div class="d-flex">
                                     <h4>Coupon Discount</h4>
-                                    <div class="ml-auto font-weight-bold"></div>
+                                    <div class="ml-auto font-weight-bold">$- <?php echo $amountDiscount; ?></div>
                                 </div>
                                 <hr class="my-1">
                                 <div class="d-flex">
@@ -158,8 +165,8 @@ if ($user_result) {
                                 <hr>
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
-                                    <div class="ml-auto h5" id="totalPrice"> $ <?php echo $totalPrice?> </div>
-                                    <input type="hidden" name="total_order" id="finalTotalPrice" value="<?php echo $totalPrice; ?>">
+                                    <div class="ml-auto h5" id="totalPrice">$ <?php echo isset($giadagiam) ? ($totalPrice - $amountDiscount) : $totalPrice; ?></div>
+                                    <input type="hidden" name="total_order" id="finalTotalPrice" value="<?php echo isset($giadagiam) ? ($totalPrice - $amountDiscount) : $totalPrice; ?>">
                                 </div>
                                 <hr>
                             </div>
@@ -171,6 +178,26 @@ if ($user_result) {
         </form>
     </div>
 </div>
+<?php
+// Sau khi xử lý xong đơn hàng, bạn cần kiểm tra xem có mã giảm giá nào được sử dụng hay không
+if (!empty($code)) {
+    // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
+    $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
+    $quantityResult = $database->select($quantityQuery);
+
+    if ($quantityResult && $quantityResult->num_rows > 0) {
+        $couponQuantityData = $quantityResult->fetch_assoc();
+        $quantity = $couponQuantityData['quantity'];
+
+        if ($quantity > 0) {
+            // Giảm số lượng mã giảm giá đi 1
+            $updatedQuantity = $quantity - 1;
+            $updateQuantityQuery = "UPDATE coupon SET quantity = $updatedQuantity WHERE code = '$code'";
+            $database->update($updateQuantityQuery);
+        }
+    }
+}
+?>
 <!-- End Cart -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

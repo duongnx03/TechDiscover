@@ -14,7 +14,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['coupon
 }
     $coupons = $coupon->show_coupon(); 
 ?>
-
+<link rel="stylesheet" type="text/css" href="styles.css">
 <style>
     /* Tạo giao diện cho bảng */
 .coupon-table {
@@ -64,8 +64,7 @@ h3{
 }
 </style>
 
-<div class="admin-content-right">
-            <div class="admin-content-right">
+<div class="container">
     <h1>Coupons List</h1><br>
     <h3><a href="coupon_create.php">Create coupon</a></h3>
     <table class="coupon-table" border="1">
@@ -107,9 +106,6 @@ if ($expiry_datetime < $current_datetime) {
             </tr>
         <?php endforeach; ?>
     </table>
- 
-
-    </div>
 </div>
 <?php
     include "footer.php";

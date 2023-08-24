@@ -33,8 +33,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
+<style>
+body, h1, form {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
 
-<div class="admin-content-right">
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+
+margin-bottom: 20px;
+color: red;
+text-align: center;
+
+}
+
+form {
+display: flex;
+flex-direction: column;
+}
+.coupon-form {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="styles.css">
+
+<body>
+<div class="container">
     <h1>Update Coupon</h1>
    
     <?php if ($error_message) : ?>
@@ -45,21 +112,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="hidden" name="coupon_id" value="<?php echo $coupon_data['coupon_id']; ?>">
 
         <label for="code">Code:</label>
-        <input type="text" id="code" name="code" value="<?php echo $coupon_data['code']; ?>"><br><br>
+        <input type="text" id="code" name="code" value="<?php echo $coupon_data['code']; ?>"><br>
 
         <label for="amount">Discount Amount:</label>
-        <input type="number" id="amount" name="amount" value="<?php echo $coupon_data['amount']; ?>"><br><br>
+        <input type="number" id="amount" name="amount" value="<?php echo $coupon_data['amount']; ?>"><br>
 
         <label for="expiry_date">Expiry Date:</label>
-        <input type="datetime-local" id="expiry_date" name="expiry_date" value="<?php echo ($coupon_data['expiry_date']) ?>"><br><br>
+        <input type="datetime-local" id="expiry_date" name="expiry_date" value="<?php echo ($coupon_data['expiry_date']) ?>"><br>
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="<?php echo ($coupon_data['quantity']) ?>"><br><br>
+        <input type="number" id="quantity" name="quantity" value="<?php echo ($coupon_data['quantity']) ?>"><br>
 
         <input type="submit" value="Update Coupon">
     </form>
 </div>
-
+</body>
 <script>
 function validateForm() {
     var code = document.getElementById("code").value;

@@ -81,19 +81,72 @@ include "navbar.php";
                 </div>
             </div>
         </div>
+        <!------------------------------ ma giam gia ----------------------------- -->
+      <?php
+      $couponAmount = 0; 
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $code = $_POST['code'];
+    $database = new Database();
+
+    // Kiểm tra mã giảm giá trong cơ sở dữ liệu
+    $couponQuery = "SELECT * FROM coupon WHERE code = '$code'";
+    $couponResult = $database->select($couponQuery);
+
+    if (!$couponResult || $couponResult->num_rows === 0) {
+        // Mã giảm giá không tồn tại, hiển thị thông báo cho người dùng
+        echo "<p>Coupon code is invalid or does not exist.</p>";
+    } else {
+        // Xử lý logic khi mã giảm giá hợp lệ
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $couponData = $couponResult->fetch_assoc();
+        $expiryDate = $couponData['expiry_date'];
+        $currentDate = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại theo múi giờ của máy chủ
+
+        // So sánh thời hạn với thời gian hiện tại
+        if ($currentDate > $expiryDate) {
+            echo "<p>Coupon code has expired.</p>";
+        } else {
+            // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
+            $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
+            $quantityResult = $database->select($quantityQuery);
+
+            if (!$quantityResult || $quantityResult->num_rows === 0) {
+                echo "<p>Coupon code is invalid or does not exist.</p>";
+            } else {
+                $couponQuantityData = $quantityResult->fetch_assoc();
+                $quantity = $couponQuantityData['quantity'];
+
+                if ($quantity > 0) {
+                    // Xử lý logic khi mã giảm giá hợp lệ và số lượng > 0
+                    $couponAmount = $couponData['amount'];
+                    
+                    // Giảm số lượng mã giảm giá đi 1
+                    // $updatedQuantity = $quantity - 1;
+                    // $updateQuantityQuery = "UPDATE coupon SET quantity = $updatedQuantity WHERE code = '$code'";
+                    // $database->update($updateQuantityQuery);
+                } else {
+                    echo "<p>Coupon code is no longer available.</p>";
+                }
+    }}}
+    }
+    $giadagiam = $totalPrice - $couponAmount;
+    // Lưu giá trị vào session
+$_SESSION['amountDiscount'] = $couponAmount;
+$_SESSION['giadagiam'] = $giadagiam;?>
+    <form action="cart.php" method="POST">
         <div class="row my-5">
             <div class="col-lg-6 col-sm-6">
                 <div class="coupon-box">
                     <div class="input-group input-group-sm">
-                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text">
+                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text" name="code">
                         <div class="input-group-append">
-                            <button class="btn btn-theme" type="button">Apply Coupon</button>
+                            <button class="btn btn-theme" type="submit">Apply Coupon</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div></form>
+<!-- ---------------------------------------end ma giảm giá -------------------------------------- -->
         <div class="row my-5">
             <div class="col-lg-8 col-sm-12"></div>
             <div class="col-lg-4 col-sm-12">
@@ -106,12 +159,12 @@ include "navbar.php";
                     <hr class="my-1">
                     <div class="d-flex">
                         <h4>Coupon Discount</h4>
-                        <div class="ml-auto font-weight-bold"> $ 0 </div>
+                        <div class="ml-auto font-weight-bold">$- <?php echo isset($couponAmount) ? $couponAmount : 0 ?></div>
                     </div>
                     <hr>
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
-                        <div class="ml-auto h5" id="grand-total"> $ <?php echo $totalPrice ?> </div>
+                        <div class="ml-auto h5" id="grand-total"> $ <?php echo $couponAmount !== 0 ? ($totalPrice - $couponAmount) : $totalPrice; ?></div>
                     </div>
                     <hr>
                 </div>

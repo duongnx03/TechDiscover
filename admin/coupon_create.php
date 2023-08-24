@@ -56,8 +56,11 @@ body {
 }
 
 h1 {
-    font-size: 24px;
+
     margin-bottom: 20px;
+    color: red;
+    text-align: center;
+
 }
 
 form {
@@ -95,23 +98,22 @@ input[type="submit"]:hover {
 </style>
 
 <head>
-    <title>Create Coupon</title>
 </head>
 <body>
 <div class="container">
     <h1>Create New Coupon</h1>
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
         <label for="code">Code:</label>
-        <input type="text" id="code" name="code" required><br><br>
+        <input type="text" id="code" name="code" required><br>
 
         <label for="amount">Discount Amount:</label>
-        <input type="number" id="amount" name="amount" required><br><br>
+        <input type="number" id="amount" name="amount" required><br>
 
         <label for="expiry_date">Expiry Date:</label>
-        <input type="datetime-local" id="expiry_date" name="expiry_date" required><br><br>
+        <input type="datetime-local" id="expiry_date" name="expiry_date" required><br>
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required><br><br>
+        <input type="number" id="quantity" name="quantity" required><br>
 
         <input type="submit" value="Create Coupon">
         
