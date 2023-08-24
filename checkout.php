@@ -16,7 +16,7 @@ $giadagiam = isset($_SESSION['giadagiam']) ? $_SESSION['giadagiam'] : $totalPric
 $code = isset($_SESSION['code']) ? $_SESSION['code'] : '';
 
 // Xóa dữ liệu trong session sau khi sử dụng
-unset($_SESSION['amountDiscount']);
+// unset($_SESSION['amountDiscount']);
 unset($_SESSION['giadagiam']);
 unset($_SESSION['code']);
 // Sau khi xử lý xong đơn hàng, bạn cần kiểm tra xem có mã giảm giá nào được sử dụng hay không
@@ -170,7 +170,7 @@ if (!empty($code)) {
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
                                     <div class="ml-auto h5" id="totalPrice">$ <?php echo isset($giadagiam) ? ($totalPrice - $amountDiscount) : $totalPrice; ?></div>
-                                    <input type="hidden" name="total_order" id="finalTotalPrice" value="<?php echo isset($giadagiam) ? ($totalPrice - $amountDiscount) : $totalPrice; ?>">
+                                    <input type="hidden" name="total_order" id="finalTotalPrice" value="">
                                 </div>
                                 <hr>
                             </div>
@@ -264,11 +264,11 @@ if (!empty($code)) {
 
                     // Update the grand total including shipping fee
                     var totalOrder = parseFloat($("#finalTotalPrice").val());
-                    var grandTotal = totalOrder + shippingFeeUSD;
+                    var grandTotal = totalOrder + shippingFeeUSD - <?php echo $amountDiscount; ?>;
                     $("#totalPrice").text("$ " + grandTotal.toFixed(2));
 
                     // Calculate the total order value including shipping fee
-                    var totalOrderWithShipping = totalOrder + shippingFeeUSD;
+                    var totalOrderWithShipping = totalOrder + shippingFeeUSD - <?php echo $amountDiscount; ?>;
 
                     // Update the input value with the total order value including shipping fee
                     $("#finalTotalPrice").val(totalOrderWithShipping.toFixed(2));
