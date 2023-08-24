@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }else{
             $query = "INSERT INTO tbl_cart (user_id, product_name, product_price, product_color, product_memory_ram, product_img, quantity, total, product_id) 
-              VALUES ('$user_id', '$product_name', '$product_price', '$product_color', '$product_memory_ram', '$product_img', '$quantity', '$total', '$product_id') ORDER BY cart_id DESC";
+              VALUES ('$user_id', '$product_name', '$product_price', '$product_color', '$product_memory_ram', '$product_img', '$quantity', '$total', '$product_id')";
             $result = $db->insert($query);
             if ($result) {
                 $_SESSION["add_to_cart_result"] = "Add to Cart success!";

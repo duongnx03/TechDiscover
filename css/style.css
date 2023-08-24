@@ -2597,7 +2597,14 @@
 	border-left: 5px solid #00bba6;
 	line-height: 26px;
 }
-
+.shopping-box {
+    width: 10px;
+    margin-bottom: 15px; 
+}
+.cod{
+    height: 50px;
+    width: 100%;
+}
 
 
 

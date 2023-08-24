@@ -61,7 +61,7 @@ include "navbar.php";
                                             <p>$ <?php echo $item['product_price'] ?></p>
                                         </td>
                                         <td class="quantity-box">
-                                            <input type="number" size="4" value="<?php echo $item['quantity']; ?>" min="1" step="1" class="c-input-text qty text quantity-input" data-cart-id="<?php echo $item['cart_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" id="quantity-<?php echo $item['cart_id']; ?>" oninput="updateQuantity(this)">
+                                            <input type="number" size="4" value="<?php echo $item['quantity']; ?>" min="1" step="1" class="c-input-text qty text quantity-input" data-cart-id="<?php echo $item['cart_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" id="quantity-<?php echo $item['cart_id']; ?>" oninput="updateQuantity(this)" onkeydown="return false">
                                         </td>
                                         <td class="total-pr">
                                             <p id="total-<?php echo $item['cart_id']; ?>">$ <?php echo $item['total'] ?></p>
