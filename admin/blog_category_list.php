@@ -63,4 +63,3 @@ include "class/blog_category_class.php";
 
 <?php
 include "footer.php";
-?>
