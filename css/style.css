@@ -2607,6 +2607,17 @@
 }
 
 
+.card {
+    overflow: hidden;
+}
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.card-img-top:hover {
+    transform: scale(1.1); /* Tăng kích thước ảnh khi hover */
+    cursor: pointer; /* Biến con trỏ thành dấu tay khi hover */
+}
 
 
 

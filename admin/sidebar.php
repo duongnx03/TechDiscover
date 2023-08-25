@@ -16,6 +16,7 @@
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="index.php" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Products</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -28,7 +29,6 @@
                             <a href="stocklist.php" class="dropdown-item">Stock</a> 
                         </div>
                     </div>
-                    <a href="userlist.php" class="nav-item nav-link"><i class="fas fa-users"></i> User</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Order</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -36,6 +36,13 @@
                             <a href="order_processed.php" class="dropdown-item">Order processed</a>
                             <a href="order_completed.php" class="dropdown-item">Order completed</a>
                             <a href="order_canceled.php" class="dropdown-item">Order canceled</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Blog</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="blog_categorylist.php" class="dropdown-item">Blog Category List</a>
+                            <a href="bloglist.php" class="dropdown-item">Blog</a>
                         </div>
                     </div>
                     <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>

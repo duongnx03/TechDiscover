@@ -31,10 +31,14 @@ $query = "SELECT * FROM users
 
 $show_user = $db->query($query); // Use the query() method to perform the query
 ?>
-
+ 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
+        <form class="d-none d-md-flex ms-4" method="GET" action="userlist.php"> <!-- Chuyển hướng đến trang userlist.php để xử lý tìm kiếm -->
+                    <input class="form-control bg-dark border-0" type="search" name="search" placeholder="Search by ID, Gmail, or Username">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
             <h6 class="mb-0">User List</h6>
             <a href="userlistadd.php">ADD User</a>
         </div>
@@ -46,35 +50,32 @@ $show_user = $db->query($query); // Use the query() method to perform the query
                         <th scope="col">ID</th>
                         <th scope="col">Email</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Password</th>
+                        
                         <th scope="col">Fullname</th>
-                        <th scope="col">Address</th>
+   
                         <th scope="col">Phone</th>
                         <th scope="col">Status</th> <!-- Thêm cột Status -->
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
-                        <th scope="col">Administrator</th>
-
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
-                
-
                 <body>
                     <?php
                     if ($show_user) {
                         $i = 0;
                         while ($result = $show_user->fetch_assoc()) {
-                            $i++;
+                            if ($result['role'] !== 'admin') {
+                                $i++;
                     ?>
                             <tr>
-
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $result['id'] ?></td>
                                 <td><?php echo $result['email'] ?></td>
                                 <td><?php echo $result['username'] ?></td>
-                                <td><?php echo $result['password'] ?></td>
+                                
                                 <td><?php echo $result['fullname'] ?></td>
-                                <td><?php echo $result['address'] ?></td>
+                                
                                 <td><?php echo $result['phone'] ?></td>
                                 <td>
                                     <?php
@@ -98,6 +99,7 @@ $show_user = $db->query($query); // Use the query() method to perform the query
                     <?php
                         }
                     }
+                }
                     ?>
                 </body>
             </table>
