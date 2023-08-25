@@ -2,11 +2,101 @@
 include "header.php";
 include "navbar.php";
 include "survey_onclick.php";
-?>
 
+class question {
+    private $db;
+    public function __construct() {
+        $this->db = new Database();
+    }
+
+    public function insert_question($id, $question, $answer1, $answer2, $answer3) {
+        $query = "INSERT INTO questions(id, question, answer1, answer2, answer3) 
+                  VALUES ('$id', '$question', '$answer1', '$answer2', '$answer3')";
+
+        $result = $this->db->insert($query);
+        return $result;
+    }
+    public function show_question(){
+        $query = "SELECT * FROM questions ORDER BY id ASC ";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    public function save_survey_response($question_id, $selected_answer) {
+        $query = "INSERT INTO survey_responses (question_id, selected_answer) VALUES ('$question_id', '$selected_answer')";
+        $result = $this->db->insert($query);
+    
+        if ($result) {
+            $updateColumn = "quantity_" . $selected_answer;
+            $query = "UPDATE questions SET $updateColumn = $updateColumn + 1 WHERE id = $question_id";
+            $this->db->update($query);
+        }
+    
+        return $result;
+    }
+    
+}
+class coupon {
+    private $db;
+    private $conn;
+    public function __construct() {
+        $this->db = new Database();
+    }
+
+    // public function insert_survey($web, $gia, $spcu) {
+    //     $query = "INSERT INTO survey(web, gia, spcu) 
+    //               VALUES ('$web', '$gia', '$spcu')";
+
+    //     $result = $this->db->insert($query);
+    //     return $result;
+    // }
+    public function get_valid_coupon_code() {
+        $timezone = new DateTimeZone('Asia/Ho_Chi_Minh');
+        $current_date = new DateTime('now', $timezone);
+    
+        $query = "SELECT code, expiry_date, quantity FROM coupon WHERE expiry_date > ? AND quantity > 0 ORDER BY RAND() LIMIT 1";
+        $stmt = $this->db->link->prepare($query);
+        $current_date_format = $current_date->format('Y-m-d H:i:s');
+        $stmt->bind_param("s", $current_date_format);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+    
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+    
+            $expiry_date = DateTime::createFromFormat('Y-m-d H:i:s', $row['expiry_date'], $timezone);
+    
+            if ($current_date < $expiry_date) {
+                return $row['code'];
+            }
+        }
+    
+        return null;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["question_ids"]) && isset($_POST["answers"])) {
+    require_once 'admin/database.php';
+    $question_ids = $_POST["question_ids"];
+    $answers = $_POST["answers"];
+    $question = new question();
+
+    foreach ($question_ids as $question_id) {
+        $selected_answer = $answers[$question_id];
+        $question->save_survey_response($question_id, $selected_answer);
+    }
+    $coupon_code = ""; // Khởi tạo biến $coupon_code trước
+$coupon = new coupon();
+$coupon_code = $coupon->get_valid_coupon_code();
+echo '<script>window.location.href = "survey_xuatcode.php?coupon_code=' . urlencode($coupon_code) . '";</script>';
+}
+$question = new question();
+$questions = $question->show_question();
+
+?>
 <style>
      .khaosat{
-        margin-top: 150px;
+        margin-top: 100px;
         margin-bottom: 10px;
      }
      .khaosat h1 {
@@ -29,8 +119,15 @@ include "survey_onclick.php";
         text-align: center;
         color: #aaaaaa;
      }
-
-
+.nut{
+    font-family: monospace;
+            
+            font-size: 17px;
+            margin-left: 10%; 
+            margin-right: 10%;
+            text-align: center;
+            /* margin-top: 20px; */
+}
 input[type="submit"] {
     background-color: #4CAF50;
     color: #fff;
@@ -38,52 +135,40 @@ input[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px; /* Khoảng cách giữa nút Submit và các radio buttons */
+    margin-top: 30px; /* Khoảng cách giữa nút Submit và các radio buttons */
     margin-left: 47%
 }
 
 
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: red;
 }
 
 </style>
 <script>
 function validateSurveyForm() {
-    var webQuality = document.getElementsByName("web");
-    var priceFeelings = document.getElementsByName("gia");
-    var oldProductQuality = document.getElementsByName("spcu");
+    var questions = document.querySelectorAll('.nut');
 
-    var webSelected = false;
-    var priceSelected = false;
-    var oldProductSelected = false;
+    for (var i = 0; i < questions.length; i++) {
+        var answerRadios = questions[i].querySelectorAll('input[type="radio"]');
+        var answered = false;
 
-    for (var i = 0; i < webQuality.length; i++) {
-        if (webQuality[i].checked) {
-            webSelected = true;
-            break;
+        for (var j = 0; j < answerRadios.length; j++) {
+            if (answerRadios[j].checked) {
+                answered = true;
+                break;
+            }
+        }
+
+        if (!answered) {
+            alert('Please complete all surveys before submitting.');
+            return false;
         }
     }
 
-    for (var i = 0; i < priceFeelings.length; i++) {
-        if (priceFeelings[i].checked) {
-            priceSelected = true;
-            break;
-        }
-    }
-
-    for (var i = 0; i < oldProductQuality.length; i++) {
-        if (oldProductQuality[i].checked) {
-            oldProductSelected = true;
-            break;
-        }
-    }
-
-    if (!webSelected || !priceSelected || !oldProductSelected) {
-        alert("Please complete all surveys before submitting.");
-        return false;
-    }
+    return true;
 }
+
 </script>
 <!-- --------------- survey_onclick ------------------------>
 <style>
@@ -174,24 +259,18 @@ function validateSurveyForm() {
 <div class="khaosat">
             <h1>Send Us Opinion now!</h1>
             <h4>Please complete all surveys</h4><br>
-            <form action="survey_xuatcode.php" method="post" onsubmit="return validateSurveyForm();">
-            <p>How is the service quality of the website? 
-            <input type="radio" name="web" value="good"> Good
-            <input type="radio" name="web" value="average"> Average
-            <input type="radio" name="web" value="poor"> Poor</p> <br>
-
-            <p>How do you feel about our prices? 
-            <input type="radio" name="gia" value="reasonable"> Reasonable
-            <input type="radio" name="gia" value="quite expensive"> Quite expensive
-            <input type="radio" name="gia" value="very expensive"> Very expensive </p><br>
-
-            <p>How is the quality of the old product? 
-            <input type="radio" name="spcu" value="good"> Good
-            <input type="radio" name="spcu" value="average"> Average
-            <input type="radio" name="spcu" value="poor"> Poor </p>
-
-            <br><br>
-            <input type="submit" value="Submit">
+            <form method="post" action="" onsubmit="return validateSurveyForm();">
+        <?php foreach ($questions as $row) : ?>
+            <p><?php echo $row['question']; ?></p>
+            <div class="nut">
+            <input type="hidden" name="question_ids[]" value="<?php echo $row['id']; ?>">
+            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer1"><?php echo $row['answer1']; ?>
+            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer2"><?php echo $row['answer2']; ?>
+            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer3"><?php echo $row['answer3']; ?>
+            </div><br>
+        <?php endforeach; ?>
+        <input type="submit" value="Submit">
+    </form>
     </div>
 
 

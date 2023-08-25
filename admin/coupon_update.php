@@ -115,13 +115,13 @@ input[type="submit"]:hover {
         <input type="text" id="code" name="code" value="<?php echo $coupon_data['code']; ?>"><br>
 
         <label for="amount">Discount Amount:</label>
-        <input type="number" id="amount" name="amount" value="<?php echo $coupon_data['amount']; ?>"><br>
+        <input type="number" id="amount" name="amount" value="<?php echo $coupon_data['amount']; ?>" min="0"><br>
 
         <label for="expiry_date">Expiry Date:</label>
         <input type="datetime-local" id="expiry_date" name="expiry_date" value="<?php echo ($coupon_data['expiry_date']) ?>"><br>
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="<?php echo ($coupon_data['quantity']) ?>"><br>
+        <input type="number" id="quantity" name="quantity" value="<?php echo ($coupon_data['quantity']) ?>" min="0"><br>
 
         <input type="submit" value="Update Coupon">
     </form>
@@ -135,7 +135,7 @@ function validateForm() {
     var quantity = document.getElementById("quantity").value;
 
     if (code === "" && amount === "" && expiry_date === "" && quantity === "") {
-        alert("Vui lòng điền ít nhất 1 thông tin.");
+        alert("Please fill in at least 1 information.");
         return false;
     }
 }

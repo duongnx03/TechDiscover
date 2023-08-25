@@ -107,13 +107,13 @@ input[type="submit"]:hover {
         <input type="text" id="code" name="code" required><br>
 
         <label for="amount">Discount Amount:</label>
-        <input type="number" id="amount" name="amount" required><br>
+        <input type="number" id="amount" name="amount" min="0" required><br>
 
         <label for="expiry_date">Expiry Date:</label>
         <input type="datetime-local" id="expiry_date" name="expiry_date" required><br>
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required><br>
+        <input type="number" id="quantity" name="quantity" min="0" required><br>
 
         <input type="submit" value="Create Coupon">
         

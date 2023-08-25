@@ -1,32 +1,7 @@
 <?php
 include 'admin/class/survey_class.php';
-?>
-<?php
-$coupon_code = ""; // Khởi tạo biến để lưu mã giảm giá
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $coupon = new coupon();
-
-    // Lấy một mã giảm giá còn hiệu lực từ cơ sở dữ liệu
-    $coupon_code = $coupon->get_valid_coupon_code();
-    // if ($coupon_code) {
-    //     // Trừ quantity của mã giảm giá đi 1 đơn vị
-    //     $coupon_info = $coupon->get_coupon_by_id($coupon_code);
-    //     if ($coupon_info) {
-    //         $coupon_id = $coupon_info['coupon_id'];
-    //         $quantity = $coupon->get_coupon_quantity($coupon_id);
-            
-    //         if ($quantity > 0) {
-    //             // Giảm số lượng đi 1
-    //             $coupon->update_coupon_quantity($coupon_id, $quantity - 1);
-    //         } else {
-    //             $coupon_code = ""; // Reset biến nếu số lượng hết
-    //         }
-    //     } else {
-    //         $coupon_code = ""; // Reset biến nếu không tìm thấy thông tin mã giảm giá
-    //     }
-    // }
-}
+$coupon_code = isset($_GET["coupon_code"]) ? $_GET["coupon_code"] : "No coupon code available";
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

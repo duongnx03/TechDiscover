@@ -39,6 +39,7 @@
                         </div>
                     </div>
                     <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>
+                    <a href="question.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Survey</a>
                     <a href="../blog.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
                     <a href="widget.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                 </div>

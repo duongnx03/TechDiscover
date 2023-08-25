@@ -16,52 +16,77 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['coupon
 ?>
 <link rel="stylesheet" type="text/css" href="styles.css">
 <style>
-    /* Tạo giao diện cho bảng */
-.coupon-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+    .container {
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-.coupon-table th, .coupon-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #3300FF;
+    }
 
-.coupon-table th {
-    background-color: #f2f2f2;
-}
+    h3 {
+        text-align: right;
+        margin-right: 30px;
+    }
 
-/* Tạo giao diện cho các nút hành động */
-.btn-update, .btn-delete {
-    display: inline-block;
-    padding: 5px 10px;
-    text-decoration: none;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    table.coupon-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-.btn-update {
-    background-color: #3498db;
-}
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
 
-.btn-delete {
-    background-color: #e74c3c;
-    margin-left: 10px;
-}
-h3{
-    text-align: right;
-    margin-right: 30px;
-}
-.expired {
-    color: red;
-}
-.out-of-stock {
-    color: red;
-    font-weight: bold;
-}
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .expired {
+        color: red; /* Đã hết hạn: Màu chữ đỏ */
+    }
+
+    .out-of-stock {
+        color: gray; /* Hết hàng: Màu chữ xám */
+    }
+
+    .btn-update,
+    .btn-delete {
+        display: inline-block;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-update {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #e74c3c;
+        color: white;
+        margin-left: 10px;
+    }
+
+    .btn-update:hover,
+    .btn-delete:hover {
+        background-color: #2980b9;
+    }
 </style>
 
 <div class="container">
