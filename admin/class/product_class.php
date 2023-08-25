@@ -484,18 +484,6 @@ class product
         return $result;
     }
 
-    public function getSimilarProductsByCustomCriteria($product_id, $color, $memory_ram) {
-        $query = "SELECT * FROM tbl_product WHERE product_id != '$product_id' AND product_color = '$color' AND product_memory_ram = '$memory_ram'";
-        $result = $this->db->select($query);
-        return $result;
-    }
-
-    public function getSimilarProductsByCategoryLimit($product_id, $limit) {
-        $query = "SELECT * FROM tbl_product WHERE cartegory_id = (SELECT cartegory_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id' LIMIT $limit";
-        $result = $this->db->select($query);
-        return $result;
-    }
-
     public function get_products_by_brand($brand_name) {
         $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
                   FROM tbl_product
@@ -508,6 +496,25 @@ class product
         $result = $this->db->select($query);
         return $result;
     }
+
+    //pagination admin
+    public function getPaginatedProducts($page, $productsPerPage)
+{
+    // Tính toán offset dựa trên trang hiện tại và số lượng sản phẩm trên mỗi trang.
+    $offset = ($page - 1) * $productsPerPage;
+
+    // Sử dụng offset và limit (số lượng sản phẩm trên mỗi trang) trong truy vấn SQL.
+    $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+        FROM tbl_product
+        INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+        INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+        INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+        ORDER BY tbl_product.product_id DESC
+        LIMIT $productsPerPage OFFSET $offset";
+
+    $result = $this->db->select($query);
+    return $result;
+}
     
 }
 

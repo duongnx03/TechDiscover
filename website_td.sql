@@ -729,6 +729,9 @@ ALTER TABLE `users`
 COMMIT;
 
 
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_blog_category`
 --
 
@@ -743,6 +746,7 @@ CREATE TABLE `tbl_blog_category` (
 
 INSERT INTO `tbl_blog_category` (`blog_cate_id`, `blog_cate_name`) VALUES
 (1, 'Technology');
+(2, 'News');
 
 --
 -- Indexes for dumped tables
@@ -781,6 +785,13 @@ CREATE TABLE `tbl_blog` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `tbl_blog`
+--
+
+INSERT INTO `tbl_blog` (`blog_id`, `blog_cate_id`, `blog_title`, `blog_author`, `blog_date`, `blog_content`, `blog_image`, `blog_tags`) VALUES
+(2, 2, 'Truyền thông phương Tây trái chiều về vụ máy bay nghi chở trùm Wagner rơi', 'DuongNX', '25 August, 2023', '<p>vbb</p>', 'may-bay-1692890770-1568-1692890964.jpg', 'good');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -798,7 +809,7 @@ ALTER TABLE `tbl_blog`
 -- AUTO_INCREMENT for table `tbl_blog`
 --
 ALTER TABLE `tbl_blog`
-  MODIFY `blog_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `blog_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

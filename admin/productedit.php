@@ -13,6 +13,8 @@ error_reporting(E_ALL);
 
 <?php
 $product = new product;
+$color_list = $product->show_color();
+$memory_ram_list = $product->show_memory_ram();
 
 if (!isset($_GET['product_id']) || $_GET['product_id'] == NULL) {
     echo "<script>window.location = 'productlist.php'</script>";
@@ -25,9 +27,6 @@ $get_product = $product->get_product($product_id);
 if ($get_product) {
     $result = $get_product->fetch_assoc();
 }
-
-$color_list = $product->show_color();
-$memory_ram_list = $product->show_memory_ram();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_product = $product->update_product($_POST, $_FILES, $product_id);
