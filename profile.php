@@ -1,7 +1,10 @@
 <?php
-require 
-require '../TechDiscovery/admin/config.php';
-session_start();
+include "header.php";
+include "navbar.php";
+?>
+<?php
+
+
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
@@ -23,25 +26,75 @@ if (isset($_SESSION["id"])) {
 
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
-        // Hiển thị thông tin tài khoản
-        echo "Welcome, " . $user["fullname"] . "!<br>";
-        echo "Email: " . $user["email"] . "<br>";
-        echo "Username: " . $user["username"] . "<br>"; 
-        echo "Fullname: " . $user["fullname"] . "<br>";
-        echo "Address: " . $user["address"] . "<br>";
-        echo "Phone: " . $user["phone"] . "<br>";
     } else {
         echo "User not found.";
-    }
-} else {
-    // Xử lý đăng nhập
-    if (isset($_POST["submit"])) {
-        // ... (code xử lý đăng nhập không thay đổi)
     }
 }
 
 // Đóng kết nối
 mysqli_close($conn);
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Tiếp tục phần HTML của trang -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" cro </head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="file-upload">
+                    <div class="row mb-5 gx-5">
+                        <!-- Contact detail -->
+                        <div class="col-xxl-8 mb-5 mb-xxl-0">
+                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" placeholder="" aria-label="Username" value="<?php echo " " . $user["username"] ?>">
+                                    </div>
+                                    <!-- Last name -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fullname</label>
+                                        <input type="text" class="form-control" placeholder="" aria-label="Fullname" value="<?php echo "" . $user["fullname"] ?>">
+                                    </div>
+                                    <!-- Phone number -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control" placeholder="" aria-label="Email" value="<?php echo "" . $user["email"] ?>">
+                                    </div>
+                                    <!-- Mobile number -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Mobile number *</label>
+                                        <input type="text" class="form-control" placeholder="" aria-label="Phone number" value="<?php echo "" . $user["phone"] ?>">
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="col-md-6">
+                                        <label for="inputEmail4" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="Address" value="<?php echo " " . $user["address"] ?>">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputEmail4" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="Password" value="<?php echo " " . $user["password"] ?>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
