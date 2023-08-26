@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_SESSION["id"])) {
         $user_id = $_SESSION['id'];
     }
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
     $currentDateTime = date('Y-m-d H:i:s');
     $fullname = $_POST['fullname'];
     $phone = $_POST['phone'];
@@ -29,9 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $order_status = 'order_processing';
     $payment_method = $_POST['payment_method'];
     $status_payment = $_POST['status_payment'];
+    $paypal_id = $_POST['palpay_id'];
 
-    $insert_query = ("insert into tbl_order (user_id, order_date, payment_method, order_status, fullname, phone, email, province, district, ward, address, status_payment, total_order) values 
-        ($user_id, '$currentDateTime', '$payment_method', '$order_status', '$fullname', '$phone', '$email', '$province', '$district', '$ward', '$address', '$status_payment', '$total_order')");
+    $insert_query = ("insert into tbl_order (user_id, order_date, payment_method, order_status, fullname, phone, email, province, district, ward, address, status_payment, total_order, paypal_id) values 
+        ($user_id, '$currentDateTime', '$payment_method', '$order_status', '$fullname', '$phone', '$email', '$province', '$district', '$ward', '$address', '$status_payment', '$total_order', '$paypal_id')");
     $insert_result = $database->insert($insert_query);
 
     $select_query = "SELECT * FROM tbl_order where user_id = $user_id";
@@ -64,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $product_img = $item['product_img'];
             $product_id = $item['product_id'];
             $order_query = ("insert into tbl_order_items (order_id, product_img, product_name, product_color, product_memory_ram, quantity, user_id) values 
-            ($order_id, '$product_img', '$product_name', '$product_color', '$product_memory_ram', $quantity, $user_id)");
+            ($order_id, '$product_img', '$product_name', '$product_color', '$product_memory_ram', $quantity, $product_id)");
             $order_result = $database->insert($order_query);
             $select_product = "SELECT product_quantity FROM tbl_product WHERE product_id = $product_id";
             $result_product = $database->select($select_product);

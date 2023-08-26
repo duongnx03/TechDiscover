@@ -23,9 +23,9 @@ if (!empty($searchTerm)) {
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Brand List</h6>
-            <form class="form-inline row" action="brandlist.php" method="GET">
-                <input class="form-control bg-dark border-0" type="search" placeholder="Search by Brand Name" name="search" value="<?php echo $searchTerm; ?>">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-none d-md-flex ms-4" method="GET" action="brandlist.php">
+                <input class="form-control bg-dark border-0" type="search" name="search" placeholder="Search by Brand Name">
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
             <a href="brand_add.php">ADD Brand</a>
         </div>
@@ -59,13 +59,13 @@ if (!empty($searchTerm)) {
                                     <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['brand_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
-                    <?php
+                        <?php
                         }
                     } elseif (!$searchTerm && $show_brand) {
                         $i = 0;
                         while ($result = $show_brand->fetch_assoc()) {
                             $i++;
-                    ?>
+                        ?>
                             <tr>
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $result['brand_id'] ?></td>

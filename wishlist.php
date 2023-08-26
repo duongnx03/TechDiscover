@@ -93,7 +93,7 @@ if ($wishlist_result) {
                                                 <input type="hidden" value="<?php echo $item['product_price']; ?>" name="product_price">
                                             </td>
                                             <td class="quantity-box">
-                                                <input name="quantity" type="number" size="4" value="<?php echo $item['quantity']; ?>" min="1" step="1" class="c-input-text qty text quantity-input" data-cart-id="<?php echo $item['wishlist_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" id="quantity-<?php echo $item['wishlist_id']; ?>" oninput="updateQuantity(this)">
+                                                <input name="quantity" type="number" size="4" value="<?php echo $item['quantity']; ?>" min="1" step="1" class="c-input-text qty text quantity-input" data-cart-id="<?php echo $item['wishlist_id']; ?>" data-product-price="<?php echo $item['product_price']; ?>" id="quantity-<?php echo $item['wishlist_id']; ?>" oninput="updateQuantity(this)" onkeydown="return false">
                                             </td>
                                             <td class="total-pr">
                                                 <p id="total-<?php echo $item['wishlist_id']; ?>">$ <?php echo $item['total'] ?></p>

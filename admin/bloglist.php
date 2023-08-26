@@ -8,18 +8,28 @@ include "class/blog_class.php";
 <?php
 $blog = new Blog;
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $blog->show_blog();
+$totalBlogs = $blog->countBlogs();
+$blogsPerPage = 6;
+$totalPages = ceil($totalBlogs / $blogsPerPage);
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($currentPage < 1 || $currentPage > $totalPages) {
+    $currentPage = 1; // Đảm bảo trang hiện tại hợp lệ
+}
+
+$offset = ($currentPage - 1) * $blogsPerPage;
+$show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $blog->getBlogsPaginated($offset, $blogsPerPage);
 ?>
 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Blog List</h6>
-            <form class="form-inline row" action="bloglist.php" method="GET">
-                <input class="form-control bg-dark border-0" type="search" placeholder="Search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-none d-md-flex ms-4" method="GET" action="bloglist.php">
+                <input class="form-control bg-dark border-0" type="search" name="search" placeholder="Search by Title">
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
-            <a href="blogadd.php">ADD Blog</a>
+            <a href="blog_add.php">ADD Blog</a>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -59,10 +69,10 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
                                     <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['blog_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
-                    <?php
+                        <?php
                         }
                     } else {
-                    ?>
+                        ?>
                         <tr>
                             <td colspan="9">No blogs found.</td>
                         </tr>
@@ -71,9 +81,57 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
                     ?>
                 </tbody>
             </table>
+        </div><br>
+        <div class="pagination-container">
+            <div class="pagination">
+                <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+                    <a href="bloglist.php?page=<?php echo $page; ?>&search=<?php echo $searchTerm; ?>" class="<?php echo ($page === $currentPage) ? 'active' : ''; ?>"><?php echo $page; ?></a>
+                <?php endfor; ?>
+            </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    /* Định dạng container chứa phân trang */
+    .pagination-container {
+        text-align: center;
+        /* Căn giữa nội dung */
+    }
+
+    /* Định dạng nút phân trang */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 16px;
+        text-decoration: none;
+        color: red;
+        border: 1px solid red;
+        margin: 2px;
+        border-radius: 4px;
+    }
+
+    /* Định dạng nút phân trang hoạt động */
+    .pagination a.active {
+        background-color: red;
+        color: white;
+        border: 1px solid black;
+    }
+
+    /* Định dạng nút phân trang khi di chuột qua */
+    .pagination a:hover {
+        background-color: black;
+        color: white;
+    }
+</style>
 
 <script>
     // Function for blog-delete

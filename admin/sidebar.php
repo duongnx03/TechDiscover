@@ -41,7 +41,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Blog</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="blog_categorylist.php" class="dropdown-item">Blog Category List</a>
+                            <a href="blog_category_list.php" class="dropdown-item">Blog Category List</a>
                             <a href="bloglist.php" class="dropdown-item">Blog</a>
                         </div>
                     </div>

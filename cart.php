@@ -3,7 +3,7 @@ include "header.php";
 include "navbar.php";
 ?>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Start All Title Box -->
 <div class="all-title-box">
     <div class="container">
@@ -43,6 +43,8 @@ include "navbar.php";
                             <?php
                             if (!empty($cartItems)) {
                                 foreach ($cartItems as $item) {
+                                    $cart_id = $item["cart_id"];
+                                    $quantity = $item["quantity"];
                             ?>
                                     <tr>
                                         <td class="thumbnail-img">
@@ -82,79 +84,82 @@ include "navbar.php";
             </div>
         </div>
         <!------------------------------ ma giam gia ----------------------------- -->
-      <?php
-      $couponAmount = 0; 
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $code = $_POST['code'];
-    $database = new Database();
+        <?php
+        $couponAmount = 0;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $code = $_POST['code'];
+            $database = new Database();
 
-    // Kiểm tra mã giảm giá trong cơ sở dữ liệu
-    $couponQuery = "SELECT * FROM coupon WHERE code = '$code'";
-    $couponResult = $database->select($couponQuery);
+            // Kiểm tra mã giảm giá trong cơ sở dữ liệu
+            $couponQuery = "SELECT * FROM coupon WHERE code = '$code'";
+            $couponResult = $database->select($couponQuery);
 
-    if (!$couponResult || $couponResult->num_rows === 0) {
-        // Mã giảm giá không tồn tại, hiển thị thông báo cho người dùng
-        echo "<p>Coupon code is invalid or does not exist.</p>";
-    } else {
-        // Xử lý logic khi mã giảm giá hợp lệ
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $couponData = $couponResult->fetch_assoc();
-        $expiryDate = $couponData['expiry_date'];
-        $currentDate = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại theo múi giờ của máy chủ
-
-        // So sánh thời hạn với thời gian hiện tại
-        if ($currentDate > $expiryDate) {
-            echo "<p>Coupon code has expired.</p>";
-        } else {
-            // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
-            $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
-            $quantityResult = $database->select($quantityQuery);
-
-            if (!$quantityResult || $quantityResult->num_rows === 0) {
+            if (!$couponResult || $couponResult->num_rows === 0) {
+                // Mã giảm giá không tồn tại, hiển thị thông báo cho người dùng
                 echo "<p>Coupon code is invalid or does not exist.</p>";
             } else {
-                $couponQuantityData = $quantityResult->fetch_assoc();
-                $quantity = $couponQuantityData['quantity'];
+                // Xử lý logic khi mã giảm giá hợp lệ
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $couponData = $couponResult->fetch_assoc();
+                $expiryDate = $couponData['expiry_date'];
+                $currentDate = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại theo múi giờ của máy chủ
 
-                if ($quantity > 0) {
-                    // Xử lý logic khi mã giảm giá hợp lệ và số lượng > 0
-                    $couponAmount = $couponData['amount'];
-                    
-                    // Giảm số lượng mã giảm giá đi 1
-                    // $updatedQuantity = $quantity - 1;
-                    // $updateQuantityQuery = "UPDATE coupon SET quantity = $updatedQuantity WHERE code = '$code'";
-                    // $database->update($updateQuantityQuery);
+                // So sánh thời hạn với thời gian hiện tại
+                if ($currentDate > $expiryDate) {
+                    echo "<p>Coupon code has expired.</p>";
                 } else {
-                    echo "<p>Coupon code is no longer available.</p>";
+                    // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
+                    $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
+                    $quantityResult = $database->select($quantityQuery);
+
+                    if (!$quantityResult || $quantityResult->num_rows === 0) {
+                        echo "<p>Coupon code is invalid or does not exist.</p>";
+                    } else {
+                        $couponQuantityData = $quantityResult->fetch_assoc();
+                        $quantity = $couponQuantityData['quantity'];
+
+                        if ($quantity > 0) {
+                            // Xử lý logic khi mã giảm giá hợp lệ và số lượng > 0
+                            $couponAmount = $couponData['amount'];
+
+                            // Giảm số lượng mã giảm giá đi 1
+                            // $updatedQuantity = $quantity - 1;
+                            // $updateQuantityQuery = "UPDATE coupon SET quantity = $updatedQuantity WHERE code = '$code'";
+                            // $database->update($updateQuantityQuery);
+                        } else {
+                            echo "<p>Coupon code is no longer available.</p>";
+                        }
+                    }
                 }
-    }}}
-    }
-    if ($totalPrice === 0) {
-    echo "<p>You cannot use the coupon code as there are no products in your cart.</p>";
-    $couponAmount = $totalPrice;
-} else {
-    $giadagiam = $totalPrice - $couponAmount;
-    // Lưu giá trị vào session
-    $_SESSION['amountDiscount'] = $couponAmount;
-    $_SESSION['giadagiam'] = $giadagiam;
-    if ($couponAmount !== 0) {
-        $_SESSION['code'] = $code;
-    }
-}?>
-    <form action="cart.php" method="POST">
-        <div class="row my-5">
-            <div class="col-lg-6 col-sm-6">
-                <div class="coupon-box">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text" name="code">
-                        <div class="input-group-append">
-                            <button class="btn btn-theme" type="submit">Apply Coupon</button>
+            }
+        }
+        if ($totalPrice === 0) {
+            echo "<p>You cannot use the coupon code as there are no products in your cart.</p>";
+            $couponAmount = $totalPrice;
+        } else {
+            $giadagiam = $totalPrice - $couponAmount;
+            // Lưu giá trị vào session
+            $_SESSION['amountDiscount'] = $couponAmount;
+            $_SESSION['giadagiam'] = $giadagiam;
+            if ($couponAmount !== 0) {
+                $_SESSION['code'] = $code;
+            }
+        } ?>
+        <form action="cart.php" method="POST">
+            <div class="row my-5">
+                <div class="col-lg-6 col-sm-6">
+                    <div class="coupon-box">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text" name="code">
+                            <div class="input-group-append">
+                                <button class="btn btn-theme" type="submit">Apply Coupon</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div></form>
-<!-- ---------------------------------------end ma giảm giá -------------------------------------- -->
+        </form>
+        <!-- ---------------------------------------end ma giảm giá -------------------------------------- -->
         <div class="row my-5">
             <div class="col-lg-8 col-sm-12"></div>
             <div class="col-lg-4 col-sm-12">
@@ -176,8 +181,10 @@ include "navbar.php";
                     </div>
                     <hr>
                 </div>
-                </div>
-                <div class="col-12 d-flex shopping-box"><a href="checkout.php" class="ml-auto btn hvr-hover">Checkout</a> </div>
+            </div>
+            <div class="col-12 d-flex shopping-box">
+                <button class="btn btn-danger" onclick="checkProductQuantity(<?php echo $cart_id; ?>, <?php echo $quantity; ?>)">Checkout</button>
+            </div>
         </div>
 
     </div>
@@ -185,6 +192,25 @@ include "navbar.php";
 </div>
 <!-- End Cart -->
 <script>
+    function checkProductQuantity(cartId, quantity) {
+        $.ajax({
+            type: "POST",
+            url: "admin/check_quantity.php",
+            data: {
+                cartId: cartId,
+                quantity: quantity
+            },
+            success: function(response) {
+                var parsedResponse = JSON.parse(response); // Parse phản hồi JSON
+                if (parsedResponse.status === 'success') {
+                    window.location.href = 'checkout.php';
+                } else {
+                    alert(parsedResponse.message);
+                }
+            }
+        });
+    }
+
     function confirmDelete(cartId) {
         var confirmation = confirm("Are you sure you want to delete this product from the cart?");
         if (confirmation) {
@@ -204,8 +230,8 @@ include "navbar.php";
         const newTotal = newQuantity * productPrice;
         totalField.textContent = "$ " + newTotal.toFixed(2);
 
-          // Update the database via Ajax
-          const xhr = new XMLHttpRequest();
+        // Update the database via Ajax
+        const xhr = new XMLHttpRequest();
         xhr.open("POST", "admin/process-cart-edit.php?id=" + cartId, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
@@ -215,7 +241,7 @@ include "navbar.php";
 
                 if (response.error) {
                     alert(response.message);
-                    input.value = response.old_quantity; 
+                    input.value = response.old_quantity;
                     totalField.textContent = "$ " + response.old_total;
                 } else {
                     console.log(response.message);
