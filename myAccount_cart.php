@@ -97,7 +97,7 @@ if ($order_result) {
                                                     <b><?php echo $item['status_payment'] ?></b>
                                                 </td>
                                                 <td class="price-pr">
-                                                    <p>$ <?php echo number_format($item['total_order']); ?></p>
+                                                    <p>$ <?php echo $item['total_order']; ?></p>
                                                 </td>
                                                 <td class="remove-pr">
                                                     <button class="btn btn-danger view-details" data-order-id="<?php echo $item['order_id']; ?>">View Details</button>
@@ -106,10 +106,11 @@ if ($order_result) {
                                             <tr>
                                                 <td colspan="7" align="right">
                                                     <?php if ($item['order_status'] === 'order_processing') { ?>
-                                                        <button class="btn btn-danger" id="cancel" data-order-id="<?php echo $item['order_id']; ?>">Cancel Order</button>
+                                                        <button class="btn btn-danger" onclick="confirmCancel(<?php echo $item['order_id'] ?>)">Cancel Order</button>
+
                                                     <?php } ?>
                                                     <?php if ($item['order_status'] === 'delivered_carrier') { ?>
-                                                        <button class="btn btn-danger" id="delivered" data-order-id="<?php echo $item['order_id']; ?>">Received Order</button>
+                                                        <button class="btn btn-danger" onclick="confirmDelivered(<?php echo $item['order_id'] ?>)">Received Order</button>
                                                     <?php } ?>
                                                 </td>
                                             </tr>
@@ -129,6 +130,24 @@ if ($order_result) {
 <!-- End Shop Page -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function confirmCancel(orderId) {
+        var confirmation = confirm("Are you sure you want to cancel your order?");
+        if (confirmation) {
+            window.location.href = "admin/process-cancel-order.php?id=" + orderId;
+        } else {
+
+        }
+    }
+
+    function confirmDelivered(orderId) {
+        var confirmation = confirm("Confirm you have received the item");
+        if (confirmation) {
+            window.location.href = "admin/process-complete-order.php?id=" + orderId;
+        } else {
+
+        }
+    }
+
     $(document).ready(function() {
         // Xử lý sự kiện khi người dùng click vào nút "Xem Chi Tiết"
         $(".view-details").click(function() {
@@ -169,52 +188,6 @@ if ($order_result) {
                 }
             });
         });
-
-        // Xử lý sự kiện khi người dùng click vào nút "Hủy Đơn Hàng"
-        $("#cancel").click(function() {
-            var orderId = $(this).data("order-id");
-            var result = confirm("Are you sure you want to cancel the order?");
-
-            // Nếu người dùng xác nhận
-            if (result) {
-                $.ajax({
-                    url: "admin/process-cancel-order.php",
-                    type: "POST", // Sử dụng phương thức POST
-                    data: {
-                        order_id: orderId
-                    },
-                    success: function(response) {
-                        console.log("Hủy đơn hàng thành công.");
-                        // Tùy chọn: Cập nhật giao diện hoặc hiển thị thông báo thành công
-                    },
-                    error: function(error) {
-                        console.error("Có lỗi xảy ra khi hủy đơn hàng.");
-                    }
-                });
-            }
-        });
-    });
-    $("#delivered").click(function() {
-    var orderId = $(this).data("order-id");
-    var result = confirm("Confirm that the goods have been received");
-
-    // Nếu người dùng xác nhận
-    if (result) {s
-        $.ajax({
-            url: "admin/process-complete-order.php",
-            type: "POST", // Sử dụng phương thức POST
-            data: {
-                order_id: orderId
-            },
-            success: function(response) {
-                console.log("Hủy đơn hàng thành công.");
-                // Tùy chọn: Cập nhật giao diện hoặc hiển thị thông báo thành công
-            },
-            error: function(error) {
-                console.error("Có lỗi xảy ra khi hủy đơn hàng.");
-            }
-        });
-    }
     });
 </script>
 <?php

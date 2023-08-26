@@ -97,7 +97,7 @@ if ($order_result) {
                                                 <b><?php echo $item['status_payment'] ?></b>
                                             </td>
                                             <td class="price-pr">
-                                                <p>$ <?php echo number_format($item['total_order']); ?></p>
+                                                <p>$ <?php echo $item['total_order']?></p>
                                             </td>
                                             <td class="remove-pr">
                                                 <button class="btn btn-danger view-details" data-order-id="<?php echo $item['order_id']; ?>">View Details</button>
