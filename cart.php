@@ -172,7 +172,7 @@ include "navbar.php";
                     <hr>
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
-                        <div class="ml-auto h5" id="grand-total"> $ <?php echo $couponAmount !== 0 ? ($totalPrice - $couponAmount) : $totalPrice; ?></div>
+                        <div class="ml-auto h5" id="grand-total"> $ <?php echo $couponAmount !== 0 ? max(0, ($totalPrice - $couponAmount)) : $totalPrice; ?></div>
                     </div>
                     <hr>
                 </div>

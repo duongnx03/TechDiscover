@@ -169,7 +169,7 @@ if (!empty($code)) {
                                 <hr>
                                 <div class="d-flex gr-total">
                                     <h5>Grand Total</h5>
-                                    <div class="ml-auto h5" id="totalPrice">$ <?php echo isset($giadagiam) ? ($totalPrice - $amountDiscount) : $totalPrice; ?></div>
+                                    <div class="ml-auto h5" id="totalPrice">$ <?php echo isset($giadagiam) ? max(0, ($totalPrice - $amountDiscount)) : $totalPrice; ?></div>
                                     <input type="hidden" name="total_order" id="finalTotalPrice" value="">
                                 </div>
                                 <hr>
@@ -265,11 +265,16 @@ if (!empty($code)) {
                     // Update the grand total including shipping fee
                     var totalOrder = parseFloat($("#finalTotalPrice").val());
                     var grandTotal = totalOrder + shippingFeeUSD - <?php echo $amountDiscount; ?>;
+                    if (grandTotal < 0) {
+                     grandTotal = 0;
+                    }
                     $("#totalPrice").text("$ " + grandTotal.toFixed(2));
 
                     // Calculate the total order value including shipping fee
                     var totalOrderWithShipping = totalOrder + shippingFeeUSD - <?php echo $amountDiscount; ?>;
-
+                    if (totalOrderWithShipping < 0) {
+                        totalOrderWithShipping = 0;
+                    }
                     // Update the input value with the total order value including shipping fee
                     $("#finalTotalPrice").val(totalOrderWithShipping.toFixed(2));
                 }
