@@ -109,16 +109,16 @@ include "navbar.php";
                     echo "<p>Coupon code has expired.</p>";
                 } else {
                     // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
-                    $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
+                    $quantityQuery = "SELECT quantity_coupon FROM coupon WHERE code = '$code'";
                     $quantityResult = $database->select($quantityQuery);
 
                     if (!$quantityResult || $quantityResult->num_rows === 0) {
                         echo "<p>Coupon code is invalid or does not exist.</p>";
                     } else {
                         $couponQuantityData = $quantityResult->fetch_assoc();
-                        $quantity = $couponQuantityData['quantity'];
+                        $quantity_coupon = $couponQuantityData['quantity_coupon'];
 
-                        if ($quantity > 0) {
+                        if ($quantity_coupon > 0) {
                             // Xử lý logic khi mã giảm giá hợp lệ và số lượng > 0
                             $couponAmount = $couponData['amount'];
 

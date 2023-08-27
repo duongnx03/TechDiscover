@@ -14,9 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $code = $_POST['code'];
     $amount = $_POST['amount'];
     $expiry_date = $_POST['expiry_date'];
-    $quantity = $_POST['quantity'];
+    $quantity_coupon = $_POST['quantity_coupon'];
 
-    $result = $coupon->update_coupon($coupon_id, $code, $amount, $expiry_date, $quantity);
+    $result = $coupon->update_coupon($coupon_id, $code, $amount, $expiry_date, $quantity_coupon);
 
     if ($result) {
         // Cập nhật thành công, chuyển hướng người dùng về trang danh sách coupon
@@ -120,8 +120,8 @@ input[type="submit"]:hover {
         <label for="expiry_date">Expiry Date:</label>
         <input type="datetime-local" id="expiry_date" name="expiry_date" value="<?php echo ($coupon_data['expiry_date']) ?>"><br>
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="<?php echo ($coupon_data['quantity']) ?>" min="0"><br>
+        <label for="quantity_coupon">Quantity:</label>
+        <input type="number" id="quantity_coupon" name="quantity_coupon" value="<?php echo ($coupon_data['quantity_coupon']) ?>" min="0"><br>
 
         <input type="submit" value="Update Coupon">
     </form>
@@ -132,9 +132,9 @@ function validateForm() {
     var code = document.getElementById("code").value;
     var amount = document.getElementById("amount").value;
     var expiry_date = document.getElementById("expiry_date").value;
-    var quantity = document.getElementById("quantity").value;
+    var quantity_coupon = document.getElementById("quantity_coupon").value;
 
-    if (code === "" && amount === "" && expiry_date === "" && quantity === "") {
+    if (code === "" && amount === "" && expiry_date === "" && quantity_coupon === "") {
         alert("Please fill in at least 1 information.");
         return false;
     }

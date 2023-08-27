@@ -19,7 +19,7 @@ class coupon {
         $timezone = new DateTimeZone('Asia/Ho_Chi_Minh');
         $current_date = new DateTime('now', $timezone);
     
-        $query = "SELECT code, expiry_date, quantity FROM coupon WHERE expiry_date > ? AND quantity > 0 ORDER BY RAND() LIMIT 1";
+        $query = "SELECT code, expiry_date, quantity_coupon FROM coupon WHERE expiry_date > ? AND quantity_coupon > 0 ORDER BY RAND() LIMIT 1";
         $stmt = $this->db->link->prepare($query);
         $current_date_format = $current_date->format('Y-m-d H:i:s');
         $stmt->bind_param("s", $current_date_format);
@@ -40,20 +40,20 @@ class coupon {
         return null;
     }
     
-    public function get_coupon_quantity($coupon_id) {
-        $query = "SELECT quantity FROM coupon WHERE coupon_id = ?";
+    public function get_coupon_quantity_coupon($coupon_id) {
+        $query = "SELECT quantity_coupon FROM coupon WHERE coupon_id = ?";
         $stmt = $this->db->link->prepare($query);
         $stmt->bind_param("i", $coupon_id);
         $stmt->execute();
-        $stmt->bind_result($quantity);
+        $stmt->bind_result($quantity_coupon);
         $stmt->fetch();
         $stmt->close();
-        return $quantity;
+        return $quantity_coupon;
     }
 
     // Cập nhật số lượng của mã giảm giá
-    public function update_coupon_quantity($coupon_id, $quantity) {
-        $query = "UPDATE coupon SET quantity = ? WHERE coupon_id = ?";
+    public function update_coupon_quantity_coupon($coupon_id, $quantity_coupon) {
+        $query = "UPDATE coupon SET quantity_coupon = ? WHERE coupon_id = ?";
         $stmt = $this->db->link->prepare($query);
         $stmt->bind_param("i", $coupon_id);
         $stmt->execute();
@@ -62,7 +62,7 @@ class coupon {
         return $result;
     }
     public function get_coupon_by_id($coupon_id) {
-        $query = "SELECT coupon_id, code, amount, expiry_date, created_at, quantity FROM coupon WHERE coupon_id = '$coupon_id'";
+        $query = "SELECT coupon_id, code, amount, expiry_date, created_at, quantity_coupon FROM coupon WHERE coupon_id = '$coupon_id'";
         $result = $this->db->select($query);
         return $result;
     }    

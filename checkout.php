@@ -22,17 +22,17 @@ unset($_SESSION['code']);
 // Sau khi xử lý xong đơn hàng, bạn cần kiểm tra xem có mã giảm giá nào được sử dụng hay không
 if (!empty($code)) {
     // Kiểm tra số lượng mã giảm giá còn lớn hơn 0
-    $quantityQuery = "SELECT quantity FROM coupon WHERE code = '$code'";
+    $quantityQuery = "SELECT quantity_coupon FROM coupon WHERE code = '$code'";
     $quantityResult = $database->select($quantityQuery);
 
     if ($quantityResult && $quantityResult->num_rows > 0) {
         $couponQuantityData = $quantityResult->fetch_assoc();
-        $quantity = $couponQuantityData['quantity'];
+        $quantity_coupon = $couponQuantityData['quantity_coupon'];
 
-        if ($quantity > 0) {
+        if ($quantity_coupon > 0) {
             // Giảm số lượng mã giảm giá đi 1
-            $updatedQuantity = $quantity - 1;
-            $updateQuantityQuery = "UPDATE coupon SET quantity = $updatedQuantity WHERE code = '$code'";
+            $updatedQuantity = $quantity_coupon - 1;
+            $updateQuantityQuery = "UPDATE coupon SET quantity_coupon = $updatedQuantity WHERE code = '$code'";
             $database->update($updateQuantityQuery);
         }
     }

@@ -114,15 +114,15 @@ if ($expiry_datetime < $current_datetime) {
 } else {
     $expired_class = ''; // Còn hiệu lực
 }
-                $quantity = $row['quantity'];
-                $out_of_stock_class = ($quantity <= 0) ? 'out-of-stock' : '';
+                $quantity_coupon = $row['quantity_coupon'];
+                $out_of_stock_class = ($quantity_coupon <= 0) ? 'out-of-stock' : '';
             ?>
             <tr>
                 <td><?php echo $stt++; ?></td>
                 <td><?php echo $row['code']; ?></td>
                 <td><?php echo $row['amount']; ?></td>
                 <td class="<?php echo $expired_class; ?>"><?php echo $row['expiry_date']; ?></td>
-                <td class="<?php echo $out_of_stock_class; ?>"><?php echo $quantity; ?></td>
+                <td class="<?php echo $out_of_stock_class; ?>"><?php echo $quantity_coupon; ?></td>
                 <td>
                 <a class="btn-update" href="coupon_update.php?coupon_id=<?php echo $row['coupon_id']; ?>">Update</a>
 

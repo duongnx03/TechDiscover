@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $amount = $_POST['amount'];
     $expiry_date = $_POST['expiry_date'];
     $created_at = date('Y-m-d H:i:s');
-    $quantity = $_POST['quantity'];
+    $quantity_coupon = $_POST['quantity_coupon'];
     $coupon = new coupon();
 
     $existing_coupon = $coupon->get_coupon_by_code($code); // Assume get_coupon_by_code() retrieves coupon by code
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Expiry date is not in the future
             echo "Expiry date must be in the future.";
         } else {
-            $coupon->insert_coupon($coupon_id, $code, $amount, $expiry_date, $created_at, $quantity);
+            $coupon->insert_coupon($coupon_id, $code, $amount, $expiry_date, $created_at, $quantity_coupon);
             echo "<script>window.location.href = 'coupon.php';</script>";
             exit;
         }
@@ -112,8 +112,8 @@ input[type="submit"]:hover {
         <label for="expiry_date">Expiry Date:</label>
         <input type="datetime-local" id="expiry_date" name="expiry_date" required><br>
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="0" required><br>
+        <label for="quantity_coupon">Quantity:</label>
+        <input type="number" id="quantity_coupon" name="quantity_coupon" min="0" required><br>
 
         <input type="submit" value="Create Coupon">
         

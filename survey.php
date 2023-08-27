@@ -89,7 +89,7 @@ class coupon {
         $timezone = new DateTimeZone('Asia/Ho_Chi_Minh');
         $current_date = new DateTime('now', $timezone);
     
-        $query = "SELECT code, expiry_date, quantity FROM coupon WHERE expiry_date > ? AND quantity > 0 ORDER BY RAND() LIMIT 1";
+        $query = "SELECT code, expiry_date, quantity_coupon FROM coupon WHERE expiry_date > ? AND quantity_coupon > 0 ORDER BY RAND() LIMIT 1";
         $stmt = $this->db->link->prepare($query);
         $current_date_format = $current_date->format('Y-m-d H:i:s');
         $stmt->bind_param("s", $current_date_format);
