@@ -52,9 +52,10 @@ if ($order_result) {
                             <h3>Purchase Order</h3>
                         </div>
                         <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
-                            <a href="myAccount_cart.php" class="list-group-item list-group-item-action active">Purchase</a>
-                            <a href="myAccount_cart_complete.php" class="list-group-item list-group-item-action">Complete</a>
-                            <a href="myAccount_cart_canceled.php" class="list-group-item list-group-item-action">Cancelled</a>
+                            <a href="myAccount_order.php" class="list-group-item list-group-item-action active">Purchase</a>
+                            <a href="myAccount_order_complete.php" class="list-group-item list-group-item-action">Complete</a>
+                            <a href="myAccount_order_cancel.php" class="list-group-item list-group-item-action">Cancel</a>
+                            <a href="myAccount_order_return.php" class="list-group-item list-group-item-action">Return</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +92,7 @@ if ($order_result) {
                                                     <b><?php echo $item['order_date'] ?></b>
                                                 </td>
                                                 <td class="name-pr">
-                                                    <b><?php echo $item['order_status'] ?></b>
+                                                    <b style="color: red;"><?php echo $item['order_status'] ?></b>
                                                 </td>
                                                 <td class="name-pr">
                                                     <b><?php echo $item['status_payment'] ?></b>
@@ -166,7 +167,7 @@ if ($order_result) {
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="orderDetailsModalLabel${orderId}">Chi Tiết Đơn Hàng</h5>
+                                    <h5 class="modal-title" id="orderDetailsModalLabel${orderId}">Order details</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

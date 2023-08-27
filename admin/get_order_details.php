@@ -47,6 +47,7 @@ if (isset($_GET['order_id'])) {
                         <th scope="col">Name</th>
                         <th scope="col">Color</th>
                         <th scope="col">Ram</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
                     </tr>
                 </thead>
@@ -63,6 +64,7 @@ if (isset($_GET['order_id'])) {
                                 <td><?php echo $row['product_name'] ?></td>
                                 <td><?php echo $row['product_color'] ?></td>
                                 <td><?php echo $row['product_memory_ram'] ?></td>
+                                <td>$ <?php echo $row['product_price'] ?></td>
                                 <td><?php echo $row['quantity'] ?></td>
                             </tr>
                     <?php

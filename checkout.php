@@ -180,10 +180,12 @@ if (!empty($code)) {
                         <input type="hidden" name="paypal_id" id="paypal_id" value="">
                         <div class="col-12 d-flex shopping-box"><button type="submit" class="btn btn-danger cod" onclick="setPaymentMethod()">Confirm and place order | COD</button></div>
                         <div class="col-12 d-flex shopping-box" id='paypal-button-container'></div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
-
 <!-- End Cart -->
 
 <!-- End Cart -->
@@ -267,7 +269,7 @@ if (!empty($code)) {
                     var totalOrder = parseFloat($("#finalTotalPrice").val());
                     var grandTotal = totalOrder + shippingFeeUSD - <?php echo $amountDiscount; ?>;
                     if (grandTotal < 0) {
-                     grandTotal = 0;
+                        grandTotal = 0;
                     }
                     $("#totalPrice").text("$ " + grandTotal.toFixed(2));
 
@@ -358,24 +360,11 @@ if (!empty($code)) {
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(orderData) {
                 console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                sendIPN(orderData.id);
-                document.getElementById('paypal_id').value = orderData.id;
                 document.getElementById('status_payment').value = 'completed';
                 document.getElementById("order-form").submit();
             });
         }
     }).render('#paypal-button-container');
-
-    function sendIPN(transactionID, paypalAccountID) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'admin/ipn-handler.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        // Truyền cả ID tài khoản thanh toán
-        var postData = 'transaction_id=' + encodeURIComponent(transactionID) +
-
-        xhr.send(postData);
-    }
 </script>
 <?php
 include "footer.php";

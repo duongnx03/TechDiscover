@@ -3,7 +3,7 @@ include "database.php";
 $db = new Database;
 if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
-    $query = "select * from tbl_order_items where order_id = $order_id";
+    $query = "select * from tbl_order_items where order_id = $order_id and is_returned = 1";
     $result = $db->select($query);
 }
 ?>
@@ -60,6 +60,8 @@ if (isset($_GET['order_id'])) {
                         <th scope="col">Ram</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Return Reason</th>
+                        <th scope="col">Return Image</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +79,8 @@ if (isset($_GET['order_id'])) {
                                 <td><?php echo $row['product_memory_ram'] ?></td>
                                 <td>$ <?php echo $row['product_price'] ?></td>
                                 <td><?php echo $row['quantity'] ?></td>
+                                <td><?php echo $row['return_reason'] ?></td>
+                                <td><img src="admin/uploads/<?php echo $row['return_img'] ?>" alt="Product Image" style="max-width: 100px;"></td>
                             </tr>
                     <?php
                         }
