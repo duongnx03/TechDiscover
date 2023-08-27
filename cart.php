@@ -182,7 +182,7 @@ include "navbar.php";
                     <hr>
                 </div>
             </div>
-            <div class="col-12 d-flex shopping-box">
+            <div class="col-12 d-flex shopping-box justify-content-end">
                 <button class="btn btn-danger" onclick="checkProductQuantity(<?php echo $cart_id; ?>, <?php echo $quantity; ?>)">Checkout</button>
             </div>
         </div>
