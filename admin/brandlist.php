@@ -66,7 +66,6 @@ if (!empty($searchTerm)) {
                         ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['brand_id'] ?></td>
                                 <td><?php echo $result['cartegory_main_name'] ?></td>
                                 <td><?php echo $result['cartegory_name'] ?></td>
                                 <td><?php echo $result['brand_name'] ?></td>
