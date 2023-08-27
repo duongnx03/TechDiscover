@@ -10,11 +10,11 @@ class danhgia
 
     public function insert_danhgia($danhgia_id, $product_id, $user_id, $name, $email, $rating, $comment, $created_at)
     {
-        $user_info_query = "SELECT username, email FROM users WHERE id = $user_id";
+        $user_info_query = "SELECT fullname, email FROM users WHERE id = $user_id";
         $user_info_result = $this->db->select($user_info_query);
         $user_info = $user_info_result->fetch_assoc();
 
-        $name = $user_info['username'];
+        $name = $user_info['fullname'];
         $email = $user_info['email'];
         $query = "INSERT INTO danhgia (danhgia_id, product_id, user_id, name, email, rating, comment, created_at) 
                   VALUES ('$danhgia_id', '$product_id', '$user_id', '$name', '$email', '$rating', '$comment', '$created_at')";
@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $created_at = date('Y-m-d H:i:s');
 
     $user_id = $_SESSION['id'];
-    
     // Kiểm tra xem người dùng đã submit đánh giá chưa cho sản phẩm này
     $submission_query = "SELECT danhgia_id FROM danhgia WHERE user_id = $user_id AND product_id = $product_id";
     $submission_result = $db->select($submission_query);
@@ -259,10 +258,10 @@ if (!isset($_SESSION['id'])) {
             <form class="review-form" action="" method="POST">
                 <input type="hidden" name="product_id" value="1"> <!-- Adjust the product ID accordingly -->
                 <input type="hidden" name="user_id" value="1"> <!-- Adjust the user ID accordingly -->
-                <label for="name">Name:</label>
-                <input type="text" name="name" value="<?php echo $review['name']; ?>" required>
+                <!-- <label for="name">Name:</label>
+                <input type="text" name="name" value="" required>
                 <label for="email">Email:</label>
-                <input type="email" name="email" value="<?php echo $review['email']; ?>" required>
+                <input type="email" name="email" value="" required> -->
                 <label for="rating">Rating:</ <div class="stars">
                     <input class="star star-5" id="star-5" type="radio" name="rating" value="5" />
                     <label class="star star-5" for="star-5"></label>
@@ -275,7 +274,7 @@ if (!isset($_SESSION['id'])) {
                     <input class="star star-1" id="star-1" type="radio" name="rating" value="1" />
                     <label class="star star-1" for="star-1"></label>
                 </div>
-                <br>
+                
                 <label for="comment">Comment:</label>
                 <textarea name="comment" rows="4" required></textarea>
                 <br>

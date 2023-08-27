@@ -47,11 +47,18 @@ class question {
 
         return $result;
     }
-    public function get_question_by_id($question_id) {
+    public function get_responses_by_question_id($question_id) {
         $query = "SELECT * FROM survey_responses WHERE question_id = '$question_id'";
         $result = $this->db->select($query);
-        return $result->fetch_assoc();
+        $responses = array();
+    
+        while ($row = $result->fetch_assoc()) {
+            $responses[] = $row;
+        }
+    
+        return $responses;
     }
+    
     
 }
 ?>

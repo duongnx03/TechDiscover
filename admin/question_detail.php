@@ -7,7 +7,7 @@ include "class/question_class.php";
 $question = new question();
 if (isset($_GET['question_id'])) {
     $question_id = $_GET['question_id'];
-    $question_detail = $question->get_question_by_id($question_id);
+    $responses = $question->get_responses_by_question_id($question_id);
 }
 $questions = $question->show_question();
 ?>
@@ -59,23 +59,25 @@ $questions = $question->show_question();
             <th>Email</th>
             <th>Selected Answer</th>
         </tr>
-        <?php if ($question_detail && $questions) : ?>
-            <?php $stt = 1; foreach ($questions as $question) : ?>
-                <?php if ($question['question_id'] == $question_id) : ?>
-                    <h3>Question: <?php echo $question['question']; ?></h3>
-                    <tr>
-                        <td><?php echo $stt++; ?></td>
-                        <td><?php echo $question_detail['username']; ?></td>
-                        <td><?php echo $question_detail['email']; ?></td>
-                        <td><?php echo $question_detail['selected_answer']; ?></td>
-                    </tr>
-                <?php endif; ?>
+        <?php if ($responses && $questions) : ?>
+    <?php $stt = 1; foreach ($questions as $question) : ?>
+        <?php if ($question['question_id'] == $question_id) : ?>
+            <h3>Question: <?php echo $question['question']; ?></h3>
+            <?php foreach ($responses as $response) : ?>
+                <tr>
+                    <td><?php echo $stt++; ?></td>
+                    <td><?php echo $response['username']; ?></td>
+                    <td><?php echo $response['email']; ?></td>
+                    <td><?php echo $response['selected_answer']; ?></td>
+                </tr>
             <?php endforeach; ?>
-        <?php else : ?>
-            <tr>
-                <td colspan="5">No question found.</td>
-            </tr>
         <?php endif; ?>
+    <?php endforeach; ?>
+<?php else : ?>
+    <tr>
+        <td colspan="5">No responses found.</td>
+    </tr>
+<?php endif; ?>
     </table>
 </div>
 
