@@ -1,17 +1,14 @@
 <?php
 include "database.php";
-require_once '../Paypal/Api/Refund.php';
-require_once '../Paypal/Api/Sale.php';
-require_once '../Paypal/Rest/ApiContext.php';
-require_once '../Paypal/Auth/OAuthTokenCredential.php';
-require_once '../Paypal/Exception/PayPalConnectionException.php';
+include "../mail/PHPMailer.php";
+include "../mail/Exception.php";
+include "../mail/OAuth.php";
+include "../mail/POP3.php";
+include "../mail/SMTP.php";
 
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Api\Refund;
-use PayPal\Api\Sale;
-use PayPal\Exception\PayPalConnectionException;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 $db = new Database;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -25,62 +22,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($product_result) {
         while ($row = $product_result->fetch_assoc()) {
             $productItems[] = array(
+                'product_name' => $row['product_name'],
+                'product_price' => $row['product_price'],
+                'product_color' => $row['product_color'],
+                'product_memory_ram' => $row['product_memory_ram'],
                 'quantity' => $row['quantity'],
-                'user_id' => $row['user_id']
+                'product_id' => $row['product_id']
             );
         }
         foreach ($productItems as $item) {
             $quantity = $item['quantity'];
-            $product_id = $item['user_id'];
+            $product_id = $item['product_id'];
             $select_product = "SELECT product_quantity FROM tbl_product WHERE product_id = $product_id";
             $result_product = $db->select($select_product);
             if ($result_product) {
                 $row = $result_product->fetch_assoc();
                 $product_quantity = $row['product_quantity'];
             }
-            $update_quanity = $quantity + $product_quantity;
-            $update_query = "update tbl_product set product_quantity = $update_quanity where product_id = $product_id";
+            $update_quantity = $quantity + $product_quantity;
+            $update_query = "update tbl_product set product_quantity = $update_quantity where product_id = $product_id";
             $update_result = $db->update($update_query);
         }
     }
+    $select_query = "select * from tbl_order where order_id = $order_id";
+    $select_result = $db->select($select_query);
+    if ($select_result) {
+        // Lấy thông tin từ kết quả truy vấn
+        $row = $select_result->fetch_assoc();
+        $fullname = $row["fullname"];
+        $email = $row["email"];
+        $total_order = $row['total_order'];
 
-    // $select_query = "select * from tbl_order where order_id = $order_id";
-    // $select_result = $db->select($select_query);
-    // if ($select_result) {
-    //     // Lấy thông tin từ kết quả truy vấn
-    //     $row = $select_result->fetch_assoc();
-    
-    //     $total = $row['total_order'];
-    //     $transaction_id = $row['paypal_id'];
-    // }
+    }
 
-    // $clientID = 'AUbOEvIMIXKSLOwnIgiCu0q7iRKK2hJtW55odcvAgtYO7heyQAa2ZDIv7ziZkzD-sGM3L2rKH5SIaxad';
-    // $secret = 'EPzN9O-qakGwsF-VlIGgbzwn5y-QqPQ1RBJ0Q0s6jLESZRNb8mcDGKm54IFmyoaW7RjM-4B672b1Sno-';
+    $mail = new PHPMailer(true);
 
-    // // Set up API context
-    // $apiContext = new \PayPal\Rest\ApiContext(
-    //     new \PayPal\Auth\OAuthTokenCredential($clientID, $secret)
-    // );
+    try {
+        $mail->isSMTP();
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->SMTPSecure = "tls";
+        $mail->SMTPAuth = true;
+        $mail->Username = 'techdiscoverys@gmail.com';
+        $mail->Password = 'gzgkpyvjmuoovenp'; // sử dụng mật khẩu ứng dụng
+        $mail->FromName = "TechDiscovery Notice of successful cancel order";
 
-    // // ID giao dịch cần hoàn
-    // $transactionID = $transaction_id;
+        $mail->setFrom('techdiscoverys@gmail.com');
+        $mail->addAddress($email, $fullname); // Thêm email và tên người nhận
 
-    // // Số tiền cần hoàn
-    // $refundAmount = array('value' => $total, 'currency' => 'USD');
+        $mail->Subject = 'Order cancellation notice';
 
-    // // Tạo yêu cầu hoàn tiền
-    // $refund = new \PayPal\Api\Refund();
-    // $refund->setAmount($refundAmount);
+        // Tạo nội dung email bao gồm thông tin người nhận hàng, sản phẩm đã đặt và tổng đơn hàng
+        $emailContent = "<p>Hello $fullname.</p>";
+        $emailContent .= "<p>Confirmed order cancellation successfully: </p>";
 
-    // try {
-    //     // Gửi yêu cầu hoàn tiền với Transaction ID
-    //     $refundDetails = \PayPal\Api\Sale::get($transactionID, $apiContext)->refundSale($refund, $apiContext);
+        // Lặp qua từng sản phẩm đã đặt
+        foreach ($productItems as $item) {
+            $productName = $item['product_name'];
+            $productColor = $item['product_color'];
+            $productMemoryRam = $item['product_memory_ram'];
+            $quantity = $item['quantity'];
+            $product_price = $item['product_price'];
+            $emailContent .= "<p>Product: $productName | $productColor | $productMemoryRam | Quantity: $quantity | $ $product_price.</p>";
+        }
 
-    //     // Hoàn tiền đã thành công
-    //     // $refundDetails->getId() sẽ trả về ID của giao dịch hoàn tiền
-    // } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-    //     // Xử lý lỗi
-    //     // $ex->getData() sẽ chứa thông tin về lỗi từ PayPal
-    // }
-    header("Location: ../myAccount_cart_canceled.php");
+        $emailContent .= "<p>Total order: $ $total_order</p>";
+        $emailContent .= "<p>If you have already paid please provide your account number and reply back to this message so that we can proceed to refund you, thanks and best regards.</p>";
+
+        // Thêm trạng thái đơn hàng vào nội dung email
+        $mail->IsHTML(true);
+        $mail->Body = $emailContent;
+
+        // Gửi email
+        $mail->send();
+    } catch (Exception $e) {
+        echo $e;
+    }
+   header("Location: ../myAccount_order_cancel.php");
 }
