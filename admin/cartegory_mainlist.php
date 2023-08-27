@@ -17,7 +17,6 @@ include "class/cartegory_main_class.php";
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">Cartegory-Main ID</th>
                         <th scope="col">Cartegory-Main Name</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -33,7 +32,6 @@ include "class/cartegory_main_class.php";
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['cartegory_main_id'] ?></td>
                                 <td><?php echo $result['cartegory_main_name'] ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="cartegory_mainedit.php?cartegory_main_id=<?php echo $result['cartegory_main_id'] ?>">Update</a> |

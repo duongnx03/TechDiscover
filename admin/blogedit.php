@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="blog_tags">Blog Tags: <span style="color:red;">*</span></label>
-                    <input name="blog_tags" type="text" class="form-control" required value="<?php echo $blog_data['blog_tags']; ?>">
+                    <input name="blog_tags" type="text" class="form-control" value="<?php echo $blog_data['blog_tags']; ?>">
                 </div>
 
                 <div class="form-group">

@@ -169,7 +169,6 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                         while ($product = $products->fetch_assoc()) {
                                             echo '<div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">';
                                             echo '<div class="products-single fix">';
-                                            echo '<div class="box-img-hover">';
 
                                             // Check if the product is on sale or new
                                             
@@ -188,7 +187,6 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                             echo '<div class="why-text">';
                                             echo '<h4><a href="product-detail.php?id=' . $product['product_id'] . '">' . $product['product_name'] . '</a></h4>';
                                             echo '<h5> <del> $' . $product['product_price'] . '</del> <a href="product-detail.php?id=' . $product['product_id'] . '"> $' . $product['product_price_sale'] . '</a></h5>';
-                                            echo '</div>';
                                             echo '</div>';
                                             echo '</div>';
                                         }

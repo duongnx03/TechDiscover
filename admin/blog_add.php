@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="blog_tags">Blog Tags: <span style="color:red;">*</span></label>
-                    <input name="blog_tags" type="text" class="form-control" required>
+                    <input name="blog_tags" type="text" class="form-control" >
                 </div>
 
                 <div class="form-group">

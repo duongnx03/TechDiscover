@@ -147,6 +147,8 @@
 
     <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <!-- ALL JS FILES -->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>

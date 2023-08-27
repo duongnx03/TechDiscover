@@ -82,14 +82,14 @@ $categories = $blog->getCategories();
                     <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><img class="card-img-top" src="admin/uploads/<?= $blogItem['blog_image']; ?>" alt="<?= $blogItem['blog_title']; ?>" ></a>
                     <div class="card-body text-center">
                         <h2 class="card-title"><a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><?= $blogItem['blog_title']; ?></a></h2>
-                        <p class="card-text"><?= $blogItem['blog_content']; ?></p>
+                        <p class="card-text"><?php echo substr(strip_tags($blogItem['blog_content']), 0, 298) . '...' ?></p>
                         <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted text-center">
                         <?php
                         $categoryName = $blog->getCategoryNameById($blogItem['blog_cate_id']);
                         ?>
-                        <?= $categoryName; ?> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?> / <a href=""><?= $blogItem['blog_tags']; ?></a>
+                        <a href="category.php?category_id=<?= $blogItem['blog_cate_id']; ?>"><?= $categoryName; ?></a> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?> / <a href=""><?= $blogItem['blog_tags']; ?></a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -105,12 +105,12 @@ $categories = $blog->getCategories();
             </nav>
         </div>
     </div>
-</div>
+</div><br><br>
 
 <style>
     .card-img-top {
         max-width: 100%; /* Thiết lập chiều rộng tối đa cho ảnh là 100% */
-        height: 400px; /* Để tỷ lệ khung hình tự động thay đổi */
+        height: 350px; /* Để tỷ lệ khung hình tự động thay đổi */
     }
 </style>
 

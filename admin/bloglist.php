@@ -36,7 +36,6 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">ID</th>
                         <th scope="col">Blog Title</th>
                         <th scope="col">Date</th>
                         <th scope="col">Author</th>
@@ -55,7 +54,6 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['blog_id'] ?></td>
                                 <td><?php echo htmlspecialchars($result['blog_title']) ?></td>
                                 <td><?php echo $result['blog_date'] ?></td>
                                 <td><?php echo htmlspecialchars($result['blog_author']) ?></td>

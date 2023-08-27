@@ -21,7 +21,6 @@ $show_colors = $color->show_color();
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">Color ID</th>
                         <th scope="col">Color</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -35,7 +34,6 @@ $show_colors = $color->show_color();
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['color_id'] ?></td>
                                 <td><?php echo $result['color_name'] ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="coloredit.php?color_id=<?php echo $result['color_id'] ?>">Update</a> | 

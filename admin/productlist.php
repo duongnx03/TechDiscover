@@ -52,7 +52,6 @@ if (!empty($searchTerm)) {
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">ID</th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Promotional Price</th>
@@ -72,7 +71,6 @@ if (!empty($searchTerm)) {
                             ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['product_id'] ?></td>
                                 <td><?php echo $result['product_name'] ?></td>
                                 <td><?php echo $result['product_price'] ?></td>
                                 <td><?php echo $result['product_price_sale'] ?></td>
