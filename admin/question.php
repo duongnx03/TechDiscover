@@ -6,13 +6,14 @@ include "class/question_class.php";
 ?>
 <?php
 $question = new question();
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $question->delete_question($id);
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['question_id'])) {
+    $question_id = $_GET['question_id'];
+    $question->delete_question($question_id);
     echo "<script>window.location.href = 'question.php';</script>";
     exit;
 }
     $questions = $question->show_question();
+    
 ?>
 <link rel="stylesheet" type="text/css" href="styles.css">
 <style>
@@ -52,7 +53,7 @@ table.question-table {
 
 th, td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 th {
@@ -67,17 +68,25 @@ tr:nth-child(even) {
     display: inline-block;
     padding: 5px 10px;
     text-decoration: none;
-    color: #fff;
+    color: white;
     border-radius: 5px;
     cursor: pointer;
     background-color: #e74c3c;
 }
-
-.btn-delete:hover {
-    color: darkred;
-    background-color: #33CC33;
+.btn-detail {
+    display: inline-block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db;
 }
 
+.btn-detail:hover,
+.btn-delete:hover {
+        background-color: #2980b9;
+    }
 
 </style>
 <body>
@@ -107,7 +116,8 @@ tr:nth-child(even) {
                 <td><?php echo $row['answer3']; ?></td>
                 <td><?php echo $row['quantity_answer3']; ?></td>
                 <td>
-                <a class="btn-delete" href="question.php?action=delete&id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this question?')">Delete</a>
+                <a class="btn-detail" href="question_detail.php?question_id=<?php echo $row['question_id']; ?>">Detail</a>
+                <a class="btn-delete" href="question.php?action=delete&question_id=<?php echo $row['question_id']; ?>" onclick="return confirm('Are you sure you want to delete this question?')">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>

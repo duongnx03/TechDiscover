@@ -69,7 +69,7 @@ if (isset($_SESSION["add_to_cart_result"])) {
                     <li class="dropdown">
                         <a href="shop.php" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">About Shop</a>
                         <ul class="dropdown-menu">
-                            <li><a href="contact-us.php">Contac US</a></li>
+                            <li><a href="contact-us.php">Contact US</a></li>
                             <li><a href="about.php">About US</a></li>
                         </ul>
                     </li>

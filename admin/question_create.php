@@ -6,14 +6,14 @@ include "class/question_class.php";
 ?>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = null;
+    $question_id = null;
     $questionText = $_POST["question"];
     $answer1 = $_POST["answer1"];
     $answer2 = $_POST["answer2"];
     $answer3 = $_POST["answer3"];
 
     $questionObject = new question();
-    $insertResult = $questionObject->insert_question($id, $questionText, $answer1, $answer2, $answer3);
+    $insertResult = $questionObject->insert_question($question_id, $questionText, $answer1, $answer2, $answer3);
     if ($insertResult) {
         echo "<script>window.location.href = 'question.php';</script>";
     } else {

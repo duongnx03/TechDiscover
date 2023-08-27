@@ -9,30 +9,74 @@ class question {
         $this->db = new Database();
     }
 
-    public function insert_question($id, $question, $answer1, $answer2, $answer3) {
-        $query = "INSERT INTO questions(id, question, answer1, answer2, answer3) 
-                  VALUES ('$id', '$question', '$answer1', '$answer2', '$answer3')";
+    public function insert_question($question_id, $question, $answer1, $answer2, $answer3) {
+        $query = "INSERT INTO questions(question_id, question, answer1, answer2, answer3) 
+                  VALUES ('$question_id', '$question', '$answer1', '$answer2', '$answer3')";
 
         $result = $this->db->insert($query);
         return $result;
     }
     public function show_question(){
-        $query = "SELECT * FROM questions ORDER BY id ASC ";
+        $query = "SELECT * FROM questions ORDER BY question_id ASC ";
         $result = $this->db->select($query);
         return $result;
     }
-    public function save_survey_response($question_id, $selected_answer) {
-        $query = "INSERT INTO survey_responses (question_id, selected_answer) VALUES ('$question_id', '$selected_answer')";
+    public function save_survey_response($question_id, $selected_answer_label, $user_id) {
+        // Get user information from the users table based on user_id
+        $user_info_query = "SELECT username, email FROM users WHERE id = $user_id";
+        $user_info_result = $this->db->select($user_info_query);
+        $user_info = $user_info_result->fetch_assoc();
+            
+        $username = $user_info['username'];
+        $email = $user_info['email'];
+         // Kiểm tra xem user_id đã submit chưa
+         $submission_query = "SELECT survey_responses_id FROM survey_responses WHERE question_id = $question_id AND user_id = $user_id";
+         $submission_result = $this->db->select($submission_query);
+    
+        if ($submission_result->num_rows > 0) {
+        // Người dùng đã submit rồi, không thực hiện gì cả
+        return false;
+         }
+        // Lấy tên đáp án dựa trên nhãn đáp án
+        $selected_answer = $this->get_answer_label($question_id, $selected_answer_label);
+    
+        $query = "INSERT INTO survey_responses (question_id, selected_answer, username, email, user_id)
+                  VALUES ('$question_id', '$selected_answer', '$username', '$email', '$user_id')";
+            
         $result = $this->db->insert($query);
     
         if ($result) {
-            $updateColumn = "quantity_" . $selected_answer;
-            $query = "UPDATE questions SET $updateColumn = $updateColumn + 1 WHERE id = $question_id";
-            $this->db->update($query);
+            $updateColumn = "quantity_" . $selected_answer_label;
+            $updateQuery = "UPDATE questions SET $updateColumn = $updateColumn + 1 WHERE question_id = $question_id";
+            $this->db->update($updateQuery);
         }
     
         return $result;
     }
+    
+    // Hàm lấy tên đáp án dựa trên nhãn đáp án
+    private function get_answer_label($question_id, $selected_answer_label) {
+        $answer_column = "";
+        switch ($selected_answer_label) {
+            case 'answer1':
+                $answer_column = 'answer1';
+                break;
+            case 'answer2':
+                $answer_column = 'answer2';
+                break;
+            case 'answer3':
+                $answer_column = 'answer3';
+                break;
+            // Thêm các trường hợp khác nếu cần
+        }
+    
+        $query = "SELECT $answer_column FROM questions WHERE question_id = $question_id";
+        $result = $this->db->select($query);
+        $row = $result->fetch_assoc();
+    
+        return $row[$answer_column];
+    }
+     
     
 }
 class coupon {
@@ -41,14 +85,6 @@ class coupon {
     public function __construct() {
         $this->db = new Database();
     }
-
-    // public function insert_survey($web, $gia, $spcu) {
-    //     $query = "INSERT INTO survey(web, gia, spcu) 
-    //               VALUES ('$web', '$gia', '$spcu')";
-
-    //     $result = $this->db->insert($query);
-    //     return $result;
-    // }
     public function get_valid_coupon_code() {
         $timezone = new DateTimeZone('Asia/Ho_Chi_Minh');
         $current_date = new DateTime('now', $timezone);
@@ -74,21 +110,34 @@ class coupon {
         return null;
     }
 }
-
+$answerLabels = array('answer1', 'answer2', 'answer3');
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["question_ids"]) && isset($_POST["answers"])) {
     require_once 'admin/database.php';
     $question_ids = $_POST["question_ids"];
     $answers = $_POST["answers"];
     $question = new question();
 
+    $user_id = $_SESSION['id'];
+    $hasSubmitted = false;
     foreach ($question_ids as $question_id) {
-        $selected_answer = $answers[$question_id];
-        $question->save_survey_response($question_id, $selected_answer);
+        $selected_answer_label = $answers[$question_id];
+        
+        // Kiểm tra xem đã submit chưa và lưu kết quả
+        $submission_result = $question->save_survey_response($question_id, $selected_answer_label, $user_id);
+        
+        if ($submission_result) {
+            $hasSubmitted = true;
+        }
     }
-    $coupon_code = ""; // Khởi tạo biến $coupon_code trước
-$coupon = new coupon();
-$coupon_code = $coupon->get_valid_coupon_code();
-echo '<script>window.location.href = "survey_xuatcode.php?coupon_code=' . urlencode($coupon_code) . '";</script>';
+    
+    if ($hasSubmitted) {
+        $coupon_code = "";
+        $coupon = new coupon();
+        $coupon_code = $coupon->get_valid_coupon_code();
+        echo '<script>window.location.href = "survey_xuatcode.php?coupon_code=' . urlencode($coupon_code) . '";</script>';
+    } else {
+        echo '<script>alert("You have already submitted the survey.");</script>';
+    }
 }
 $question = new question();
 $questions = $question->show_question();
@@ -147,6 +196,12 @@ input[type="submit"]:hover {
 </style>
 <script>
 function validateSurveyForm() {
+    var isLoggedIn = <?php echo (isset($_SESSION['id']) ? 'true' : 'false'); ?>;
+    
+    if (!isLoggedIn) {
+        alert('You need to be logged in to submit the survey.');
+        return false;
+    }
     var questions = document.querySelectorAll('.nut');
 
     for (var i = 0; i < questions.length; i++) {
@@ -257,21 +312,22 @@ function validateSurveyForm() {
 
 <!------------------------------------------ survey --------------------------------------------->
 <div class="khaosat">
-            <h1>Send Us Opinion now!</h1>
-            <h4>Please complete all surveys</h4><br>
-            <form method="post" action="" onsubmit="return validateSurveyForm();">
+    <h1>Send Us Opinion now!</h1>
+    <h4>Please complete all surveys</h4><br>
+    <form method="post" action="" onsubmit="return validateSurveyForm();">
         <?php foreach ($questions as $row) : ?>
             <p><?php echo $row['question']; ?></p>
             <div class="nut">
-            <input type="hidden" name="question_ids[]" value="<?php echo $row['id']; ?>">
-            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer1"><?php echo $row['answer1']; ?>
-            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer2"><?php echo $row['answer2']; ?>
-            <input type="radio" name="answers[<?php echo $row['id']; ?>]" value="answer3"><?php echo $row['answer3']; ?>
+                <input type="hidden" name="question_ids[]" value="<?php echo $row['question_id']; ?>">
+                <?php foreach ($answerLabels as $label) : ?>
+                    <input type="radio" name="answers[<?php echo $row['question_id']; ?>]" value="<?php echo $label; ?>">
+                    <?php echo $row[$label]; ?>
+                <?php endforeach; ?>
             </div><br>
         <?php endforeach; ?>
         <input type="submit" value="Submit">
     </form>
-    </div>
+</div>
 
 
 <!------------------------------------------end-------------------------------------->
