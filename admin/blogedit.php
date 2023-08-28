@@ -70,11 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="blog_date">Blog Date: <span style="color:red;">*</span></label>
-                    <input name="blog_date" type="text" class="form-control" required value="<?php echo $blog_data['blog_date']; ?>">
-                </div>
-
-                <div class="form-group">
                     <label for="blog_author">Blog Author: <span style="color:red;">*</span></label>
                     <input name="blog_author" type="text" class="form-control" required value="<?php echo $blog_data['blog_author']; ?>">
                 </div>

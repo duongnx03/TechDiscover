@@ -3,22 +3,60 @@ include "header.php";
 include "sidebar.php";
 include "navbar.php";
 include "class/blog_class.php";
-?>
 
-<?php
 $blog = new Blog;
-$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$totalBlogs = $blog->countBlogs();
-$blogsPerPage = 6;
-$totalPages = ceil($totalBlogs / $blogsPerPage);
-$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-if ($currentPage < 1 || $currentPage > $totalPages) {
-    $currentPage = 1; // Đảm bảo trang hiện tại hợp lệ
+// Lấy giá trị từ URL
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
+$categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
+
+// Thiết lập giá trị mặc định nếu cần
+if (empty($sortBy)) {
+    $sortBy = 'date'; // Sắp xếp theo ngày mặc định
 }
 
+if ($sortBy === 'title') {
+    $orderBy = 'blog_title ASC';
+} elseif ($sortBy === 'date') {
+    $orderBy = 'blog_date DESC';
+} else {
+    $orderBy = ''; // Không sắp xếp
+}
+
+$blogsPerPage = 6;
+
+// Lấy tổng số bài viết
+$totalBlogs = $blog->countBlogs();
+
+// Tính tổng số trang
+$totalPages = ceil($totalBlogs / $blogsPerPage);
+
+// Xác định trang hiện tại
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Đảm bảo trang hiện tại hợp lệ
+if ($currentPage < 1 || $currentPage > $totalPages) {
+    $currentPage = 1;
+}
+
+// Tính offset
 $offset = ($currentPage - 1) * $blogsPerPage;
-$show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $blog->getBlogsPaginated($offset, $blogsPerPage);
+
+// Lấy danh sách blogs dựa trên sort và filter
+if (!empty($searchTerm)) {
+    // Tìm kiếm
+    $show_blogs = $blog->searchBlogsByTitle($searchTerm);
+} elseif (!empty($categoryFilter)) {
+    // Lọc theo danh mục
+    $show_blogs = $blog->getBlogsByCategory($categoryFilter,  $blogsPerPage, $offset, $orderBy);
+
+    // Tính lại tổng số bài viết sau khi lọc
+    $totalBlogs = $blog->countBlogsByCategory($categoryFilter);
+} else {
+    // Hiển thị toàn bộ blogs đã sắp xếp
+    $show_blogs = $blog->getBlogsPaginated($offset, $blogsPerPage, $orderBy);
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -26,11 +64,31 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Blog List</h6>
             <form class="d-none d-md-flex ms-4" method="GET" action="bloglist.php">
-                <input class="form-control bg-dark border-0" type="search" name="search" placeholder="Search by Title">
+                <input class="form-control bg-dark border-0" type="search" name="search" placeholder="Search by Title" value="<?php echo $searchTerm; ?>">
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
             <a href="blog_add.php">ADD Blog</a>
         </div>
+
+        <div>
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort" onchange="sortBlogs(this.value)">
+                <option value="">-- Select --</option>
+                <option value="title" <?php echo ($sortBy === 'title') ? 'selected' : ''; ?>>Title</option>
+                <option value="date" <?php echo ($sortBy === 'date') ? 'selected' : ''; ?>>Date</option>
+            </select>
+
+            <label for="filter">Filter by Category:</label>
+            <select name="filter" id="filter" onchange="filterBlogs(this.value)">
+                <option value="">-- All Categories --</option>
+                <?php
+                $categories = $blog->show_categories();
+                while ($category = $categories->fetch_assoc()) {
+                    echo '<option value="' . $category['blog_cate_id'] . '" ' . (($categoryFilter === $category['blog_cate_id']) ? 'selected' : '') . '>' . $category['blog_cate_name'] . '</option>';
+                }
+                ?>
+            </select>
+        </div><br>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
@@ -81,13 +139,42 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
             </table>
         </div><br>
         <div class="pagination-container">
-            <div class="pagination">
-                <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
-                    <a href="bloglist.php?page=<?php echo $page; ?>&search=<?php echo $searchTerm; ?>" class="<?php echo ($page === $currentPage) ? 'active' : ''; ?>"><?php echo $page; ?></a>
-                <?php endfor; ?>
-            </div>
-        </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <?php if ($page > 1) : ?>
+                <li class="page-item">
+                    <a class="page-link" href="?page=1<?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            <?php endif; ?>
 
+            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <?php if ($page < $totalPages) : ?>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?php echo $totalPages; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</div>
     </div>
 </div>
 
@@ -137,6 +224,14 @@ $show_blogs = (!empty($searchTerm)) ? $blog->searchBlogsByTitle($searchTerm) : $
         if (confirm('Are you sure you want to delete this blog?')) {
             window.location.href = 'blogdelete.php?blog_id=' + blog_id;
         }
+    }
+
+    function sortBlogs(sortBy) {
+        window.location.href = 'bloglist.php?sort=' + sortBy + '&search=<?php echo $searchTerm; ?>&category=<?php echo $categoryFilter; ?>';
+    }
+
+    function filterBlogs(categoryId) {
+        window.location.href = 'bloglist.php?category=' + categoryId + '&sort=<?php echo $sortBy; ?>&search=<?php echo $searchTerm; ?>';
     }
 </script>
 

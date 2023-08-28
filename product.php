@@ -175,14 +175,10 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                                 echo '<div class="type-lb"><p class="new">New</p></div>';
                                             
 
-                                            echo '<img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
-                                            echo '<div class="mask-icon">';
+                                            echo '<a href="product-detail.php?id=' . $product['product_id'] . '"><img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image"></a>';
                                             echo '<ul>';
-                                            echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>';
-                                            echo '<li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>';
+                                            echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '"></a></li>';
                                             echo '</ul>';
-                                            echo '<a class="cart" href="cart.php">Add to Cart</a>';
-                                            echo '</div>';
                                             echo '</div>';
                                             echo '<div class="why-text">';
                                             echo '<h4><a href="product-detail.php?id=' . $product['product_id'] . '">' . $product['product_name'] . '</a></h4>';
