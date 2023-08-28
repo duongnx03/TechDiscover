@@ -136,6 +136,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         echo $e;
     }
+
+    $_SESSION["new_order_notification"] = [
+        "message" => "New order received",
+        "time" => $currentDateTime,
+        "url" => "order_list.php"
+    ];
+
     $delete_query = "delete from tbl_cart where user_id = $user_id";
     $delete_result = $database->delete($delete_query);
     if ($delete_result) {

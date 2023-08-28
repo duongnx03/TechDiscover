@@ -229,6 +229,34 @@ if ($order_result) {
                 }
             });
         });
+
+        $("#returnForm").submit(function(e) {
+            var selectedCheckboxes = $("input[name='products_to_return[]']:checked");
+
+            if (selectedCheckboxes.length === 0) {
+                alert("Please select at least one product to return.");
+                e.preventDefault(); // Ngăn form được gửi đi
+            } else {
+                var isValid = true;
+                selectedCheckboxes.each(function() {
+                    var orderItemId = $(this).val();
+                    var returnReason = $("textarea[name='return_reasons[" + orderItemId + "]']").val();
+                    var returnImage = $("input[name='return_images[" + orderItemId + "]']").val();
+
+                    if (!returnReason || !returnImage) {
+                        alert("Please provide return reason and image for selected products.");
+                        isValid = false;
+                        e.preventDefault(); // Ngăn form được gửi đi
+                        return false; // Dừng việc kiểm tra
+                    }
+                });
+
+                if (isValid) {
+                    // Thực hiện submit form
+                    // $("#returnForm").submit(); // Uncomment this line to submit the form
+                }
+            }
+        });
     });
 </script>
 <?php

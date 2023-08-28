@@ -51,24 +51,39 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                            <span class="d-none d-lg-inline-flex">Notification</span>
+                            <?php
+                            $notificationTypes = ["new_order_notification", "cancel_order_notification", "complete_order_notification", "return_order_notification"];
+                            $hasNotifications = false;
+
+                            foreach ($notificationTypes as $type) {
+                                if (isset($_SESSION[$type])) {
+                                    $hasNotifications = true;
+                                }
+                            }
+
+                            // Thêm class "red-dot" nếu có thông báo
+                            $dotClass = $hasNotifications ? 'red-dot' : '';
+                            ?>
+                            <span class="<?php echo $dotClass; ?>"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>1 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>5 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>10 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
+                        <div id="notification-dropdown" class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <?php
+                            if ($hasNotifications) {
+                                foreach ($notificationTypes as $type) {
+                                    if (isset($_SESSION[$type])) {
+                                        $notificationData = $_SESSION[$type];
+                                        echo '<a href="' . $notificationData["url"] . '" class="dropdown-item">';
+                                        echo '<h6 class="fw-normal mb-0">' . $notificationData["message"] . '</h6>';
+                                        echo '<small>' . $notificationData["time"] . '</small>';
+                                        echo '</a>';
+                                        unset($_SESSION[$type]);
+                                    }
+                                }
+                            } else {
+                                echo '<p class="dropdown-item text-center">No new notifications.</p>';
+                            }
+                            ?>
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
                         </div>
                     </div>
