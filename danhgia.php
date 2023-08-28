@@ -253,11 +253,30 @@ function validateSurveyForm() {
             <?php
 if (!isset($_SESSION['id'])) {
     echo "<p>You need to <big><b><a href='login.php'>Login</a></b></big> to leave a comment.</p>";
-} else {}
-?>
-            <form class="review-form" action="" method="POST">
-                <input type="hidden" name="product_id" value="1"> <!-- Adjust the product ID accordingly -->
-                <input type="hidden" name="user_id" value="1"> <!-- Adjust the user ID accordingly -->
+} else {
+    // Check if user has purchased the product
+    $product_id = isset($_GET['id']) ? $_GET['id'] : null;
+    $user_id = $_SESSION['id'];
+
+    // Check if the user has purchased the product
+    $purchase_query = "SELECT * FROM tbl_order_items WHERE product_id = $product_id";
+    $purchase_result = $db->select($purchase_query);
+
+    if ($purchase_result && $purchase_result->num_rows > 0) {
+        $purchase_data = $purchase_result->fetch_assoc();
+        $order_id = $purchase_data['order_id'];
+
+        // Check if the order status is 'delivered'
+        $order_status_query = "SELECT * FROM tbl_order WHERE order_id = $order_id AND order_status = 'delivered'";
+        $order_status_result = $db->select($order_status_query);
+
+        if ($order_status_result && $order_status_result->num_rows > 0) {
+  // User can leave a review
+  ?>
+  <!-- Review form -->
+  <form class="review-form" action="" method="POST">
+      <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+      <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                 <!-- <label for="name">Name:</label>
                 <input type="text" name="name" value="" required>
                 <label for="email">Email:</label>
@@ -280,6 +299,15 @@ if (!isset($_SESSION['id'])) {
                 <br>
                 <button class="send" type="submit" name="submit_danhgia" onclick="return validateSurveyForm();">Send</button>
             </form>
+            <?php
+        } else {
+            echo "<p>You can only leave a review for products that have been delivered.</p>";
+        }
+    } else {
+        echo "<p>You can only leave a review for products you've purchased.</p>";
+    }
+}
+?>
         </div>
     </div>
 </div>

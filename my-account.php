@@ -29,7 +29,7 @@
                             <div class="account-box">
                                 <div class="service-box">
                                     <div class="service-icon">
-                                        <a href="myAccount_cart.php"> <i class="fa fa-gift"></i> </a>
+                                        <a href="myAccount_order.php"> <i class="fa fa-gift"></i> </a>
                                     </div>
                                     <div class="service-desc">
                                         <h4>Your Orders</h4>
