@@ -2331,6 +2331,9 @@
 }
 .product-content-right-bottom-content{
     padding-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 .product-content-right-bottom-content p{
     font-size: 12px;
