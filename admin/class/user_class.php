@@ -84,5 +84,15 @@ class User {
         $result = $this->db->update($sql);
         return $result;
     }
+    public function update_avatar($user_id, $avatar) {
+        $query = "UPDATE users SET avatar = '$avatar' WHERE id = '$user_id'";
+        $result = $this->db->update($query);
+        if ($result) {
+            echo "Avatar updated in the database.";
+        } else {
+            echo "Error updating avatar in the database.";
+        }
+        return $result;
+    }
 }
 ?>
