@@ -43,13 +43,13 @@ if (isset($_POST['confirm_code'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <section>
         <div class="login-box">
             <form action="confirmcode.php" method="post">
-                <!-- ... -->
+                <h2>Code</h2>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="key"></ion-icon>
