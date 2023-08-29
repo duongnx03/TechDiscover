@@ -189,13 +189,15 @@ class Blog
         return '';
     }
 
-    public function searchBlogsByTitle($searchTerm)
-    {
-        // Sửa lại câu truy vấn để tìm kiếm blog theo tiêu đề
-        $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '%$searchTerm%'";
-        $result = $this->db->select($query);
-        return $result;
-    }
+    public function searchBlogsByTitle($searchTerm, $limit, $offset)
+{
+    $searchTerm = "%" . $searchTerm . "%"; // Thêm dấu % cho phần tử wildcard trong LIKE
+    $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '$searchTerm' LIMIT $offset, $limit";
+
+    $result = $this->db->select($query);
+    
+    return $result;
+}
 
     public function countBlogs()
     {
@@ -240,4 +242,38 @@ class Blog
         $result = $this->db->select($query);
         return $result;
     }
+
+    public function countFilteredBlogs($searchTerm, $categoryFilter)
+    {
+        // Bắt đầu truy vấn SQL từng phần
+        $query = "SELECT COUNT(*) AS total FROM tbl_blog";
+
+        // Xác định xem có cần thêm điều kiện WHERE không
+        $whereClause = "";
+
+        if (!empty($searchTerm) && !empty($categoryFilter)) {
+            // Trường hợp 1: Cả hai điều kiện đều được áp dụng
+            $whereClause = " WHERE blog_title LIKE '%$searchTerm%' AND blog_cate_id = '$categoryFilter'";
+        } elseif (!empty($searchTerm)) {
+            // Trường hợp 2: Chỉ áp dụng điều kiện tìm kiếm theo tiêu đề
+            $whereClause = " WHERE blog_title LIKE '%$searchTerm%'";
+        } elseif (!empty($categoryFilter)) {
+            // Trường hợp 3: Chỉ áp dụng điều kiện lọc theo danh mục
+            $whereClause = " WHERE blog_cate_id = '$categoryFilter'";
+        }
+
+        // Kết hợp các phần của truy vấn
+        $query .= $whereClause;
+
+        // Thực hiện truy vấn và trả về kết quả
+        $result = $this->db->select($query);
+
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
+    
 }

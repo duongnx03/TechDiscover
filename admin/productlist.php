@@ -3,13 +3,16 @@ include "header.php";
 include "sidebar.php";
 include "navbar.php";
 include "class/product_class.php";
-?>
 
-<?php
 $product = new product;
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$productsPerPage = 8; // Số lượng sản phẩm trên mỗi trang
+$productsPerPage = 8;
+
+// Sắp xếp và bộ lọc
+$sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
+$filterColor = isset($_GET['color']) ? $_GET['color'] : '';
+$filterMemory = isset($_GET['memory']) ? $_GET['memory'] : '';
 
 // Tính tổng số sản phẩm
 $totalProducts = $product->getTotalProducts();
@@ -31,11 +34,11 @@ if (!empty($searchTerm)) {
     $show_product = $product->searchProductsByName($searchTerm);
     $totalProducts = $product->getTotalSearchProducts($searchTerm);
 } else {
-    // Ngược lại, lấy danh sách sản phẩm theo trang
-    $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage);
+    // Ngược lại, lấy danh sách sản phẩm theo trang với sắp xếp và bộ lọc
+    $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
 }
-
 ?>
+
 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
@@ -47,6 +50,41 @@ if (!empty($searchTerm)) {
             </form>
             <a href="productadd.php">ADD Product</a>
         </div>
+        <form method="GET" action="productlist.php">
+            <label for="sort">Sort by: </label>
+            <select name="sort" id="sort">
+                <option value="price_asc">NONE</option>
+                <option value="price_asc">Prices go up</option>
+                <option value="price_desc">Prices go down</option>
+                <option value="name_asc">Name (A-Z)</option>
+                <option value="name_desc">Name(Z-A)</option>
+            </select>
+
+            <label for="color">Filter by color:</label>
+            <select name="color" id="color">
+                <option value="">ALL</option>
+                <option value="black">Black</option>
+                <option value="blue">Blue</option>
+                <option value="blue">White</option>
+                <option value="blue">Sliver</option>
+                <option value="blue">Gold</option>
+                <!-- Thêm các tùy chọn màu sắc khác -->
+            </select>
+
+            <label for="memory">Filter by RAM:</label>
+            <select name="memory" id="memory">
+                <option value="">ALL</option>
+                <option value="8GB">64GB</option>
+                <option value="16GB">128GB</option>
+                <option value="16GB">256GB</option>
+                <option value="16GB">512GB</option>
+                <option value="16GB">1TB</option>
+                <!-- Thêm các tùy chọn dung lượng RAM khác -->
+            </select>
+
+            <input type="submit" value="Filter and Sort">
+        </form><br>
+
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
@@ -68,7 +106,7 @@ if (!empty($searchTerm)) {
                         $i = 0;
                         while ($result = $show_product->fetch_assoc()) {
                             $i++;
-                            ?>
+                    ?>
                             <tr>
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $result['product_name'] ?></td>
@@ -94,18 +132,15 @@ if (!empty($searchTerm)) {
                                 </td>
                                 <td><?php echo $result['product_quantity'] ?></td>
                                 <td>
-                                    <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image"
-                                        style="max-width: 100px;">
+                                    <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary"
-                                        href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a>
+                                    <a class="btn btn-sm btn-primary" href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a>
                                     |
-                                    <a class="btn btn-sm btn-primary" href="#"
-                                        onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
+                                    <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
-                        <?php
+                    <?php
                         }
                     } else {
                         echo '<tr><td colspan="10">No products found.</td></tr>';
@@ -114,14 +149,46 @@ if (!empty($searchTerm)) {
                 </tbody>
             </table>
         </div><br>
-        <div class="pagination-container">
-            <div class="pagination">
-                <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
-                    <a href="productlist.php?page=<?php echo $page; ?>&search=<?php echo $searchTerm; ?>"
-                        class="<?php echo ($page === $currentPage) ? 'active' : ''; ?>"><?php echo $page; ?></a>
+        <?php if ($totalPages > 1) : ?>
+    <div class="pagination-container">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <?php if ($currentPage > 1) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="productlist.php?page=1<?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="productlist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="productlist.php?page=<?php echo $i; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>"><?php echo $i; ?></a>
+                    </li>
                 <?php endfor; ?>
-            </div>
-        </div>
+
+                <?php if ($currentPage < $totalPages) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="productlist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="productlist.php?page=<?php echo $totalPages; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </div>
+<?php endif; ?>
+
     </div>
 </div>
 

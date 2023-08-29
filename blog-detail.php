@@ -23,6 +23,10 @@ if (isset($_GET['blog_id'])) {
                         <!-- Blog Post -->
                         <div class="card mb-4">
                             <h1 class="card-title"><?php echo $detail['blog_title']; ?></h1>
+                            <div class="vote-count">
+                                <p class="fa fa-thumbs-up" id="upvote-count"><?php echo isset($detail['upvotes']) ? $detail['upvotes'] : 0; ?></p>
+                                <p class="fa fa-thumbs-down" id="downvote-count"><?php echo isset($detail['downvotes']) ? $detail['downvotes'] : 0; ?></p>
+                            </div>
                             <img class="card-img-top-a" src="admin/uploads/<?php echo $detail['blog_image']; ?>">
                             <div class="card-body text-center blog-content">
                                 <p class="card-text"><?php echo $detail['blog_content']; ?></p>
@@ -42,19 +46,23 @@ if (isset($_GET['blog_id'])) {
         <!-- Form Comment -->
         <section id="comment-section" class="section">
             <div class="container text-center">
+                <div id="comment-section" class="section">
+                    <div class="container">
+                        <h2 class="text-center">Comments</h2>
+                        <div id="comments-list">
+                            <!-- Các comment sẽ được thêm vào đây -->
+                        </div>
+                    </div>
+                </div>
                 <!-- Phần Vote -->
                 <div class="vote-section">
                     <h3>Rate this blog:</h3>
                     <button class="btn btn-success vote-up"><i class="fa fa-thumbs-up"></i> Upvote</button>
                     <button class="btn btn-danger vote-down"><i class="fa fa-thumbs-down"></i> Downvote</button>
-                </div>
-                <h4 class="card-title">Leave a Comment:</h4>
+                </div><br>
                 <form method="post">
                     <div class="form-group">
-                        <label for="author">Your Name</label>
-                        <input type="text" class="form-control" id="author" name="author" required>
-                    </div>
-                    <div class="form-group">
+                        <h4 class="card-title">Leave a Comment:</h4>
                         <label for="comment">Your Comment</label>
                         <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
                     </div>
@@ -106,7 +114,6 @@ if (isset($_GET['blog_id'])) {
     echo '<p>No Blog ID provided.</p>';
 }
 ?>
-
 
 
 <br><br>
@@ -235,9 +242,28 @@ if (isset($_GET['blog_id'])) {
         padding: 20px;
         /* Thêm phần đệm cho khoảng cách từ nội dung đến mép trang */
     }
+
+    .vote-count {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .fa.fa-thumbs-up,
+    .fa.fa-thumbs-down {
+        font-size: 24px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .fa.fa-thumbs-up:hover,
+    .fa.fa-thumbs-down:hover {
+        color: #007bff;
+        /* Màu khi di chuột qua */
+    }
 </style>
 
 <script>
+
     $(document).ready(function() {
         $("#relatedBlogsCarousel").owlCarousel({
             items: 3, // Số lượng phần tử hiển thị
@@ -258,6 +284,7 @@ if (isset($_GET['blog_id'])) {
         });
     });
 </script>
+
 <?php
 include "footer.php";
 ?>

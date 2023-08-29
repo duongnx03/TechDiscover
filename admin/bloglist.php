@@ -27,7 +27,13 @@ if ($sortBy === 'title') {
 $blogsPerPage = 6;
 
 // Lấy tổng số bài viết
-$totalBlogs = $blog->countBlogs();
+if (!empty($searchTerm) || !empty($categoryFilter)) {
+    // Nếu có tìm kiếm hoặc lọc theo danh mục, tính tổng số bài viết sau khi tìm kiếm hoặc lọc
+    $totalBlogs = $blog->countFilteredBlogs($searchTerm, $categoryFilter);
+} else {
+    // Nếu không có tìm kiếm hoặc lọc, lấy tổng số bài viết
+    $totalBlogs = $blog->countBlogs();
+}
 
 // Tính tổng số trang
 $totalPages = ceil($totalBlogs / $blogsPerPage);
@@ -43,16 +49,14 @@ if ($currentPage < 1 || $currentPage > $totalPages) {
 // Tính offset
 $offset = ($currentPage - 1) * $blogsPerPage;
 
-// Lấy danh sách blogs dựa trên sort và filter
+// Tìm kiếm và lấy danh sách blogs dựa trên sort, filter và search
+$show_blogs = [];
 if (!empty($searchTerm)) {
     // Tìm kiếm
-    $show_blogs = $blog->searchBlogsByTitle($searchTerm);
+    $show_blogs = $blog->searchBlogsByTitle($searchTerm, $blogsPerPage, $offset);
 } elseif (!empty($categoryFilter)) {
     // Lọc theo danh mục
-    $show_blogs = $blog->getBlogsByCategory($categoryFilter,  $blogsPerPage, $offset, $orderBy);
-
-    // Tính lại tổng số bài viết sau khi lọc
-    $totalBlogs = $blog->countBlogsByCategory($categoryFilter);
+    $show_blogs = $blog->getBlogsByCategory($categoryFilter, $blogsPerPage, $offset, $orderBy);
 } else {
     // Hiển thị toàn bộ blogs đã sắp xếp
     $show_blogs = $blog->getBlogsPaginated($offset, $blogsPerPage, $orderBy);
@@ -106,10 +110,9 @@ if (!empty($searchTerm)) {
                 <tbody>
                     <?php
                     if ($show_blogs->num_rows > 0) {
-                        $i = 0;
+                        $i = ($currentPage - 1) * $blogsPerPage + 1;
                         while ($result = $show_blogs->fetch_assoc()) {
-                            $i++;
-                    ?>
+                            ?>
                             <tr>
                                 <td><?php echo $i ?></td>
                                 <td><?php echo htmlspecialchars($result['blog_title']) ?></td>
@@ -125,56 +128,59 @@ if (!empty($searchTerm)) {
                                     <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['blog_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
-                        <?php
+                            <?php
+                            $i++;
                         }
                     } else {
                         ?>
                         <tr>
                             <td colspan="9">No blogs found.</td>
                         </tr>
-                    <?php
+                        <?php
                     }
                     ?>
                 </tbody>
             </table>
         </div><br>
-        <div class="pagination-container">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <?php if ($page > 1) : ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=1<?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="First">
-                        <span aria-hidden="true">&laquo;&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
+        <?php if ($totalPages > 1) : ?>
+            <div class="pagination-container">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <?php if ($currentPage > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="bloglist.php?page=1<?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
-            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
+                        <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                            <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $i; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php endfor; ?>
 
-            <?php if ($page < $totalPages) : ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $totalPages; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>" aria-label="Last">
-                        <span aria-hidden="true">&raquo;&raquo;</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </nav>
-</div>
+                        <?php if ($currentPage < $totalPages) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $totalPages; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
