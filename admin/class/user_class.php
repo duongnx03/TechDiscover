@@ -47,13 +47,20 @@ class User {
         $result = $this->db->select($query);
         return $result;
     }
-
     public function get_user_by_id($user_id) {
         $query = "SELECT id, email, username, password , fullname, address, phone FROM users WHERE id = '$user_id'";
         $result = $this->db->select($query);
         return $result;
     }
+    public function get_user_by_email($email) {
+        $query = "SELECT * FROM users WHERE email = '$email'";
+        return $this->db->select($query);
+    }
 
+    public function get_user_by_username($username) {
+        $query = "SELECT * FROM users WHERE username = '$username'";
+        return $this->db->select($query);
+    }
     public function update_user($user_id, $email, $username, $password, $fullname, $address, $phone) {
         // Add code to hash the password before updating it into the database
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
