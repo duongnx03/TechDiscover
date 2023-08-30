@@ -75,7 +75,7 @@ if (isset($_POST['verification_code'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Code</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <script>
     var jsAlert = "<?php echo addslashes($jsAlert); ?>"; // Lấy giá trị thông báo từ biến PHP
     if (jsAlert) {
