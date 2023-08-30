@@ -3,6 +3,8 @@ include "header.php";
 include "navbar.php";
 include "admin/class/product_class.php";
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $product = new product();
 
 $_SESSION["product_page_url"] = $_SERVER['REQUEST_URI'];
@@ -15,10 +17,6 @@ if (isset($_GET['id'])) {
     if ($productDetail) {
         $detail = $productDetail->fetch_assoc();
 
-        $brand_id = $detail['product_brand'];
-
-        // Lấy danh sách các sản phẩm cùng brand
-        $relatedProducts = $product->get_products_by_brand($brand_id);
 ?>
         <!-- Start All Title Box -->
         <div class="all-title-box">
@@ -250,163 +248,40 @@ if (isset($_GET['id'])) {
 <br><br><br><br>
 
 <!-- ---------------danh gia ------------------- -->
-<?php
-include "danhgia.php";
-?>
+
 <!-- ------------------end danh gia -------------------- -->
 
 
-
+<!-- Phần hiển thị sản phẩm tương tự -->
 <div class="row my-5">
     <div class="col-lg-12">
         <div class="title-all text-center">
             <h1>Similar products</h1>
         </div>
         <div class="featured-products-box owl-carousel owl-theme">
-            <div class="item">
-                <div class="products-single fix">
+            <?php
+            $similarProducts = $product->getSimilarProducts($product_id);
+
+            if ($similarProducts) {
+                while ($row = $similarProducts->fetch_assoc()) {
+            ?>
+            <div class="item product-item">
+                <div class="products-single fix" >
                     <div class="box-img-hover">
-                        <img src="admin/uploads/cate1-gold.webp" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
+                    <a href="product-detail.php?id=<?php echo $row['product_id']; ?>"> <img src="admin/uploads/<?php echo $row['product_img']; ?>" class="img-fluid image-hover-effect" alt="Image"></a>
                     </div>
                     <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
+                        <h4><a href="product-detail.php?id=<?php echo $row['product_id']; ?>"><?php echo $row['product_name']; ?></a></h4>
+                        <h5><del>$<?php echo $row['product_price']; ?></del><a href="product-detail.php?id=<?php echo $row['product_id']; ?>"> $<?php echo $row['product_price_sale']; ?></a> </h5>
                     </div>
                 </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/cate1.webp" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/cate1-white.webp" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/cate5.webp" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/cate2.webp" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/iphone13promaxden.jpg" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/iphone14promaxtrang.png" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="products-single fix">
-                    <div class="box-img-hover">
-                        <img src="admin/uploads/iphone8plus.png" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
-                            <ul>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                            </ul>
-                            <a class="cart" href="#">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5><del>$9.79</del><a href="">$9.29</a> </h5>
-                    </div>
-                </div>
-            </div>
+            </div>  
+            <?php
+                }
+            } else {
+                echo '<p>No similar products found.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>

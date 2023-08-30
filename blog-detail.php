@@ -77,31 +77,27 @@ if (isset($_GET['blog_id'])) {
         ?>
             <section id="related-blogs" class="section">
                 <div class="container">
-                    <h2 class="text-center">Related Blogs</h2>
-                    <div id="relatedBlogsCarousel" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <?php
-                            $activeClass = "active"; // Gán lớp active cho phần tử đầu tiên
-                            while ($row = $relatedBlogs->fetch_assoc()) {
-                            ?>
-                                <div class="carousel-item <?php echo $activeClass; ?>">
-                                    <h4><a href="blog-detail.php?blog_id=<?php echo $row['blog_id']; ?>"><?php echo $row['blog_title']; ?></a></h4>
-                                    <p><a href="blog-detail.php?blog_id=<?php echo $row['blog_id']; ?>"><?php echo substr($row['blog_content'], 0, 200); ?>...</a></p>
-                                    <a href="blog-detail.php?blog_id=<?php echo $row['blog_id']; ?>" class="btn btn-primary">Read More</a>
+                    <h2 class="text-center">Related Blog</h2>
+                    <div class="featured-products-box owl-carousel owl-theme">
+                        <?php
+                        while ($row = $relatedBlogs->fetch_assoc()) {
+                            $blogDetailLink = "blog-detail.php?blog_id=" . $row['blog_id'];
+                        ?>
+                            <div class="item">
+                                <div class="products-single fix">
+                                    <div class="box-img-hover">
+                                        <a href="<?php echo $blogDetailLink; ?>">
+                                            <img src="admin/uploads/<?php echo $row['blog_image']; ?>" class="img-fluid" alt="Image">
+                                        </a>
+                                    </div>
+                                    <div class="why-text">
+                                        <h4><a href="<?php echo $blogDetailLink; ?>"><?php echo $row['blog_title']; ?></a></h4>
+                                    </div>
                                 </div>
-                            <?php
-                                $activeClass = ""; // Bỏ lớp active sau khi gán cho phần tử đầu tiên
-                            }
-                            ?>
-                        </div>
-                        <a class="carousel-control-prev" href="#relatedBlogsCarousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#relatedBlogsCarousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </section>
@@ -120,6 +116,66 @@ if (isset($_GET['blog_id'])) {
 
 
 <style>
+    
+    .featured-products-box .item .box-img-hover:hover img {
+    transform: scale(1.05); /* Increase image size slightly */
+    transition: transform 0.3s ease; /* Add a smooth transition */
+}
+
+    /* CSS for the Related Blog Section */
+    #related-blogs {
+        padding: 30px 0;
+        /* Add some padding to the section */
+    }
+
+    .featured-products-box {
+        margin-top: 0px;
+        /* Add margin to the top of the carousel */
+    }
+
+    .featured-products-box .item {
+        margin-right: 20px;
+        /* Add margin between the blog items */
+    }
+
+    /* Set a max-width for the images and make them centered */
+    .featured-products-box .item .box-img-hover img {
+        max-width: 100%;
+        /* Ensure images don't overflow their containers */
+        display: block;
+        /* Center the images */
+        margin: 0 auto;
+    }
+
+    /* Style the blog title */
+    .featured-products-box .item .why-text h4 {
+        font-size: 18px;
+        /* Adjust the font size as needed */
+        margin-top: 10px;
+        /* Add spacing below the title */
+        text-align: center;
+        /* Center the text horizontally */
+        height: 60px;
+        /* Set a fixed height for the title container */
+        overflow: hidden;
+        /* Hide any overflowing content */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* Limit the title to 2 lines */
+        -webkit-box-orient: vertical;
+    }
+
+    /* Ensure consistent image and title heights for uniform appearance */
+    .featured-products-box .item .box-img-hover,
+    .featured-products-box .item .why-text {
+        height: 150px;
+        /* Set a fixed height for both image and title containers */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+
     h1 {
         padding-top: 30px;
         text-align: center;
@@ -179,27 +235,6 @@ if (isset($_GET['blog_id'])) {
 
     .comment-text {
         margin-top: 5px;
-    }
-
-    /* CSS để điều chỉnh vị trí của mũi tên "Previous" và "Next" */
-    .carousel-control-prev,
-    .carousel-control-next {
-        top: 50%;
-        transform: translateY(-50%);
-        width: 30px;
-        height: 30px;
-    }
-
-    .carousel-control-prev {
-        background: black;
-        left: -30px;
-        /* Điều chỉnh khoảng cách về bên trái */
-    }
-
-    .carousel-control-next {
-        background: black;
-        right: -30px;
-        /* Điều chỉnh khoảng cách về bên phải */
     }
 
     #comment-section {
@@ -263,7 +298,6 @@ if (isset($_GET['blog_id'])) {
 </style>
 
 <script>
-
     $(document).ready(function() {
         $("#relatedBlogsCarousel").owlCarousel({
             items: 3, // Số lượng phần tử hiển thị

@@ -2622,9 +2622,30 @@
     cursor: pointer; /* Biến con trỏ thành dấu tay khi hover */
 }
 
+.image-hover-effect:hover {
+    /* Đổi màu nền khi rê chuột vào */
+    background-color: rgba(248, 240, 240, 0.5); /* Ví dụ: màu đen với độ trong suốt 50% */
+    /* Đổi kích thước và vị trí */
+    transform: scale(1.1); /* Ví dụ: phóng to 110% */
+    /* Thêm chuyển động trơn tru */
+    transition: all 0.3s ease; /* Ví dụ: chuyển đổi trong 0.3 giây với hiệu ứng trơn tru */
+}
 
+.product-item {
+    margin: 30px; /* Khoảng cách bên phải của mỗi sản phẩm */
+    transition: transform 0.2s; /* Hiệu ứng chuyển đổi (hover) */
+}
 
+/* Loại bỏ khoảng cách bên phải của sản phẩm cuối cùng */
+.product-item:last-child {
+    margin-right: 0;
+}
 
+/* Hover effect */
+.product-item:hover {
+    transform: scale(1.05); /* Khi di chuột qua, sản phẩm sẽ phóng to lên 1.05 lần kích thước ban đầu */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Hiển thị shadow khi hover */
+}
 
 
 

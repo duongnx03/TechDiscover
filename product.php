@@ -155,8 +155,8 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                 </select>
                             </div>
                             <?php
-                           echo '<p>Showing all <span>' . $totalProducts . '</span> results</p>';
-                           ?>
+                            echo '<p>Showing all <span>' . $totalProducts . '</span> results</p>';
+                            ?>
                         </div>
                     </div>
 
@@ -171,11 +171,11 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                             echo '<div class="products-single fix">';
 
                                             // Check if the product is on sale or new
-                                            
-                                                echo '<div class="type-lb"><p class="new">New</p></div>';
-                                            
 
-                                            echo '<a href="product-detail.php?id=' . $product['product_id'] . '"><img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image"></a>';
+                                            echo '<div class="type-lb"><p class="new">New</p></div>';
+
+
+                                            echo '<a href="product-detail.php?id=' . $product['product_id'] . '"><img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid product-image" alt="Image"></a>';
                                             echo '<ul>';
                                             echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '"></a></li>';
                                             echo '</ul>';
@@ -243,6 +243,18 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
         </div>
     </div>
     <!-- End Shop Page -->
+
+    <style>
+        .product-image {
+            transition: transform 0.3s ease;
+            /* Hiệu ứng thay đổi trong 0.3 giây */
+        }
+
+        .product-image:hover {
+            transform: scale(1.1);
+            /* Khi con trỏ chuột hover, phóng to hình ảnh lên 1.1 lần kích thước ban đầu */
+        }
+    </style>
 
     <script>
         document.getElementById("sortSelect").addEventListener("change", function() {
