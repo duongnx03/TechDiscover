@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="product_img">Product Image<span style="color:red;">*</span></label>
-                    <input required name="product_img" type="file" class="form-control" onchange="previewImage(this, 'previewProductImg')">
+                    <input name="product_img" type="file" class="form-control" onchange="previewImage(this, 'previewProductImg')">
                     <img id="previewProductImg" src="uploads/<?php echo $result['product_img']; ?>" alt="Preview Image" style="max-width: 200px; max-height: 200px; display: block;"><br>
                 </div>
 

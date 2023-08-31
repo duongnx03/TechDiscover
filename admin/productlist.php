@@ -5,49 +5,41 @@ include "navbar.php";
 include "class/product_class.php";
 
 $product = new product;
-// Lấy danh sách màu sắc từ bảng tbl_color
 $colors = $product->show_color();
-
-// Lấy danh sách dung lượng RAM từ bảng tbl_memory_ram
 $memoryRams = $product->show_memory_ram();
 
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $productsPerPage = 8;
 
-// Sắp xếp và bộ lọc
 $sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
 $filterColor = isset($_GET['color']) ? $_GET['color'] : '';
 $filterMemory = isset($_GET['memory']) ? $_GET['memory'] : '';
 
-// Tính tổng số sản phẩm
-if (!empty($searchTerm)) {
-    // Nếu có từ khóa tìm kiếm, sử dụng hàm tìm kiếm
-    $totalProducts = $product->getTotalSearchProducts($searchTerm);
-} else {
-    // Ngược lại, lấy tổng số sản phẩm trong cơ sở dữ liệu
-    $totalProducts = $product->getTotalProducts();
-}
+// Tính tổng số sản phẩm sau khi áp dụng bộ lọc
+$totalProducts = $product->getTotalFilteredProducts($searchTerm, $sortOption, $filterColor, $filterMemory);
 
-// Tính tổng số trang dựa trên tổng số sản phẩm và số lượng sản phẩm trên mỗi trang
+// Tính tổng số trang dựa trên tổng số sản phẩm và số sản phẩm trên mỗi trang
 $totalPages = ceil($totalProducts / $productsPerPage);
 
-// Đảm bảo trang hiện tại hợp lệ
 if ($currentPage < 1 || $currentPage > $totalPages) {
     $currentPage = 1;
 }
 
-// Tính offset để lấy sản phẩm cho trang hiện tại
 $offset = ($currentPage - 1) * $productsPerPage;
 
-// Lấy danh sách sản phẩm phân trang
+// Lấy danh sách sản phẩm sau khi áp dụng bộ lọc và phân trang
 if (!empty($searchTerm)) {
-    // Nếu có từ khóa tìm kiếm, sử dụng hàm tìm kiếm
-    $show_product = $product->searchProductsByName($searchTerm);
+    $show_product = $product->searchProductsByNamePaginated($searchTerm, $currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
 } else {
-    // Ngược lại, lấy danh sách sản phẩm theo trang với sắp xếp và bộ lọc
     $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
 }
+
+// Tính số thứ tự bắt đầu cho từng trang
+$startNumber = ($currentPage - 1) * $productsPerPage + 1;
+
+// Tính số thứ tự bắt đầu cho từng trang
+$startNumber = ($currentPage - 1) * $productsPerPage + 1;
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -63,13 +55,11 @@ if (!empty($searchTerm)) {
         <form method="GET" action="productlist.php">
             <label for="sort">Sort by: </label>
             <select name="sort" id="sort">
-                <option value="price_asc">NONE</option>
-                <option value="price_asc">Prices go up</option>
-                <option value="price_desc">Prices go down</option>
-                <option value="name_asc">Name (A-Z)</option>
-                <option value="name_desc">Name(Z-A)</option>
+                <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
+                <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
+                <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
+                <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
             </select>
-
             <label for="color">Filter by color:</label>
             <select name="color" id="color">
                 <option value="">ALL</option>
@@ -107,9 +97,8 @@ if (!empty($searchTerm)) {
                 <tbody>
                     <?php
                     if ($show_product) {
-                        $i = 0;
+                        $i = $startNumber; // Sử dụng biến startNumber thay vì $i
                         while ($result = $show_product->fetch_assoc()) {
-                            $i++;
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
@@ -140,11 +129,10 @@ if (!empty($searchTerm)) {
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a>
-                                    |
-                                    <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
                     <?php
+                            $i++; // Tăng biến startNumber sau mỗi lần hiển thị sản phẩm
                         }
                     } else {
                         echo '<tr><td colspan="10">No products found.</td></tr>';
