@@ -72,13 +72,16 @@ if (isset($_POST['send_code'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Forgot Password</title>
 </head>
 <body>
     <section>
+        
         <div class="login-box">
-            <h2>Forgot Password</h2>
+         
             <form action="forgotpassword.php" method="post">
+            <h2>Forgot Password</h2>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="mail"></ion-icon>
