@@ -116,7 +116,17 @@ if (isset($_GET['blog_id'])) {
 
 
 <style>
-    
+    .blog-detail{
+        background: grey;
+    }
+
+    body {
+        background-image: url('image/nen1.jpeg') !important; /* Thay 'URL_CUA_HINH_ANH_NEN' bằng URL thực tế của hình ảnh nền */
+        background-size: cover; /* Để đảm bảo hình ảnh nền phủ kín toàn bộ nền trang */
+        background-repeat: no-repeat; /* Ngăn lặp lại hình ảnh nền */
+        background-attachment: fixed; /* Giữ hình ảnh nền cố định khi trang cuộn */
+    }
+ 
     .featured-products-box .item .box-img-hover:hover img {
     transform: scale(1.05); /* Increase image size slightly */
     transition: transform 0.3s ease; /* Add a smooth transition */

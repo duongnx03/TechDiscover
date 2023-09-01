@@ -138,17 +138,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="product_detail">Enter Product Detail: <span style="color:red;">*</span></label>
+                    <label for="product_detail">Enter Product Detail: <span style="color:red;"></span></label>
                     <textarea name="product_detail" id="summernote_detail" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_accessory">Enter Product Accessory: <span style="color:red;">*</span></label>
+                    <label for="product_accessory">Enter Product Accessory: <span style="color:red;"></span></label>
                     <textarea name="product_accessory" id="summernote_accessory" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_guarantee">Enter Product Guarantee <span style="color:red;">*</span></label>
+                    <label for="product_guarantee">Enter Product Guarantee <span style="color:red;"></span></label>
                     <textarea name="product_guarantee" id="summernote_guarantee" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 

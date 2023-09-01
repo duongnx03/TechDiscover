@@ -148,6 +148,14 @@
     <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
 
 
+<style>
+    body {
+        background-image: url('image/nen1.jpeg'); /* Thay 'URL_CUA_HINH_ANH_NEN' bằng URL thực tế của hình ảnh nền */
+        background-size: cover; /* Để đảm bảo hình ảnh nền phủ kín toàn bộ nền trang */
+        background-repeat: no-repeat; /* Ngăn lặp lại hình ảnh nền */
+        background-attachment: fixed; /* Giữ hình ảnh nền cố định khi trang cuộn */
+    }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <!-- ALL JS FILES -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
