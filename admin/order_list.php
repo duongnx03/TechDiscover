@@ -17,6 +17,7 @@ $show_order = $order->show_order_list();
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
+                        <th scope="col">Code</th>
                         <th scope="col">User Info</th>
                         <th scope="col">Order Date</th>
                         <th scope="col">Payment Method</th>
@@ -36,6 +37,7 @@ $show_order = $order->show_order_list();
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
+                                <td><?php echo $result['order_id'] ?></td>
                                 <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
                                 <td><?php echo $result['order_date'] ?></td>
                                 <td><?php echo $result['payment_method'] ?></td>

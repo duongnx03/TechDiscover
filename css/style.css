@@ -2647,7 +2647,78 @@
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Hiển thị shadow khi hover */
 }
 
+.directional {
+    margin-top: 20px;
+    display: flex;
+    margin-bottom: 20px;
+}
 
+.list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s;
+    font-weight: bold; /* Chữ in đậm */
+    font-size: 18px; /* Cỡ chữ lớn hơn */
+}
+
+.list-group-item.active {
+    background-color: red;
+    color: white;
+}
+
+.table_info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table_info th,
+.table_info td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table_info th {
+    background-color: #f2f2f2;
+}
+
+.info {
+    max-width: 200px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name-pr, .price-pr, .remove-pr {
+    width: 10%;
+}
+
+.price-pr p {
+    margin: 0;
+}
+
+.remove-pr button {
+    width: 100%;
+}
+
+.action-row td {
+    border-top: none;
+    padding-top: 0;
+    text-align: right;
+}
+
+.action-row button {
+    margin: 4px;
+}
+
+.text-right {
+    text-align: right;
+}
 
 
 

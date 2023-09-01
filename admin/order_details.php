@@ -19,8 +19,10 @@ if (isset($_GET['order_id'])) {
         color: #333;
         font-weight: bold;
     }
+
     .modal-dialog {
-        max-width: 80%; /* Adjust the width as needed */
+        max-width: 80%;
+        /* Adjust the width as needed */
     }
 
     .modal-body {
