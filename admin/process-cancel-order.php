@@ -14,7 +14,7 @@ $db = new Database;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $order_id = $_GET['id'];
-    $query = "UPDATE tbl_order SET order_status = 'canceled' WHERE order_id = $order_id";
+    $query = "UPDATE tbl_order SET order_status = 'cancelled' WHERE order_id = $order_id";
     $result = $db->update($query);
 
     $product_query = "select * from tbl_order_items where order_id = $order_id";

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ward = $_POST['ward'];
     $address = $_POST['address'];
     $total_order = $_POST['total_order'];
-    $order_status = 'order_processing';
+    $order_status = 'processing';
     $payment_method = $_POST['payment_method'];
     $status_payment = $_POST['status_payment'];
 

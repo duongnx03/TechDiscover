@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $upload_directory = "../admin/uploads/";
 
     // Update order status
-    $order_query = "UPDATE tbl_order SET order_status = 'return_order', return_status = 'processing' WHERE order_id = $order_id";
+    $order_query = "UPDATE tbl_order SET order_status = 'return', return_status = 'processing' WHERE order_id = $order_id";
     $order_result = $db->update($order_query);
 
     $info_query = "select * from tbl_order where order_id  = $order_id";

@@ -4,14 +4,35 @@ include "sidebar.php";
 include "navbar.php";
 include "class/order_class.php";
 $order = new order;
-$show_order = $order->show_order_list();
+
+// Xác định trang hiện tại và số đơn hàng trên mỗi trang
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$itemsPerPage = 9;
+
+// Lấy tổng số đơn hàng
+$totalOrders = $order->getTotalOrdersReturn();
+
+// Tính tổng số trang
+$totalPages = ceil($totalOrders / $itemsPerPage);
+
+// Lấy danh sách đơn hàng cho trang hiện tại
+$show_order = $order->show_return_orders($page, $itemsPerPage);
+
+if (isset($_GET["search"])) {
+    $order_id = $_GET["order_id"];
+    $show_order = $order->search_order_list($order_id);
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h6 class="mb-0">Order List</h6>
+        <form class="d-none d-md-flex ms-4" method="GET">
+            <input class="form-control bg-dark border-0" name="order_id" placeholder="Search by order code">
+            <button type="submit" name="search" class="btn btn-primary">Search</button>
+        </form>
+    </div>
     <div class="bg-secondary text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Order return</h6>
-        </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
@@ -74,6 +95,25 @@ $show_order = $order->show_order_list();
             </table>
         </div>
     </div>
+    <?php
+    // Tạo liên kết phân trang
+    if ($totalOrders > 8) {
+        // Tính tổng số trang
+        $totalPages = ceil($totalOrders / $itemsPerPage);
+    
+        // Tạo liên kết phân trang
+        if ($totalPages > 1) {
+            echo '<div class="text-center mt-4">';
+            echo '<ul class="pagination">';
+            for ($i = 1; $i <= $totalPages; $i++) {
+                $isActive = ($i == $page) ? 'active' : '';
+                echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+            }
+            echo '</ul>';
+            echo '</div>';
+        }
+    }
+    ?>
 </div>
 <?php
 include "footer.php";
