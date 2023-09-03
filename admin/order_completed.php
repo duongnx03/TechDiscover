@@ -80,7 +80,7 @@ if (isset($_GET["search"])) {
     </div>
     <?php
     // Tạo liên kết phân trang
-    if ($totalOrders > 8) {
+    if ($totalOrders > 10) {
         // Tính tổng số trang
         $totalPages = ceil($totalOrders / $itemsPerPage);
     
