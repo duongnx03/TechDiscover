@@ -60,7 +60,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['coupon
     }
 
     .out-of-stock {
-        color: gray; /* Hết hàng: Màu chữ xám */
+        color: red; /* Hết hàng: Màu chữ xám */
     }
 
     .btn-update,

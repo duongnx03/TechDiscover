@@ -1,6 +1,21 @@
 <?php
 include "header.php";
 include "navbar.php";
+if (!isset($_SESSION['id'])) {
+    echo "<p>You need to <big><b><a href='login.php'>Login</a></b></big> to leave a message.</p>";
+} else {
+    $user_id = $_SESSION['id'];
+    // Truy vấn dữ liệu từ bảng users
+    $sql = "SELECT fullname, email FROM users WHERE id = $user_id";
+    $result = $db->select($sql);
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $fullname = $row['fullname'];
+        $email = $row['email'];
+    }
+
+}
 ?>
 
 <!-- Start All Title Box -->
@@ -47,39 +62,42 @@ include "navbar.php";
                         <br><br>
                         Best regards,<br>
                         Customer support team.</p>
-                    <form id="contactForm">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required data-error="Please enter your name">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Your Email" id="email" class="form-control" name="name" required data-error="Please enter your email">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="subject" name="name" placeholder="Subject" required data-error="Please enter your Subject">
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <textarea class="form-control" id="message" placeholder="Your Message" rows="4" data-error="Write your message" required></textarea>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="submit-button text-center">
-                                    <button class="btn hvr-hover" id="submit" type="submit">Send Message</button>
-                                    <div id="msgSubmit" class="h3 text-center hidden"></div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        <?php
+if (!isset($_SESSION['id'])) {
+    echo "<p>You need to <big><b><a href='login.php'>Login</a></b></big> to leave a message.</p>";
+} else {
+?>
+                        <form id="contactForm" action="process_contact_form.php" method="POST">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Hiển thị thông tin người dùng -->
+            <div class="form-group">
+                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo isset($fullname) ? $fullname : ''; ?>" >
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <!-- Hiển thị thông tin người dùng -->
+                <input type="email" id="email" class="form-control" name="email" value="<?php echo isset($email) ? $email : ''; ?>" >
+            </div>
+        </div>
+        <!-- ... Phần khác của biểu mẫu ... -->
+        <div class="col-md-12">
+            <div class="form-group">
+                <textarea class="form-control" name="message" id="message" placeholder="Your Message" rows="4" data-error="Write your message" required></textarea>
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="submit-button text-center">
+                <button class="btn hvr-hover" id="submit" type="submit">Send Message</button>
+                <div id="msgSubmit" class="h3 text-center hidden"></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</form>
+<?php
+}
+?>
                 </div>
             </div>
         </div>
