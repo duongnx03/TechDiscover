@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mb-3">
                     <label for="brand_name" class="form-label">Brand Name</label>
-                    <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Enter brand name" required>
+                    <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Enter brand name" >
                 </div>
                 <button type="submit" class="btn btn-primary">ADD</button>
             </form>

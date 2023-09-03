@@ -3,38 +3,43 @@ include "header.php";
 include "sidebar.php";
 include "navbar.php";
 include "class/product_class.php";
-?>
 
-<?php
 $product = new product;
+$colors = $product->show_color();
+$memoryRams = $product->show_memory_ram();
+
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$productsPerPage = 8; // Số lượng sản phẩm trên mỗi trang
+$productsPerPage = 8;
 
-// Tính tổng số sản phẩm
-$totalProducts = $product->getTotalProducts();
+$sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
+$filterColor = isset($_GET['color']) ? $_GET['color'] : '';
+$filterMemory = isset($_GET['memory']) ? $_GET['memory'] : '';
 
-// Tính tổng số trang dựa trên tổng số sản phẩm và số lượng sản phẩm trên mỗi trang
+// Tính tổng số sản phẩm sau khi áp dụng bộ lọc
+$totalProducts = $product->getTotalFilteredProducts($searchTerm, $sortOption, $filterColor, $filterMemory);
+
+// Tính tổng số trang dựa trên tổng số sản phẩm và số sản phẩm trên mỗi trang
 $totalPages = ceil($totalProducts / $productsPerPage);
 
-// Đảm bảo trang hiện tại hợp lệ
 if ($currentPage < 1 || $currentPage > $totalPages) {
     $currentPage = 1;
 }
 
-// Tính offset để lấy sản phẩm cho trang hiện tại
 $offset = ($currentPage - 1) * $productsPerPage;
 
-// Lấy danh sách sản phẩm phân trang
+// Lấy danh sách sản phẩm sau khi áp dụng bộ lọc và phân trang
 if (!empty($searchTerm)) {
-    // Nếu có từ khóa tìm kiếm, sử dụng hàm tìm kiếm
-    $show_product = $product->searchProductsByName($searchTerm);
-    $totalProducts = $product->getTotalSearchProducts($searchTerm);
+    $show_product = $product->searchProductsByNamePaginated($searchTerm, $currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
 } else {
-    // Ngược lại, lấy danh sách sản phẩm theo trang
-    $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage);
+    $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
 }
 
+// Tính số thứ tự bắt đầu cho từng trang
+$startNumber = ($currentPage - 1) * $productsPerPage + 1;
+
+// Tính số thứ tự bắt đầu cho từng trang
+$startNumber = ($currentPage - 1) * $productsPerPage + 1;
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -47,12 +52,38 @@ if (!empty($searchTerm)) {
             </form>
             <a href="productadd.php">ADD Product</a>
         </div>
+        <form method="GET" action="productlist.php">
+            <label for="sort">Sort by: </label>
+            <select name="sort" id="sort">
+                <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
+                <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
+                <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
+                <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
+            </select>
+            <label for="color">Filter by color:</label>
+            <select name="color" id="color">
+                <option value="">ALL</option>
+                <?php foreach ($colors as $color) : ?>
+                    <option value="<?php echo $color['color_id']; ?>"><?php echo $color['color_name']; ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <label for="memory">Filter by RAM:</label>
+            <select name="memory" id="memory">
+                <option value="">ALL</option>
+                <?php foreach ($memoryRams as $memoryRam) : ?>
+                    <option value="<?php echo $memoryRam['memory_ram_id']; ?>"><?php echo $memoryRam['memory_ram_name']; ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <input type="submit" value="Filter and Sort">
+        </form><br>
+
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">ID</th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Promotional Price</th>
@@ -66,13 +97,11 @@ if (!empty($searchTerm)) {
                 <tbody>
                     <?php
                     if ($show_product) {
-                        $i = 0;
+                        $i = $startNumber; // Sử dụng biến startNumber thay vì $i
                         while ($result = $show_product->fetch_assoc()) {
-                            $i++;
-                            ?>
+                    ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['product_id'] ?></td>
                                 <td><?php echo $result['product_name'] ?></td>
                                 <td><?php echo $result['product_price'] ?></td>
                                 <td><?php echo $result['product_price_sale'] ?></td>
@@ -96,18 +125,14 @@ if (!empty($searchTerm)) {
                                 </td>
                                 <td><?php echo $result['product_quantity'] ?></td>
                                 <td>
-                                    <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image"
-                                        style="max-width: 100px;">
+                                    <img src="uploads/<?php echo $result['product_img'] ?>" alt="Product Image" style="max-width: 100px;">
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary"
-                                        href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a>
-                                    |
-                                    <a class="btn btn-sm btn-primary" href="#"
-                                        onclick="confirmDelete(<?php echo $result['product_id'] ?>)">Delete</a>
+                                    <a class="btn btn-sm btn-primary" href="productedit.php?product_id=<?php echo $result['product_id'] ?>">Update</a>
                                 </td>
                             </tr>
-                        <?php
+                    <?php
+                            $i++; // Tăng biến startNumber sau mỗi lần hiển thị sản phẩm
                         }
                     } else {
                         echo '<tr><td colspan="10">No products found.</td></tr>';
@@ -116,14 +141,46 @@ if (!empty($searchTerm)) {
                 </tbody>
             </table>
         </div><br>
-        <div class="pagination-container">
-            <div class="pagination">
-                <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
-                    <a href="productlist.php?page=<?php echo $page; ?>&search=<?php echo $searchTerm; ?>"
-                        class="<?php echo ($page === $currentPage) ? 'active' : ''; ?>"><?php echo $page; ?></a>
-                <?php endfor; ?>
+        <?php if ($totalPages > 1) : ?>
+            <div class="pagination-container">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <?php if ($currentPage > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="productlist.php?page=1<?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                            <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
+                                <a class="page-link" href="productlist.php?page=<?php echo $i; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($currentPage < $totalPages) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="productlist.php?page=<?php echo $totalPages; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
             </div>
-        </div>
+        <?php endif; ?>
+
     </div>
 </div>
 

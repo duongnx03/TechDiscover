@@ -47,14 +47,17 @@ if (isset($_POST['reset_password'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <!-- ... -->
+    <link rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
     <section>
         <div class="login-box">
             <form action="resetpassword.php" method="post">
-                <!-- ... -->
+                <h2>Resest Password</h2>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
@@ -84,4 +87,5 @@ if (isset($_POST['reset_password'])) {
         </div>
     </section>
 </body>
+
 </html>

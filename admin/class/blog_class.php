@@ -47,8 +47,46 @@ class Blog
         return $result;
     }
 
+    public function countBlogsByCategory($category_id)
+    {
+        $query = "SELECT COUNT(*) AS total FROM tbl_blog WHERE blog_cate_id = '$category_id'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
+
+    private function isValidDateTime($dateTime)
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh'); // Đặt múi giờ cho Việt Nam
+
+        $format = 'Y-m-d H:i:s'; // Định dạng datetime mong muốn
+        $date = DateTime::createFromFormat($format, $dateTime);
+
+        // Kiểm tra xem datetime có hợp lệ không
+        if ($date && $date->format($format) === $dateTime) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function insert_blog($post_data)
     {
+        // Kiểm tra xem trường 'blog_date' có giá trị không trống
+        if (empty($post_data['blog_date'])) {
+            // Trường 'blog_date' trống, hãy tạo thời gian mặc định
+            $post_data['blog_date'] = date('Y-m-d H:i:s');
+        } else {
+            // Trường 'blog_date' không trống, hãy kiểm tra xem nó có đúng định dạng datetime không
+            if (!$this->isValidDateTime($post_data['blog_date'])) {
+                // Trường 'blog_date' không hợp lệ, có thể xử lý thêm ở đây hoặc hiển thị thông báo lỗi cho người dùng
+                return false; // Hoặc thực hiện xử lý khác tùy theo yêu cầu của bạn
+            }
+        }
         // Sửa lại hàm thêm blog dựa trên dữ liệu đầu vào
         // Bạn cần thay đổi tên bảng và tên cột dựa trên cấu trúc của bảng tbl_blog
         $blog_title = $post_data['blog_title'];
@@ -78,6 +116,17 @@ class Blog
 
     public function update_blog($post_data, $blog_id)
     {
+
+        if (empty($post_data['blog_date'])) {
+            // Trường 'blog_date' trống, hãy tạo thời gian mặc định
+            $post_data['blog_date'] = date('Y-m-d H:i:s');
+        } else {
+            // Trường 'blog_date' không trống, hãy kiểm tra xem nó có đúng định dạng datetime không
+            if (!$this->isValidDateTime($post_data['blog_date'])) {
+                // Trường 'blog_date' không hợp lệ, có thể xử lý thêm ở đây hoặc hiển thị thông báo lỗi cho người dùng
+                return false; // Hoặc thực hiện xử lý khác tùy theo yêu cầu của bạn
+            }
+        }
         $blog_title = $post_data['blog_title'];
         $blog_cate_id = $post_data['blog_cate_id'];
         $blog_author = $post_data['blog_author'];
@@ -140,13 +189,15 @@ class Blog
         return '';
     }
 
-    public function searchBlogsByTitle($searchTerm)
-    {
-        // Sửa lại câu truy vấn để tìm kiếm blog theo tiêu đề
-        $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '%$searchTerm%'";
-        $result = $this->db->select($query);
-        return $result;
-    }
+    public function searchBlogsByTitle($searchTerm, $limit, $offset)
+{
+    $searchTerm = "%" . $searchTerm . "%"; // Thêm dấu % cho phần tử wildcard trong LIKE
+    $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '$searchTerm' LIMIT $offset, $limit";
+
+    $result = $this->db->select($query);
+    
+    return $result;
+}
 
     public function countBlogs()
     {
@@ -191,4 +242,38 @@ class Blog
         $result = $this->db->select($query);
         return $result;
     }
+
+    public function countFilteredBlogs($searchTerm, $categoryFilter)
+    {
+        // Bắt đầu truy vấn SQL từng phần
+        $query = "SELECT COUNT(*) AS total FROM tbl_blog";
+
+        // Xác định xem có cần thêm điều kiện WHERE không
+        $whereClause = "";
+
+        if (!empty($searchTerm) && !empty($categoryFilter)) {
+            // Trường hợp 1: Cả hai điều kiện đều được áp dụng
+            $whereClause = " WHERE blog_title LIKE '%$searchTerm%' AND blog_cate_id = '$categoryFilter'";
+        } elseif (!empty($searchTerm)) {
+            // Trường hợp 2: Chỉ áp dụng điều kiện tìm kiếm theo tiêu đề
+            $whereClause = " WHERE blog_title LIKE '%$searchTerm%'";
+        } elseif (!empty($categoryFilter)) {
+            // Trường hợp 3: Chỉ áp dụng điều kiện lọc theo danh mục
+            $whereClause = " WHERE blog_cate_id = '$categoryFilter'";
+        }
+
+        // Kết hợp các phần của truy vấn
+        $query .= $whereClause;
+
+        // Thực hiện truy vấn và trả về kết quả
+        $result = $this->db->select($query);
+
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
+    
 }

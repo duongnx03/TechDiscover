@@ -21,7 +21,6 @@ $show_cartegory = $cartegory->show_cartegory();
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">Cartegory ID</th>
                         <th scope="col">Main Category Name</th>
                         <th scope="col">Category Name</th>
                         <th scope="col">Action</th>
@@ -36,7 +35,6 @@ $show_cartegory = $cartegory->show_cartegory();
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['cartegory_id'] ?></td>
                                 <td><?php echo $result['cartegory_main_name'] ?></td>
                                 <td><?php echo $result['cartegory_name'] ?></td>
                                 <td>

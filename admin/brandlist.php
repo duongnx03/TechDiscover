@@ -34,7 +34,6 @@ if (!empty($searchTerm)) {
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">Brand ID</th>
                         <th scope="col">Category Main Name</th>
                         <th scope="col">Category Name</th>
                         <th scope="col">Brand Name</th>
@@ -50,7 +49,6 @@ if (!empty($searchTerm)) {
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['brand_id'] ?></td>
                                 <td><?php echo $result['cartegory_main_name'] ?></td>
                                 <td><?php echo $result['cartegory_name'] ?></td>
                                 <td><?php echo $result['brand_name'] ?></td>
@@ -68,7 +66,6 @@ if (!empty($searchTerm)) {
                         ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['brand_id'] ?></td>
                                 <td><?php echo $result['cartegory_main_name'] ?></td>
                                 <td><?php echo $result['cartegory_name'] ?></td>
                                 <td><?php echo $result['brand_name'] ?></td>

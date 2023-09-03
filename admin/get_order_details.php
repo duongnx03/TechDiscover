@@ -46,7 +46,7 @@ if (isset($_GET['order_id'])) {
                         <th scope="col">Product</th>
                         <th scope="col">Name</th>
                         <th scope="col">Color</th>
-                        <th scope="col">Ram</th>
+                        <th scope="col">Memory</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
                     </tr>

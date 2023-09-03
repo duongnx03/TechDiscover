@@ -21,7 +21,6 @@ $show_memory_ram = $memory_ram->show_memory_ram();
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">ID</th>
                         <th scope="col">Memory - Ram</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -35,7 +34,6 @@ $show_memory_ram = $memory_ram->show_memory_ram();
                     ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td><?php echo $result['memory_ram_id'] ?></td>
                                 <td><?php echo $result['memory_ram_name'] ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="memory_ramedit.php?memory_ram_id=<?php echo $result['memory_ram_id'] ?>">Update</a> | 

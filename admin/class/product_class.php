@@ -369,17 +369,17 @@ class product
     }
 
     public function getProductsForPage($limit, $offset)
-{
-    $query = "SELECT p.*, c.cartegory_name, b.brand_name, cm.cartegory_main_name
+    {
+        $query = "SELECT p.*, c.cartegory_name, b.brand_name, cm.cartegory_main_name
               FROM tbl_product AS p
               INNER JOIN tbl_cartegory AS c ON p.cartegory_id = c.cartegory_id
               INNER JOIN tbl_brand AS b ON p.brand_id = b.brand_id
               INNER JOIN tbl_cartegory_main AS cm ON c.cartegory_main_id = cm.cartegory_main_id
               ORDER BY p.product_id DESC LIMIT $limit OFFSET $offset";
 
-    $result = $this->db->select($query);
-    return $result;
-}
+        $result = $this->db->select($query);
+        return $result;
+    }
 
 
     public function getTotalProducts()
@@ -444,14 +444,14 @@ class product
         return $row['total'];
     }
 
-    public function getProductsByPriceLowToHigh($limit, $offset)
+    public function getProductsByPriceLowToHigh($limit, $offset, $sortField = 'product_price', $sortOrder = 'ASC')
     {
         $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
               FROM tbl_product
               INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
               INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
               INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
-              ORDER BY tbl_product.product_price ASC
+              ORDER BY $sortField $sortOrder
               LIMIT $limit OFFSET $offset";
 
         $result = $this->db->select($query);
@@ -472,19 +472,22 @@ class product
         return $result;
     }
 
-    public function getSimilarProductsByCategory($product_id) {
+    public function getSimilarProductsByCategory($product_id)
+    {
         $query = "SELECT * FROM tbl_product WHERE cartegory_id = (SELECT cartegory_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id'";
         $result = $this->db->select($query);
         return $result;
     }
 
-    public function getSimilarProductsByBrand($product_id) {
+    public function getSimilarProductsByBrand($product_id)
+    {
         $query = "SELECT * FROM tbl_product WHERE brand_id = (SELECT brand_id FROM tbl_product WHERE product_id = '$product_id') AND product_id != '$product_id'";
         $result = $this->db->select($query);
         return $result;
     }
 
-    public function get_products_by_brand($brand_name) {
+    public function get_products_by_brand($brand_name)
+    {
         $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
                   FROM tbl_product
                   INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
@@ -492,30 +495,170 @@ class product
                   INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
                   WHERE tbl_brand.brand_name = '$brand_name'
                   ORDER BY tbl_product.product_id DESC";
-    
+
         $result = $this->db->select($query);
         return $result;
     }
 
     //pagination admin
-    public function getPaginatedProducts($page, $productsPerPage)
-{
-    // Tính toán offset dựa trên trang hiện tại và số lượng sản phẩm trên mỗi trang.
-    $offset = ($page - 1) * $productsPerPage;
+    public function getPaginatedProducts($page, $productsPerPage, $sortOption = '', $filterColor = '', $filterMemory = '')
+    {
+        // Tính toán offset dựa trên trang hiện tại và số lượng sản phẩm trên mỗi trang.
+        $offset = ($page - 1) * $productsPerPage;
 
-    // Sử dụng offset và limit (số lượng sản phẩm trên mỗi trang) trong truy vấn SQL.
-    $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
-        FROM tbl_product
-        INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
-        INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
-        INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
-        ORDER BY tbl_product.product_id DESC
-        LIMIT $productsPerPage OFFSET $offset";
+        // Xây dựng truy vấn SQL dựa trên các thông tin sắp xếp và bộ lọc.
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+    FROM tbl_product
+    INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+    INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+    INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id";
 
-    $result = $this->db->select($query);
-    return $result;
-}
+        // Thêm điều kiện sắp xếp nếu có
+        if (!empty($sortOption)) {
+            // Sử dụng switch case để xác định kiểu sắp xếp
+            switch ($sortOption) {
+                case 'price_low_to_high':
+                    $query .= " ORDER BY tbl_product.product_price_sale ASC";
+                    break;
+                case 'price_high_to_low':
+                    $query .= " ORDER BY tbl_product.product_price_sale DESC";
+                    break;
+                    // Thêm các trường hợp sắp xếp khác ở đây nếu cần
+            }
+        } else {
+            // Mặc định sắp xếp theo ID giảm dần nếu không có yêu cầu sắp xếp
+            $query .= " ORDER BY tbl_product.product_id DESC";
+        }
+
+        // Thêm điều kiện bộ lọc nếu có
+        if (!empty($filterColor)) {
+            // Thêm điều kiện bộ lọc cho màu sắc vào truy vấn
+            $query .= " WHERE tbl_product.product_color LIKE '%$filterColor%'";
+        }
+
+        if (!empty($filterMemory)) {
+            // Thêm điều kiện bộ lọc cho bộ nhớ RAM vào truy vấn
+            // Nếu đã có điều kiện WHERE (vì màu sắc), ta sẽ sử dụng AND
+            $query .= (!empty($filterColor) ? " AND" : " WHERE") . " tbl_product.product_memory_ram LIKE '%$filterMemory%'";
+        }
+
+        // Thêm LIMIT và OFFSET vào truy vấn để phân trang
+        $query .= " LIMIT $productsPerPage OFFSET $offset";
+
+        // Thực hiện truy vấn SQL
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    // Trong class `product` của bạn, hãy thêm phương thức sau:
+    public function searchProductsByNamePaginated($searchTerm, $currentPage, $productsPerPage, $sortOption = '', $filterColor = '', $filterMemory = '')
+    {
+        // Tính toán offset dựa trên trang hiện tại và số lượng sản phẩm trên mỗi trang.
+        $offset = ($currentPage - 1) * $productsPerPage;
     
+        // Xây dựng truy vấn SQL dựa trên các thông tin sắp xếp và bộ lọc.
+        $query = "SELECT tbl_product.*, tbl_cartegory.cartegory_name, tbl_brand.brand_name, tbl_cartegory_main.cartegory_main_name
+            FROM tbl_product
+            INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+            INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+            INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+            WHERE tbl_product.product_name LIKE '%$searchTerm%'";
+    
+        // Thêm điều kiện sắp xếp nếu có
+        if (!empty($sortOption)) {
+            // Sử dụng switch case để xác định kiểu sắp xếp
+            switch ($sortOption) {
+                case 'price_low_to_high':
+                    $query .= " ORDER BY tbl_product.product_price ASC";
+                    break;
+                case 'price_high_to_low':
+                    $query .= " ORDER BY tbl_product.product_price DESC";
+                    break;
+                    // Thêm các trường hợp sắp xếp khác ở đây nếu cần
+            }
+        } else {
+            // Mặc định sắp xếp theo ID giảm dần nếu không có yêu cầu sắp xếp
+            $query .= " ORDER BY tbl_product.product_id DESC";
+        }
+    
+        // Thêm điều kiện bộ lọc nếu có
+        if (!empty($filterColor)) {
+            // Thêm điều kiện bộ lọc cho màu sắc vào truy vấn
+            $query .= " AND tbl_product.product_color LIKE '%$filterColor%'";
+        }
+    
+        if (!empty($filterMemory)) {
+            // Thêm điều kiện bộ lọc cho bộ nhớ RAM vào truy vấn
+            $query .= " AND tbl_product.product_memory_ram LIKE '%$filterMemory%'";
+        }
+    
+        // Thêm LIMIT và OFFSET vào truy vấn để phân trang
+        $query .= " LIMIT $productsPerPage OFFSET $offset";
+    
+        // Thực hiện truy vấn SQL
+        $result = $this->db->select($query);
+        return $result;
+    }
+    
+    public function getTotalFilteredProducts($searchTerm, $sortOption, $filterColor, $filterMemory)
+    {
+        // Xây dựng truy vấn SQL dựa trên các thông tin sắp xếp và bộ lọc.
+        $query = "SELECT COUNT(*) as total
+            FROM tbl_product
+            INNER JOIN tbl_cartegory ON tbl_product.cartegory_id = tbl_cartegory.cartegory_id
+            INNER JOIN tbl_brand ON tbl_product.brand_id = tbl_brand.brand_id
+            INNER JOIN tbl_cartegory_main ON tbl_cartegory.cartegory_main_id = tbl_cartegory_main.cartegory_main_id
+            WHERE tbl_product.product_name LIKE '%$searchTerm%'";
+    
+        // Thêm điều kiện bộ lọc nếu có
+        if (!empty($filterColor)) {
+            $query .= " AND tbl_product.product_color LIKE '%$filterColor%'";
+        }
+    
+        if (!empty($filterMemory)) {
+            $query .= " AND tbl_product.product_memory_ram LIKE '%$filterMemory%'";
+        }
+    
+        // Thêm điều kiện sắp xếp nếu có
+        if (!empty($sortOption)) {
+            switch ($sortOption) {
+                case 'price_low_to_high':
+                    $query .= " ORDER BY tbl_product.product_price ASC";
+                    break;
+                case 'price_high_to_low':
+                    $query .= " ORDER BY tbl_product.product_price DESC";
+                    break;
+                // Thêm các trường hợp sắp xếp khác ở đây nếu cần
+            }
+        }
+    
+        // Thực hiện truy vấn SQL
+        $result = $this->db->select($query);
+    
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
+    
+
+    public function getSimilarProducts($product_id)
+    {
+        $query = "SELECT brand_id FROM tbl_product WHERE product_id = '$product_id'";
+        $result = $this->db->select($query);
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $brand_id = $row['brand_id'];
+
+            // Sau đó, lấy các sản phẩm khác có cùng thương hiệu
+            $query = "SELECT * FROM tbl_product WHERE brand_id = '$brand_id' AND product_id != '$product_id'";
+            $result = $this->db->select($query);
+            return $result;
+        }
+        return null;
+    }
 }
 
 

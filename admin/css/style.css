@@ -289,3 +289,12 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+.red-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: 5px; /* Để tạo khoảng cách giữa biểu tượng và văn bản */
+}

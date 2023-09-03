@@ -1,7 +1,20 @@
 <?php
 include "header.php";
 include "sidebar.php";
-include "navbar.php"
+include "navbar.php";
+include "database.php";
+$db = new Database;
+$totalRevenue = 0;
+$sql = "SELECT SUM(total_order) AS total_revenue FROM tbl_order where order_status = 'delivered'";
+$result = $db->select($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $totalRevenue = $row["total_revenue"];
+} else {
+    $totalRevenue = 0;
+}
+
 ?>
 <!-- Sale & Revenue Start -->
 <div class="container-fluid pt-4 px-4">
@@ -12,36 +25,41 @@ include "navbar.php"
                     <i class="fa fa-chart-line fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">Total Products</p>
-                        <h6 class="mb-0">34</h6>
+                        <h6 class="mb-0">32</h6>
                     </div>
                 </div>
         </div></a>
         <div class="col-sm-6 col-xl-3">
-            <a href="order_list.php"><div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Revenue</p>
-                    <h6 class="mb-0">$0</h6>
+            <a href="order_list.php">
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Total Revenue</p>
+                        <h6 class="mb-0">$<?php echo number_format($totalRevenue, 2); ?></h6>
+                    </div>
                 </div>
-            </div></a>
+            </a>
         </div>
         <div class="col-sm-6 col-xl-3">
-            <a href="coupon.php"><div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-area fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0">2</h6>
+            <a href="coupon.php">
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-area fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today Sale</p>
+                        <h6 class="mb-0">2</h6>
+                    </div>
                 </div>
-            </div>
         </div></a>
         <div class="col-sm-6 col-xl-3">
-            <a href="order_completed.php"><div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Revenue</p>
-                    <h6 class="mb-0">$0</h6>
+            <a href="order_completed.php">
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today Revenue</p>
+                        <h6 class="mb-0">$<?php echo number_format($totalRevenue, 2); ?></h6>
+                    </div>
                 </div>
-            </div></a>
+            </a>
         </div>
     </div>
 </div>

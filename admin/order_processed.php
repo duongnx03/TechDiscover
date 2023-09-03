@@ -4,19 +4,41 @@ include "sidebar.php";
 include "navbar.php";
 include "class/order_class.php";
 $order = new order;
-$show_order = $order->show_order_list();
+
+// Xác định trang hiện tại và số đơn hàng trên mỗi trang
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$itemsPerPage = 9;
+
+// Lấy tổng số đơn hàng
+$totalOrders = $order->getTotalOrdersProcessed();
+
+// Tính tổng số trang
+$totalPages = ceil($totalOrders / $itemsPerPage);
+
+// Lấy danh sách đơn hàng cho trang hiện tại
+$show_order = $order->show_processed_orders($page, $itemsPerPage);
+
+if (isset($_GET["search"])) {
+    $order_id = $_GET["order_id"];
+    $show_order = $order->search_order_list($order_id);
+}
 ?>
 
 <div class="container-fluid pt-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h6 class="mb-0">Order List</h6>
+        <form class="d-none d-md-flex ms-4" method="GET">
+            <input class="form-control bg-dark border-0" type="search" name="order_id" placeholder="Search by order code">
+            <button type="submit" name="search" class="btn btn-primary">Search</button>
+        </form>
+    </div>
     <div class="bg-secondary text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Order processed</h6>
-        </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-white">
                         <th scope="col">#</th>
+                        <th scope="col">Code</th>
                         <th scope="col">User Info</th>
                         <th scope="col">Order Date</th>
                         <th scope="col">Payment Method</th>
@@ -32,29 +54,30 @@ $show_order = $order->show_order_list();
                         $i = 0;
                         while ($result = $show_order->fetch_assoc()) {
                             if ($result['order_status'] == 'delivered_carrier') {
-                            $i++;
+                                $i++;
                     ?>
-                            <tr>
-                                <td><?php echo $i ?></td>
-                                <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
-                                <td><?php echo $result['order_date'] ?></td>
-                                <td><?php echo $result['payment_method'] ?></td>
-                                <td class="status">
-                                    <form action="order_edit.php?order_id=<?php echo $result['order_id'] ?>" method="post">
-                                        <select name="order_status" class="form-select">
-                                            <option value="order_processing" <?php if ($result['order_status'] == 'order_processing') echo 'selected' ?>>Order processing</option>
-                                            <option value="delivered_carrier" <?php if ($result['order_status'] == 'delivered_carrier') echo 'selected' ?>>Delivered to the carrier</option>
-                                            <option value="delivered" <?php if ($result['order_status'] == 'delivered') echo 'selected' ?>>Delivered</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-link view-details">UPDATE</button>
-                                    </form>
-                                </td>
-                                <td>$<?php echo $result['total_order'] ?></td>
-                                <td><?php echo $result['status_payment'] ?></td>
-                                <td>
-                                    <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><?php echo $i ?></td>
+                                    <td><?php echo $result['order_id'] ?></td>
+                                    <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
+                                    <td><?php echo $result['order_date'] ?></td>
+                                    <td><?php echo $result['payment_method'] ?></td>
+                                    <td class="status">
+                                        <form action="order_edit.php?order_id=<?php echo $result['order_id'] ?>" method="post">
+                                            <select name="order_status" class="form-select">
+                                                <option value="order_processing" <?php if ($result['order_status'] == 'order_processing') echo 'selected' ?>>Order processing</option>
+                                                <option value="delivered_carrier" <?php if ($result['order_status'] == 'delivered_carrier') echo 'selected' ?>>Delivered to the carrier</option>
+                                                <option value="delivered" <?php if ($result['order_status'] == 'delivered') echo 'selected' ?>>Delivered</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-link view-details">UPDATE</button>
+                                        </form>
+                                    </td>
+                                    <td>$<?php echo $result['total_order'] ?></td>
+                                    <td><?php echo $result['status_payment'] ?></td>
+                                    <td>
+                                        <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
+                                    </td>
+                                </tr>
                     <?php
                             }
                         }
@@ -64,6 +87,25 @@ $show_order = $order->show_order_list();
             </table>
         </div>
     </div>
+    <?php
+    // Tạo liên kết phân trang
+    if ($totalOrders > 8) {
+        // Tính tổng số trang
+        $totalPages = ceil($totalOrders / $itemsPerPage);
+
+        // Tạo liên kết phân trang
+        if ($totalPages > 1) {
+            echo '<div class="text-center mt-4">';
+            echo '<ul class="pagination">';
+            for ($i = 1; $i <= $totalPages; $i++) {
+                $isActive = ($i == $page) ? 'active' : '';
+                echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+            }
+            echo '</ul>';
+            echo '</div>';
+        }
+    }
+    ?>
 </div>
 <?php
 include "footer.php";

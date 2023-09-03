@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             echo '<div class="checkbox-row">';
                             while ($color = $color_list->fetch_assoc()) {
                                 echo '<div class="checkbox-item">';
-                                echo '<input type="checkbox" name="product_color[]" value="' . $color['color_id'] . '"> ' .$color['color_name'];
+                                echo '<input type="checkbox" name="product_color[]" value="' . $color['color_id'] . '"> ' . $color['color_name'];
                                 echo '</div>';
                             }
                             echo '</div>';
@@ -138,17 +138,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="product_detail">Enter Product Detail: <span style="color:red;">*</span></label>
+                    <label for="product_detail">Enter Product Detail: <span style="color:red;"></span></label>
                     <textarea name="product_detail" id="summernote_detail" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_accessory">Enter Product Accessory: <span style="color:red;">*</span></label>
+                    <label for="product_accessory">Enter Product Accessory: <span style="color:red;"></span></label>
                     <textarea name="product_accessory" id="summernote_accessory" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="product_guarantee">Enter Product Guarantee <span style="color:red;">*</span></label>
+                    <label for="product_guarantee">Enter Product Guarantee <span style="color:red;"></span></label>
                     <textarea name="product_guarantee" id="summernote_guarantee" cols="30" rows="10" class="form-control"></textarea>
                 </div>
 
@@ -164,7 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="image-previews">
                         <!-- Dùng để hiển thị các ảnh đã chọn -->
                     </div>
-                    <!-- <div class="error-messages"></div> -->
                 </div>
 
                 <div class="form-group">
@@ -282,42 +281,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function previewImages(input) {
-        var imagesContainer = document.querySelector('.image-previews');
-        imagesContainer.innerHTML = '';
+    var imagesContainer = document.querySelector('.image-previews');
+    imagesContainer.innerHTML = '';
 
-        var errorMessagesContainer = document.querySelector('.error-messages');
-        errorMessagesContainer.innerHTML = '';
+    var files = input.files;
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var imageURL = URL.createObjectURL(file);
 
-        var files = input.files;
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var imageURL = URL.createObjectURL(file);
+        var image = document.createElement('img');
+        image.src = imageURL;
+        image.style.width = '150px'; // Cài độ rộng tùy ý
+        image.style.height = '150px'; // Cài chiều cao tùy ý
 
-            var image = document.createElement('img');
-            image.src = imageURL;
-            image.style.width = '150px'; // Cài độ rộng tùy ý
-            image.style.height = '150px'; // Cài chiều cao tùy ý
+        imagesContainer.appendChild(image);
 
-            imagesContainer.appendChild(image);
+        // Kiểm tra định dạng và dung lượng của ảnh mô tả
+        var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        var maxFileSize = 5 * 1024 * 1024; // 5MB
 
-            // Kiểm tra định dạng và dung lượng của ảnh mô tả
-            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-            var maxFileSize = 5 * 1024 * 1024; // 5MB
+        var fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(fileExtension)) {
+            var errorMessage = document.createElement('div');
+            errorMessage.innerText = "Định dạng đuôi ảnh không hợp lệ. Chỉ chấp nhận định dạng jpg, jpeg, png, gif, webp.";
+            errorMessagesContainer.appendChild(errorMessage);
+        }
 
-            var fileExtension = file.name.split('.').pop().toLowerCase();
-            if (!allowedExtensions.includes(fileExtension)) {
-                var errorMessage = document.createElement('div');
-                errorMessage.innerText = "Định dạng đuôi ảnh không hợp lệ. Chỉ chấp nhận định dạng jpg, jpeg, png, gif, webp.";
-                errorMessagesContainer.appendChild(errorMessage);
-            }
-
-            if (file.size > maxFileSize) {
-                var errorMessage = document.createElement('div');
-                errorMessage.innerText = "Dung lượng ảnh quá lớn. Chỉ chấp nhận ảnh có dung lượng tối đa là 5MB.";
-                errorMessagesContainer.appendChild(errorMessage);
-            }
+        if (file.size > maxFileSize) {
+            var errorMessage = document.createElement('div');
+            errorMessage.innerText = "Dung lượng ảnh quá lớn. Chỉ chấp nhận ảnh có dung lượng tối đa là 5MB.";
+            errorMessagesContainer.appendChild(errorMessage);
         }
     }
+}
+
 </script>
 
 <?php

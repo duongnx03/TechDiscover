@@ -155,8 +155,8 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                 </select>
                             </div>
                             <?php
-                           echo '<p>Showing all <span>' . $totalProducts . '</span> results</p>';
-                           ?>
+                            echo '<p>Showing all <span>' . $totalProducts . '</span> results</p>';
+                            ?>
                         </div>
                     </div>
 
@@ -169,26 +169,20 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
                                         while ($product = $products->fetch_assoc()) {
                                             echo '<div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">';
                                             echo '<div class="products-single fix">';
-                                            echo '<div class="box-img-hover">';
 
                                             // Check if the product is on sale or new
-                                            
-                                                echo '<div class="type-lb"><p class="new">New</p></div>';
-                                            
 
-                                            echo '<img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid" alt="Image">';
-                                            echo '<div class="mask-icon">';
+                                            echo '<div class="type-lb"><p class="new">New</p></div>';
+
+
+                                            echo '<a href="product-detail.php?id=' . $product['product_id'] . '"><img src="admin/uploads/' . $product['product_img'] . '" class="img-fluid product-image" alt="Image"></a>';
                                             echo '<ul>';
-                                            echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>';
-                                            echo '<li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>';
+                                            echo '<li><a href="product-detail.php?id=' . $product['product_id'] . '"></a></li>';
                                             echo '</ul>';
-                                            echo '<a class="cart" href="cart.php">Add to Cart</a>';
-                                            echo '</div>';
                                             echo '</div>';
                                             echo '<div class="why-text">';
                                             echo '<h4><a href="product-detail.php?id=' . $product['product_id'] . '">' . $product['product_name'] . '</a></h4>';
                                             echo '<h5> <del> $' . $product['product_price'] . '</del> <a href="product-detail.php?id=' . $product['product_id'] . '"> $' . $product['product_price_sale'] . '</a></h5>';
-                                            echo '</div>';
                                             echo '</div>';
                                             echo '</div>';
                                         }
@@ -249,6 +243,18 @@ $totalPages = ceil($totalProducts / $limit); // Tổng số trang
         </div>
     </div>
     <!-- End Shop Page -->
+
+    <style>
+        .product-image {
+            transition: transform 0.3s ease;
+            /* Hiệu ứng thay đổi trong 0.3 giây */
+        }
+
+        .product-image:hover {
+            transform: scale(1.1);
+            /* Khi con trỏ chuột hover, phóng to hình ảnh lên 1.1 lần kích thước ban đầu */
+        }
+    </style>
 
     <script>
         document.getElementById("sortSelect").addEventListener("change", function() {

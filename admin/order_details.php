@@ -19,8 +19,10 @@ if (isset($_GET['order_id'])) {
         color: #333;
         font-weight: bold;
     }
+
     .modal-dialog {
-        max-width: 80%; /* Adjust the width as needed */
+        max-width: 80%;
+        /* Adjust the width as needed */
     }
 
     .modal-body {
@@ -57,7 +59,7 @@ if (isset($_GET['order_id'])) {
                         <th scope="col">Product</th>
                         <th scope="col">Name</th>
                         <th scope="col">Color</th>
-                        <th scope="col">Ram</th>
+                        <th scope="col">Memory</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
                     </tr>

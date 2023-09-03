@@ -31,7 +31,7 @@
                     
                 </div>
                 <div class="col-lg-6">
-                    <div class="banner-frame"> <img class="img-thumbnail img-fluid" src="images/about-img.jpg" alt="" />
+                    <div class="banner-frame"> <img class="img-thumbnail img-fluid" src="image/hinh-nen-cong-nghe-1.jpg" alt="" />
                     </div>
                 </div>
             </div>

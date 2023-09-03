@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "database.php";
 include "../mail/PHPMailer.php";
 include "../mail/Exception.php";
@@ -13,7 +14,7 @@ $db = new Database;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $order_id = $_GET['id'];
-    $query = "UPDATE tbl_order SET order_status = 'canceled' WHERE order_id = $order_id";
+    $query = "UPDATE tbl_order SET order_status = 'cancelled' WHERE order_id = $order_id";
     $result = $db->update($query);
 
     $product_query = "select * from tbl_order_items where order_id = $order_id";
@@ -99,5 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } catch (Exception $e) {
         echo $e;
     }
+
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    $currentDateTime = date('Y-m-d H:i:s');
+    $_SESSION["cancel_order_notification"] = [
+        "message" => "Order canceled",
+        "time" => $currentDateTime,
+        "url" => "order_canceled.php"
+    ];
+
    header("Location: ../myAccount_order_cancel.php");
 }

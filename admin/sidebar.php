@@ -6,11 +6,11 @@
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="img/rose2.jpeg" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="img/logo.png" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">DuongNX</h6>
+                        <h6 class="mb-0">TechDiscovery</h6>
                         <span>Admin</span>
                     </div>
                 </div>
@@ -36,6 +36,7 @@
                             <a href="order_processed.php" class="dropdown-item">Order processed</a>
                             <a href="order_completed.php" class="dropdown-item">Order completed</a>
                             <a href="order_canceled.php" class="dropdown-item">Order canceled</a>
+                            <a href="order_return.php" class="dropdown-item">Order return</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
@@ -47,7 +48,6 @@
                     </div>
                     <a href="coupon.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Coupon</a>
                     <a href="question.php" class="nav-item nav-link"><i class="fas fa-poll-h"></i> Survey</a>
-                    <a href="../blog.php" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Block</a>
                     <a href="widget.php" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
                 </div>
             </nav>
