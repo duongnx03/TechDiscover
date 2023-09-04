@@ -18,6 +18,8 @@ $totalPages = ceil($totalOrders / $itemsPerPage);
 // Lấy danh sách đơn hàng cho trang hiện tại
 $show_order = $order->show_processed_orders($page, $itemsPerPage);
 
+$isSearching = isset($_GET['search']);
+
 if (isset($_GET["search"])) {
     $order_id = $_GET["order_id"];
     $show_order = $order->search_order_list($order_id);
@@ -26,7 +28,7 @@ if (isset($_GET["search"])) {
 
 <div class="container-fluid pt-4 px-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
-        <h6 class="mb-0">Order List</h6>
+        <h6 class="mb-0">Order Processed</h6>
         <form class="d-none d-md-flex ms-4" method="GET">
             <input class="form-control bg-dark border-0" type="search" name="order_id" placeholder="Search by order code">
             <button type="submit" name="search" class="btn btn-primary">Search</button>
@@ -51,13 +53,15 @@ if (isset($_GET["search"])) {
                 <tbody>
                     <?php
                     if ($show_order) {
-                        $i = 0;
+                        // Tạo biến $orderNumber để tính số thứ tự dựa trên trang hiện tại
+                        $orderNumber = ($page - 1) * $itemsPerPage;
                         while ($result = $show_order->fetch_assoc()) {
                             if ($result['order_status'] == 'delivered_carrier') {
-                                $i++;
+                                $orderNumber++; // Tăng số thứ tự sau mỗi đơn hàng
+                                // ... Các dòng code khác không thay đổi
                     ?>
                                 <tr>
-                                    <td><?php echo $i ?></td>
+                                    <td><?php echo $orderNumber ?></td>
                                     <td><?php echo $result['order_id'] ?></td>
                                     <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
                                     <td><?php echo $result['order_date'] ?></td>
@@ -89,7 +93,7 @@ if (isset($_GET["search"])) {
     </div>
     <?php
     // Tạo liên kết phân trang
-    if ($totalOrders > 10) {
+    if (!$isSearching && $totalOrders > 9) {
         // Tính tổng số trang
         $totalPages = ceil($totalOrders / $itemsPerPage);
 

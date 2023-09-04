@@ -68,7 +68,7 @@ if ($order_result) {
             <?php
             if (!empty($orderItems)) {
                 foreach ($orderItems as $item) {
-                    if ($item['order_status'] == 'order_processing' || $item['order_status'] == 'delivered_carrier') {
+                    if ($item['order_status'] == 'processing' || $item['order_status'] == 'delivered_carrier') {
             ?>
                         <tr>
                             <td class="name-pr">
@@ -98,7 +98,7 @@ if ($order_result) {
                         </tr>
                         <tr>
                             <td colspan="8" class="cancel-received">
-                                <?php if ($item['order_status'] === 'order_processing') { ?>
+                                <?php if ($item['order_status'] === 'processing') { ?>
                                     <div class="text-right">
                                         <button class="btn btn-danger" onclick="confirmCancel(<?php echo $item['order_id'] ?>)">Cancel Order</button>
                                     </div>

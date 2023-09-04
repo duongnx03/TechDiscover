@@ -32,7 +32,7 @@
 
         public function show_processing_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'processing' LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'processing' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {
@@ -45,7 +45,7 @@
         // Phương thức lấy danh sách đơn hàng đã hoàn thành
         public function show_completed_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'completed' LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'completed' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {
@@ -58,7 +58,7 @@
         // Phương thức lấy danh sách đơn hàng đã hủy
         public function show_cancelled_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'cancelled' LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'cancelled' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {
@@ -70,7 +70,7 @@
 
         public function show_processed_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'delivered_carrier' LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'delivered_carrier' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {
@@ -82,7 +82,7 @@
 
         public function show_return_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'return' LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'return' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {
@@ -129,7 +129,7 @@
         }
 
         public function getTotalOrdersReturn() {
-            $query = "SELECT COUNT(*) as total_orders FROM tbl_order WHERE order_status = 'completed'";
+            $query = "SELECT COUNT(*) as total_orders FROM tbl_order WHERE order_status = 'return'";
             $result = $this->db->select($query);
         
             if ($result->num_rows == 1) {

@@ -70,7 +70,7 @@ if ($order_result) {
             <?php
             if (!empty($orderItems)) {
                 foreach ($orderItems as $item) {
-                    if ($item['order_status'] == 'return_order') {
+                    if ($item['order_status'] == 'return') {
             ?>
                         <tr>
                             <td class="name-pr">
