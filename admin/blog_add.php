@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="blog_title">Blog Title: <span style="color:red;">*</span></label>
                     <input name="blog_title" type="text" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="blog_author">Blog Author: <span style="color:red;">*</span></label>
                     <input name="blog_author" type="text" class="form-control" required>
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="blog_tags">Blog Tags: <span style="color:red;">*</span></label>
-                    <input name="blog_tags" type="text" class="form-control" >
+                    <label for="blog_tags">Blog Tags: <span style="color:red;"></span></label>
+                    <input name="blog_tags" type="text" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -101,19 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (file) {
             reader.readAsDataURL(file);
-        }
-    }
-
-     // Hàm để xem xét và định dạng hình ảnh khi người dùng chọn ảnh mới
-     function previewImage(input, imageID) {
-        var file = input.files[0];
-        if (file) {
-            var image = document.getElementById(imageID);
-            image.style.display = 'block'; // Hiển thị ảnh
-
-            // Sử dụng URL.createObjectURL để tạo đường dẫn tạm thời đến ảnh
-            var imageURL = URL.createObjectURL(file);
-            image.src = imageURL;
         }
     }
 
@@ -153,6 +140,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         tabsize: 2,
         height: 200
     });
+
+    function validateBlogForm() {
+        var title = document.getElementById("blog_title").value.trim();
+        var author = document.getElementById("blog_author").value.trim();
+        var content = document.getElementById("summernote_content").value.trim();
+        var imageInput = document.querySelector('input[type="file"]');
+
+        // Kiểm tra tiêu đề
+        if (title === "") {
+            alert("Blog title is required.");
+            return false;
+        } else if (title.length > 200) {
+            alert("Blog title should not exceed 200 characters.");
+            return false;
+        }
+
+        // Kiểm tra tác giả
+        if (author === "") {
+            alert("Blog author is required.");
+            return false;
+        } else if (author.length > 50) {
+            alert("Blog author should not exceed 50 characters.");
+            return false;
+        }
+
+        // Kiểm tra nội dung
+        if (content === "") {
+            alert("Blog content is required.");
+            return false;
+        } else if (content.length < 100) {
+            alert("Blog content should be at least 100 characters long.");
+            return false;
+        }
+
+        // Kiểm tra định dạng và kích thước ảnh
+        if (imageInput.files.length > 0) {
+            var file = imageInput.files[0];
+            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            var maxFileSize = 5 * 1024 * 1024; // 5MB
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert("Invalid image format. Only JPG, JPEG, PNG, GIF, and WebP formats are allowed.");
+                return false;
+            }
+
+            if (file.size > maxFileSize) {
+                alert("Image file size is too large. Maximum file size allowed is 5MB.");
+                return false;
+            }
+        } else {
+            alert("Blog image is required.");
+            return false;
+        }
+
+        // Chấp nhận việc gửi form nếu tất cả kiểm tra thành công
+        return true;
+    }
 </script>
 
 <?php

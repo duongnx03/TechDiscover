@@ -74,8 +74,40 @@ class Blog
         return false;
     }
 
+    public function isBlogTitleExists($blog_title, $exclude_id = null)
+    {
+        // Get the database connection from your Database class
+        $db = new Database();
+
+        // Escape and sanitize the blog title
+        $blog_title = $db->link->real_escape_string($blog_title);
+
+        $query = "SELECT COUNT(*) FROM tbl_blog WHERE blog_title = '$blog_title'";
+
+        if (!is_null($exclude_id)) {
+            $exclude_id = (int)$exclude_id;
+            $query .= " AND blog_id != $exclude_id";
+        }
+
+        $result = $db->select($query);
+
+        if ($result) {
+            $count = mysqli_fetch_row($result)[0];
+            $db->close();
+            return $count > 0;
+        }
+
+        $db->close();
+        return false;
+    }
+
     public function insert_blog($post_data)
     {
+        $blog_title = $post_data['blog_title'];
+        if ($this->isBlogTitleExists($blog_title)) {
+            return false; // Blog title already exists
+        }
+
         // Kiểm tra xem trường 'blog_date' có giá trị không trống
         if (empty($post_data['blog_date'])) {
             // Trường 'blog_date' trống, hãy tạo thời gian mặc định
@@ -89,7 +121,6 @@ class Blog
         }
         // Sửa lại hàm thêm blog dựa trên dữ liệu đầu vào
         // Bạn cần thay đổi tên bảng và tên cột dựa trên cấu trúc của bảng tbl_blog
-        $blog_title = $post_data['blog_title'];
         $blog_cate_id = $post_data['blog_cate_id'];
         $blog_author = $post_data['blog_author'];
         $blog_date = $post_data['blog_date'];
@@ -116,7 +147,10 @@ class Blog
 
     public function update_blog($post_data, $blog_id)
     {
-
+        $blog_title = $post_data['blog_title'];
+        if ($this->isBlogTitleExists($blog_title, $blog_id)) {
+            return false; // Blog title already exists
+        }
         if (empty($post_data['blog_date'])) {
             // Trường 'blog_date' trống, hãy tạo thời gian mặc định
             $post_data['blog_date'] = date('Y-m-d H:i:s');
@@ -308,7 +342,8 @@ class Blog
         }
     }
 
-    public function getBlogsSortedByDate($limit, $offset, $sortOrder = 'date-desc') {
+    public function getBlogsSortedByDate($limit, $offset, $sortOrder = 'date-desc')
+    {
         // Xây dựng truy vấn SQL dựa trên sắp xếp và giới hạn
         $sql = "SELECT * FROM tbl_blog ";
         if ($sortOrder === 'date-asc') {
@@ -359,13 +394,13 @@ class Blog
     {
         // Kiểm tra xem $sortBy có giá trị hợp lệ không, nếu không thì sử dụng giá trị mặc định
         $validOrderBy = ['blog_id ASC', 'blog_id DESC', 'blog_date ASC', 'blog_date DESC', 'blog_title ASC', 'blog_title DESC'];
-    
+
         if (!in_array($sortBy, $validOrderBy)) {
             $sortBy = 'blog_date DESC'; // Giá trị mặc định nếu $sortBy không hợp lệ
         }
-    
+
         $query = "SELECT * FROM tbl_blog WHERE blog_cate_id = '$category_id' AND blog_author = '$author' ORDER BY $sortBy LIMIT $offset, $limit";
         $result = $this->db->select($query);
         return $result;
-    } 
+    }
 }
