@@ -18,9 +18,11 @@ $totalPages = ceil($totalOrders / $itemsPerPage);
 // Lấy danh sách đơn hàng cho trang hiện tại
 $show_order = $order->show_processing_orders($page, $itemsPerPage);
 
+$isSearching = isset($_GET['search']);
+
 if (isset($_GET["search"])) {
     $order_id = $_GET["order_id"];
-    $show_order = $order->search_order_list($order_id);
+    $show_order = $order->search_order_list($order_id, $page, $itemsPerPage);
 }
 ?>
 
@@ -51,35 +53,37 @@ if (isset($_GET["search"])) {
                 <tbody>
                     <?php
                     if ($show_order) {
-                        $i = 0;
+                        // Tạo biến $orderNumber để tính số thứ tự dựa trên trang hiện tại
+                        $orderNumber = ($page - 1) * $itemsPerPage;
                         while ($result = $show_order->fetch_assoc()) {
-                                $i++;
+                            $orderNumber++; // Tăng số thứ tự sau mỗi đơn hàng
+                            // ... Các dòng code khác không thay đổi
                     ?>
-                                <tr>
-                                    <td><?php echo $i ?></td>
-                                    <td><?php echo $result['order_id'] ?></td>
-                                    <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
-                                    <td><?php echo $result['order_date'] ?></td>
-                                    <td><?php echo $result['payment_method'] ?></td>
-                                    <td class="status">
-                                        <form action="order_edit.php?order_id=<?php echo $result['order_id'] ?>" method="post">
-                                            <select name="order_status" class="form-select">
-                                                <option value="processing" <?php if ($result['order_status'] == 'processing') echo 'selected' ?>>Order processing</option>
-                                                <option value="delivered_carrier" <?php if ($result['order_status'] == 'delivered_carrier') echo 'selected' ?>>Delivered to the carrier</option>
-                                                <option value="delivered" <?php if ($result['order_status'] == 'delivered') echo 'selected' ?>>Delivered</option>
-                                            </select>
-                                            <button type="submit" class="btn btn-link view-details">UPDATE</button>
-                                        </form>
-                                    </td>
-                                    <td>$<?php echo $result['total_order'] ?></td>
-                                    <td><?php echo $result['status_payment'] ?></td>
-                                    <td>
-                                        <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td><?php echo $orderNumber ?></td>
+                                <td><?php echo $result['order_id'] ?></td>
+                                <td class="info"><?php echo $result['fullname'] . ' | ' . $result['phone'] . ' | ' . $result['email'] . ' | ' . $result['address'] . ', ' . $result['ward'] . ', ' . $result['district'] . ', ' . $result['province'] ?></td>
+                                <td><?php echo $result['order_date'] ?></td>
+                                <td><?php echo $result['payment_method'] ?></td>
+                                <td class="status">
+                                    <form action="order_edit.php?order_id=<?php echo $result['order_id'] ?>" method="post">
+                                        <select name="order_status" class="form-select">
+                                            <option value="processing" <?php if ($result['order_status'] == 'processing') echo 'selected' ?>>Order processing</option>
+                                            <option value="delivered_carrier" <?php if ($result['order_status'] == 'delivered_carrier') echo 'selected' ?>>Delivered to the carrier</option>
+                                            <option value="delivered" <?php if ($result['order_status'] == 'delivered') echo 'selected' ?>>Delivered</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-link view-details">UPDATE</button>
+                                    </form>
+                                </td>
+                                <td>$<?php echo $result['total_order'] ?></td>
+                                <td><?php echo $result['status_payment'] ?></td>
+                                <td>
+                                    <button class="btn btn-link view-details" data-order-id="<?php echo $result['order_id']; ?>">View Details</button>
+                                </td>
+                            </tr>
                     <?php
-                            }
                         }
+                    }
                     ?>
                 </tbody>
             </table>
@@ -87,10 +91,10 @@ if (isset($_GET["search"])) {
     </div>
     <?php
     // Tạo liên kết phân trang
-    if ($totalOrders > 10) {
+    if (!$isSearching && $totalOrders > 9) {
         // Tính tổng số trang
         $totalPages = ceil($totalOrders / $itemsPerPage);
-    
+
         // Tạo liên kết phân trang
         if ($totalPages > 1) {
             echo '<div class="text-center mt-4">';

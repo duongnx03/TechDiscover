@@ -68,7 +68,7 @@ if ($order_result) {
             <?php
             if (!empty($orderItems)) {
                 foreach ($orderItems as $item) {
-                    if ($item['order_status'] == 'canceled') {
+                    if ($item['order_status'] == 'cancelled') {
             ?>
                         <tr>
                             <td class="name-pr">
