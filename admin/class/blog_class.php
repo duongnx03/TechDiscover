@@ -190,14 +190,14 @@ class Blog
     }
 
     public function searchBlogsByTitle($searchTerm, $limit, $offset)
-{
-    $searchTerm = "%" . $searchTerm . "%"; // Thêm dấu % cho phần tử wildcard trong LIKE
-    $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '$searchTerm' LIMIT $offset, $limit";
+    {
+        $searchTerm = "%" . $searchTerm . "%"; // Thêm dấu % cho phần tử wildcard trong LIKE
+        $query = "SELECT * FROM tbl_blog WHERE blog_title LIKE '$searchTerm' LIMIT $offset, $limit";
 
-    $result = $this->db->select($query);
-    
-    return $result;
-}
+        $result = $this->db->select($query);
+
+        return $result;
+    }
 
     public function countBlogs()
     {
@@ -275,5 +275,97 @@ class Blog
             return 0;
         }
     }
+    public function getAuthors()
+    {
+        $query = "SELECT DISTINCT blog_author FROM tbl_blog";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getBlogsByAuthor($author, $limit, $offset, $orderBy)
+    {
+        // Kiểm tra xem $orderBy có giá trị hợp lệ không, nếu không thì sử dụng giá trị mặc định
+        $validOrderBy = ['blog_id ASC', 'blog_id DESC', 'blog_date ASC', 'blog_date DESC', 'blog_title ASC', 'blog_title DESC'];
+
+        if (!in_array($orderBy, $validOrderBy)) {
+            $orderBy = 'blog_date DESC'; // Giá trị mặc định nếu $orderBy không hợp lệ
+        }
+
+        $query = "SELECT * FROM tbl_blog WHERE blog_author = '$author' ORDER BY $orderBy LIMIT $offset, $limit";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function countBlogsByAuthor($author)
+    {
+        $query = "SELECT COUNT(*) AS total FROM tbl_blog WHERE blog_author = '$author'";
+        $result = $this->db->select($query);
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
+
+    public function getBlogsSortedByDate($limit, $offset, $sortOrder = 'date-desc') {
+        // Xây dựng truy vấn SQL dựa trên sắp xếp và giới hạn
+        $sql = "SELECT * FROM tbl_blog ";
+        if ($sortOrder === 'date-asc') {
+            $sql .= "ORDER BY blog_date ASC ";
+        } else {
+            $sql .= "ORDER BY blog_date DESC ";
+        }
+        $sql .= "LIMIT $limit OFFSET $offset";
+
+        // Thực hiện truy vấn và trả về kết quả
+        $result = $this->db->select($sql);
+        return $result;
+    }
+
+    public function getSortedBlogs($blogsPerPage, $offset, $sortBy)
+    {
+        $sql = "SELECT * FROM tbl_blog";
+
+        // Thêm điều kiện sort vào truy vấn SQL tương ứng với tùy chọn được chọn
+        switch ($sortBy) {
+            case 'title-asc':
+                $sql .= " ORDER BY blog_title ASC";
+                break;
+            case 'title-desc':
+                $sql .= " ORDER BY blog_title DESC";
+                break;
+            case 'date-asc':
+                $sql .= " ORDER BY blog_date ASC";
+                break;
+            case 'date-desc':
+                $sql .= " ORDER BY blog_date DESC";
+                break;
+            default:
+                // Mặc định sắp xếp theo ID giảm dần
+                $sql .= " ORDER BY blog_id DESC";
+                break;
+        }
+
+        // Thêm LIMIT và OFFSET vào truy vấn SQL
+        $sql .= " LIMIT $blogsPerPage OFFSET $offset";
+
+        // Thực hiện truy vấn SQL và trả về kết quả
+        $result = $this->db->select($sql);
+        return $result;
+    }
+
+    public function getBlogsByCategoryAndAuthor($category_id, $author, $limit, $offset, $sortBy)
+    {
+        // Kiểm tra xem $sortBy có giá trị hợp lệ không, nếu không thì sử dụng giá trị mặc định
+        $validOrderBy = ['blog_id ASC', 'blog_id DESC', 'blog_date ASC', 'blog_date DESC', 'blog_title ASC', 'blog_title DESC'];
     
+        if (!in_array($sortBy, $validOrderBy)) {
+            $sortBy = 'blog_date DESC'; // Giá trị mặc định nếu $sortBy không hợp lệ
+        }
+    
+        $query = "SELECT * FROM tbl_blog WHERE blog_cate_id = '$category_id' AND blog_author = '$author' ORDER BY $sortBy LIMIT $offset, $limit";
+        $result = $this->db->select($query);
+        return $result;
+    } 
 }
