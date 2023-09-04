@@ -5,31 +5,20 @@ include "navbar.php";
 include "class/blog_class.php";
 
 $blog = new Blog;
-
+$authors = $blog->getAuthors();
 // Lấy giá trị từ URL
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-$sortBy = isset($_GET['sort']) ? $_GET['sort'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'date-desc';
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
+$authorFilter = isset($_GET['authorFilter']) ? $_GET['authorFilter'] : ''; // Lấy giá trị tác giả từ URL
 
 // Thiết lập giá trị mặc định nếu cần
-if (empty($sortBy)) {
-    $sortBy = 'date'; // Sắp xếp theo ngày mặc định
-}
-
-if ($sortBy === 'title') {
-    $orderBy = 'blog_title ASC';
-} elseif ($sortBy === 'date') {
-    $orderBy = 'blog_date DESC';
-} else {
-    $orderBy = ''; // Không sắp xếp
-}
-
 $blogsPerPage = 6;
 
 // Lấy tổng số bài viết
-if (!empty($searchTerm) || !empty($categoryFilter)) {
-    // Nếu có tìm kiếm hoặc lọc theo danh mục, tính tổng số bài viết sau khi tìm kiếm hoặc lọc
-    $totalBlogs = $blog->countFilteredBlogs($searchTerm, $categoryFilter);
+if (!empty($searchTerm) || !empty($categoryFilter) || !empty($authorFilter)) {
+    // Nếu có tìm kiếm hoặc lọc theo danh mục hoặc tác giả, tính tổng số bài viết sau khi tìm kiếm hoặc lọc
+    $totalBlogs = $blog->countFilteredBlogs($searchTerm, $categoryFilter, $authorFilter);
 } else {
     // Nếu không có tìm kiếm hoặc lọc, lấy tổng số bài viết
     $totalBlogs = $blog->countBlogs();
@@ -51,15 +40,35 @@ $offset = ($currentPage - 1) * $blogsPerPage;
 
 // Tìm kiếm và lấy danh sách blogs dựa trên sort, filter và search
 $show_blogs = [];
-if (!empty($searchTerm)) {
+
+// Tạo biến lưu trữ URL phân trang cơ bản
+$basePaginationUrl = "bloglist.php?search=$searchTerm&sort=$sortBy&category=$categoryFilter";
+
+if (!empty($categoryFilter) && !empty($authorFilter)) {
+    // Nếu cả danh mục và tác giả đều có giá trị
+    $show_blogs = $blog->getBlogsByCategoryAndAuthor($categoryFilter, $authorFilter, $blogsPerPage, $offset, $sortBy);
+    // Cập nhật URL phân trang
+    $paginationUrl = "$basePaginationUrl&authorFilter=$authorFilter";
+} elseif (!empty($authorFilter)) {
+    // Lọc theo tác giả
+    $show_blogs = $blog->getBlogsByAuthor($authorFilter, $blogsPerPage, $offset, $sortBy);
+    // Cập nhật URL phân trang
+    $paginationUrl = "$basePaginationUrl&authorFilter=$authorFilter";
+} elseif (!empty($searchTerm)) {
     // Tìm kiếm
     $show_blogs = $blog->searchBlogsByTitle($searchTerm, $blogsPerPage, $offset);
+    // Cập nhật URL phân trang
+    $paginationUrl = "$basePaginationUrl";
 } elseif (!empty($categoryFilter)) {
     // Lọc theo danh mục
-    $show_blogs = $blog->getBlogsByCategory($categoryFilter, $blogsPerPage, $offset, $orderBy);
+    $show_blogs = $blog->getBlogsByCategory($categoryFilter, $blogsPerPage, $offset, $sortBy);
+    // Cập nhật URL phân trang
+    $paginationUrl = "$basePaginationUrl";
 } else {
     // Hiển thị toàn bộ blogs đã sắp xếp
-    $show_blogs = $blog->getBlogsPaginated($offset, $blogsPerPage, $orderBy);
+    $show_blogs = $blog->getSortedBlogs($blogsPerPage, $offset, $sortBy);
+    // Cập nhật URL phân trang
+    $paginationUrl = "$basePaginationUrl";
 }
 ?>
 
@@ -78,8 +87,10 @@ if (!empty($searchTerm)) {
             <label for="sort">Sort by:</label>
             <select name="sort" id="sort" onchange="sortBlogs(this.value)">
                 <option value="">-- Select --</option>
-                <option value="title" <?php echo ($sortBy === 'title') ? 'selected' : ''; ?>>Title</option>
-                <option value="date" <?php echo ($sortBy === 'date') ? 'selected' : ''; ?>>Date</option>
+                <option value="title-asc" <?php echo ($sortBy === 'title-asc') ? 'selected' : ''; ?>>Title A-Z</option>
+                <option value="title-desc" <?php echo ($sortBy === 'title-desc') ? 'selected' : ''; ?>>Title Z-A</option>
+                <option value="date-asc" <?php echo ($sortBy === 'date-asc') ? 'selected' : ''; ?>>Date Ascending</option>
+                <option value="date-desc" <?php echo ($sortBy === 'date-desc') ? 'selected' : ''; ?>>Date Descending</option>
             </select>
 
             <label for="filter">Filter by Category:</label>
@@ -89,6 +100,18 @@ if (!empty($searchTerm)) {
                 $categories = $blog->show_categories();
                 while ($category = $categories->fetch_assoc()) {
                     echo '<option value="' . $category['blog_cate_id'] . '" ' . (($categoryFilter === $category['blog_cate_id']) ? 'selected' : '') . '>' . $category['blog_cate_name'] . '</option>';
+                }
+                ?>
+            </select>
+
+            <label for="authorFilter">Filter by Author:</label>
+            <select name="authorFilter" id="authorFilter" onchange="filterBlogsByAuthor(this.value)">
+                <option value="">-- All Authors --</option>
+                <?php
+                while ($author = $authors->fetch_assoc()) {
+                    $authorName = $author['blog_author'];
+                    $selected = ($authorFilter === $authorName) ? 'selected' : '';
+                    echo '<option value="' . htmlspecialchars($authorName) . '" ' . $selected . '>' . htmlspecialchars($authorName) . '</option>';
                 }
                 ?>
             </select>
@@ -112,7 +135,7 @@ if (!empty($searchTerm)) {
                     if ($show_blogs->num_rows > 0) {
                         $i = ($currentPage - 1) * $blogsPerPage + 1;
                         while ($result = $show_blogs->fetch_assoc()) {
-                            ?>
+                    ?>
                             <tr>
                                 <td><?php echo $i ?></td>
                                 <td><?php echo htmlspecialchars($result['blog_title']) ?></td>
@@ -128,7 +151,7 @@ if (!empty($searchTerm)) {
                                     <a class="btn btn-sm btn-primary" href="#" onclick="confirmDelete(<?php echo $result['blog_id'] ?>)">Delete</a>
                                 </td>
                             </tr>
-                            <?php
+                        <?php
                             $i++;
                         }
                     } else {
@@ -136,7 +159,7 @@ if (!empty($searchTerm)) {
                         <tr>
                             <td colspan="9">No blogs found.</td>
                         </tr>
-                        <?php
+                    <?php
                     }
                     ?>
                 </tbody>
@@ -148,12 +171,12 @@ if (!empty($searchTerm)) {
                     <ul class="pagination">
                         <?php if ($currentPage > 1) : ?>
                             <li class="page-item">
-                                <a class="page-link" href="bloglist.php?page=1<?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="First">
+                                <a class="page-link" href="bloglist.php?page=1<?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>&sort=<?php echo $sortBy; ?>&authorFilter=<?php echo $authorFilter; ?>" aria-label="First">
                                     <span aria-hidden="true">&laquo;&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Previous">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>&sort=<?php echo $sortBy; ?>&authorFilter=<?php echo $authorFilter; ?>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -161,18 +184,18 @@ if (!empty($searchTerm)) {
 
                         <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
                             <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
-                                <a class="page-link" href="bloglist.php?page=<?php echo $i; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>"><?php echo $i; ?></a>
+                                <a class="page-link" href="bloglist.php?page=<?php echo $i; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>&sort=<?php echo $sortBy; ?>&authorFilter=<?php echo $authorFilter; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php endfor; ?>
 
                         <?php if ($currentPage < $totalPages) : ?>
                             <li class="page-item">
-                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Next">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>&sort=<?php echo $sortBy; ?>&authorFilter=<?php echo $authorFilter; ?>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="bloglist.php?page=<?php echo $totalPages; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>" aria-label="Last">
+                                <a class="page-link" href="bloglist.php?page=<?php echo $totalPages; ?><?php echo (!empty($categoryFilter)) ? '&category=' . $categoryFilter : ''; ?>&search=<?php echo $searchTerm; ?>&sort=<?php echo $sortBy; ?>&authorFilter=<?php echo $authorFilter; ?>" aria-label="Last">
                                     <span aria-hidden="true">&raquo;&raquo;</span>
                                 </a>
                             </li>
@@ -233,11 +256,31 @@ if (!empty($searchTerm)) {
     }
 
     function sortBlogs(sortBy) {
-        window.location.href = 'bloglist.php?sort=' + sortBy + '&search=<?php echo $searchTerm; ?>&category=<?php echo $categoryFilter; ?>';
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        url.searchParams.set('sort', sortBy);
+        window.location.href = url.toString();
     }
 
     function filterBlogs(categoryId) {
-        window.location.href = 'bloglist.php?category=' + categoryId + '&sort=<?php echo $sortBy; ?>&search=<?php echo $searchTerm; ?>';
+    // Lấy giá trị tác giả hiện tại từ URL (nếu có)
+    const currentUrl = new URL(window.location.href);
+    const currentAuthorFilter = currentUrl.searchParams.get('authorFilter');
+
+    // Cập nhật URL với cả categoryId và authorFilter
+    const url = new URL('bloglist.php', window.location.href);
+    url.searchParams.set('category', categoryId);
+    if (currentAuthorFilter) {
+        url.searchParams.set('authorFilter', currentAuthorFilter);
+    }
+
+    // Chuyển đến URL mới
+    window.location.href = url.toString();
+}
+
+    function filterBlogsByAuthor(author, page) {
+        // Sử dụng encodeURIComponent để tránh lỗi với tên tác giả có ký tự đặc biệt
+        window.location.href = 'bloglist.php?authorFilter=' + encodeURIComponent(author) + '&sort=<?php echo $sortBy; ?>&search=<?php echo $searchTerm; ?>&category=<?php echo $categoryFilter; ?>&page=' + page;
     }
 </script>
 
