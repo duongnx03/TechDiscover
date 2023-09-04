@@ -22,7 +22,7 @@ $isSearching = isset($_GET['search']);
 
 if (isset($_GET["search"])) {
     $order_id = $_GET["order_id"];
-    $show_order = $order->search_order_list($order_id, $page, $itemsPerPage);
+    $show_order = $order->search_order_list($order_id);
 }
 ?>
 
