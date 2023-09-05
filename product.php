@@ -10,7 +10,7 @@ $category = new cartegory();
 $brand = new brand();
 
 // Kiểm tra xem trang có được yêu cầu từ tham số URL không, nếu không thì mặc định là trang 1
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $limit = 6; // Số sản phẩm trên mỗi trang
 
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
