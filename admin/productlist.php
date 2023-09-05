@@ -72,16 +72,16 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
             </form>
             <a href="productadd.php">ADD Product</a>
         </div>
-        <label for="sort">Sort by: </label>
-        <select name="sort" id="sort">
-            <option value="">-- Select --</option>
-            <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
-            <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
-            <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
-            <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
-        </select>
 
         <form method="GET" action="productlist.php">
+            <label for="sort">Sort by: </label>
+            <select name="sort" id="sort">
+                <option value="">-- Select --</option>
+                <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
+                <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
+                <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
+                <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
+            </select>
             <label for="brand">Choose Brand:</label>
             <select name="brand" id="brand">
                 <option value="">ALL</option>
@@ -109,7 +109,7 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
             <input type="range" id="priceFilterValue" name="priceFilterValue" min="100" max="5000" value="<?php echo $priceFilterValue; ?>">
             <output name="priceOutput" for="priceFilterValue"></output>
 
-            <input type="submit" value="Filter">
+            <input type="submit" value="Sort And Filter">
         </form><br>
 
         <div class="table-responsive">

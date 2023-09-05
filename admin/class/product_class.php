@@ -66,20 +66,69 @@ class product
 
     public function insert_product($post_data, $files_data)
     {
-        $product_name = $post_data['product_name'];
-        $cartegory_main_id = $post_data['cartegory_main_id'];
-        $cartegory_id = $post_data['cartegory_id'];
-        $brand_id = $post_data['brand_id'];
-        $product_price = $post_data['product_price'];
-        $product_price_sale = $post_data['product_price_sale'];
-        $product_color = isset($_POST['product_color']) ? implode(', ', $_POST['product_color']) : '';
-        $product_memory_ram = isset($_POST['product_memory_ram']) ? implode(', ', $_POST['product_memory_ram']) : '';
-        $product_quantity = $post_data['product_quantity'];
-        $product_intro = $post_data['product_intro'];
-        $product_detail = $post_data['product_detail'];
-        $product_accessory = $post_data['product_accessory'];
-        $product_guarantee = $post_data['product_guarantee'];
-        $product_img = $_FILES['product_img']['name'];
+        $errors = array();
+
+        // Validate input data
+        $product_name = isset($post_data['product_name']) ? trim($post_data['product_name']) : '';
+        $cartegory_main_id = isset($post_data['cartegory_main_id']) ? trim($post_data['cartegory_main_id']) : '';
+        $cartegory_id = isset($post_data['cartegory_id']) ? trim($post_data['cartegory_id']) : '';
+        $brand_id = isset($post_data['brand_id']) ? trim($post_data['brand_id']) : '';
+        $product_price = isset($post_data['product_price']) ? floatval($post_data['product_price']) : 0;
+        $product_price_sale = isset($post_data['product_price_sale']) ? floatval($post_data['product_price_sale']) : 0;
+        $product_color = isset($_POST['product_color']) ? $_POST['product_color'] : array();
+        $product_memory_ram = isset($_POST['product_memory_ram']) ? $_POST['product_memory_ram'] : array();
+        $product_quantity = isset($post_data['product_quantity']) ? intval($post_data['product_quantity']) : 0;
+        $product_intro = isset($post_data['product_intro']) ? trim($post_data['product_intro']) : '';
+        $product_detail = isset($post_data['product_detail']) ? trim($post_data['product_detail']) : '';
+        $product_accessory = isset($post_data['product_accessory']) ? trim($post_data['product_accessory']) : '';
+        $product_guarantee = isset($post_data['product_guarantee']) ? trim($post_data['product_guarantee']) : '';
+        $product_img = isset($_FILES['product_img']['name']) ? $_FILES['product_img']['name'] : '';
+
+        // Check required fields
+        if (empty($product_name)) {
+            $errors[] = "Product name cannot be empty.";
+        }
+
+        // Check for duplicate product_name
+        $query_check_name = "SELECT COUNT(*) AS count FROM tbl_product WHERE product_name = '$product_name'";
+        $result_check_name = $this->db->select($query_check_name);
+        $row_check_name = $result_check_name->fetch_assoc();
+        if ($row_check_name['count'] > 0) {
+            $errors[] = "Product name already exists.";
+        }
+
+        if (empty($cartegory_main_id)) {
+            $errors[] = "Please select the main category.";
+        }
+        if (empty($cartegory_id)) {
+            $errors[] = "Please select the category.";
+        }
+        if (empty($brand_id)) {
+            $errors[] = "Please select the brand.";
+        }
+        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 5000) {
+            $errors[] = "Invalid product price.";
+        }
+        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 5000) {
+            $errors[] = "Invalid sale price.";
+        }
+        if (empty($product_color)) {
+            $errors[] = "Color cannot be empty.";
+        }
+        if (empty($product_memory_ram)) {
+            $errors[] = "Memory RAM cannot be empty.";
+        }
+        if (empty($product_quantity) || !is_numeric($product_quantity) || $product_quantity < 0) {
+            $errors[] = "Invalid product quantity.";
+        }
+
+        // Handle errors if any
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                echo $error . "<br>";
+            }
+            return false;
+        }
         move_uploaded_file($_FILES['product_img']['tmp_name'], "uploads/" . $_FILES['product_img']['name']);
 
         $query = "INSERT INTO tbl_product 
@@ -185,6 +234,8 @@ class product
 
     public function update_product($post_data, $files_data, $product_id)
     {
+        $errors = array();
+
         $product_name = $post_data['product_name'];
         $cartegory_id = $post_data['cartegory_id'];
         $brand_id = $post_data['brand_id'];
@@ -197,6 +248,40 @@ class product
         $product_detail = $post_data['product_detail'];
         $product_accessory = $post_data['product_accessory'];
         $product_guarantee = $post_data['product_guarantee'];
+
+        // Validate input fields
+        if (empty($product_name)) {
+            $errors[] = "Product name cannot be empty.";
+        }
+        if (empty($cartegory_id)) {
+            $errors[] = "Please select the category.";
+        }
+        if (empty($brand_id)) {
+            $errors[] = "Please select the brand.";
+        }
+        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 5000) {
+            $errors[] = "Invalid product price.";
+        }
+        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 5000) {
+            $errors[] = "Invalid sale price.";
+        }
+        if (empty($product_color)) {
+            $errors[] = "Color cannot be empty.";
+        }
+        if (empty($product_memory_ram)) {
+            $errors[] = "Memory RAM cannot be empty.";
+        }
+        if (empty($product_quantity) || !is_numeric($product_quantity) || $product_quantity < 0) {
+            $errors[] = "Invalid product quantity.";
+        }
+
+        // Handle errors if any
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                echo $error . "<br>";
+            }
+            return false;
+        }
 
         // Kiểm tra nếu người dùng đã chọn ảnh sản phẩm mới
         if (isset($files_data['product_img']['name']) && !empty($files_data['product_img']['name'])) {
