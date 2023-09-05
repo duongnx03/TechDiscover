@@ -80,7 +80,7 @@ if (isset($_GET['order_id'])) {
                                 <td>$ <?php echo $row['product_price'] ?></td>
                                 <td><?php echo $row['quantity'] ?></td>
                                 <td><?php echo $row['return_reason'] ?></td>
-                                <td><img src="admin/uploads/<?php echo $row['return_img'] ?>" alt="Product Image" style="max-width: 300px;"></td>
+                                <td><img src="admin/uploads/<?php echo $row['return_img'] ?>" alt="Product Image" style="max-width: 200px; max-height: 250px;"></td>
                             </tr>
                     <?php
                         }

@@ -45,7 +45,7 @@
         // Phương thức lấy danh sách đơn hàng đã hoàn thành
         public function show_completed_orders($page, $itemsPerPage) {
             $offset = ($page - 1) * $itemsPerPage;
-            $query = "SELECT * FROM tbl_order WHERE order_status = 'completed' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
+            $query = "SELECT * FROM tbl_order WHERE order_status = 'delivered' ORDER BY order_id DESC LIMIT $itemsPerPage OFFSET $offset";
             $result = $this->db->select($query);
         
             if ($result && $result->num_rows > 0) {

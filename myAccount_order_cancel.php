@@ -84,7 +84,7 @@ if ($order_result) {
                                 <b><?php echo $item['order_date'] ?></b>
                             </td>
                             <td class="name-pr">
-                                <b style="color: blue;"><?php echo $item['order_status'] ?></b>
+                                <b style="color: red;"><?php echo $item['order_status'] ?></b>
                             </td>
                             <td class="name-pr">
                                 <b><?php echo $item['status_payment'] ?></b>
