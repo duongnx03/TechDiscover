@@ -4,20 +4,27 @@ include "sidebar.php";
 include "navbar.php";
 include "class/product_class.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $product = new product;
 $colors = $product->show_color();
 $memoryRams = $product->show_memory_ram();
+$brands = $product->show_brand();
 
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $productsPerPage = 8;
 
-$sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
+$sortOption = isset($_GET['sort']) ? $_GET['sort'] : ''; // Di chuyển dòng này lên đầu
+$filterBrand = isset($_GET['brand']) ? (int)$_GET['brand'] : '';
 $filterColor = isset($_GET['color']) ? $_GET['color'] : '';
 $filterMemory = isset($_GET['memory']) ? $_GET['memory'] : '';
+$priceFilterValue = isset($_GET['priceFilterValue']) ? (int)$_GET['priceFilterValue'] : 0;
 
 // Tính tổng số sản phẩm sau khi áp dụng bộ lọc
-$totalProducts = $product->getTotalFilteredProducts($searchTerm, $sortOption, $filterColor, $filterMemory);
+$totalProducts = $product->getTotalFilteredProducts($searchTerm, $filterColor, $filterMemory, $filterBrand, $priceFilterValue);
 
 // Tính tổng số trang dựa trên tổng số sản phẩm và số sản phẩm trên mỗi trang
 $totalPages = ceil($totalProducts / $productsPerPage);
@@ -26,21 +33,34 @@ if ($currentPage < 1 || $currentPage > $totalPages) {
     $currentPage = 1;
 }
 
-$offset = ($currentPage - 1) * $productsPerPage;
-
 // Lấy danh sách sản phẩm sau khi áp dụng bộ lọc và phân trang
 if (!empty($searchTerm)) {
-    $show_product = $product->searchProductsByNamePaginated($searchTerm, $currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
+    $show_product = $product->searchProductsByNamePaginated(
+        $searchTerm,
+        $currentPage,
+        $productsPerPage,
+        $filterColor,
+        $filterMemory,
+        $filterBrand,
+        $priceFilterValue
+    );
 } else {
-    $show_product = $product->getPaginatedProducts($currentPage, $productsPerPage, $sortOption, $filterColor, $filterMemory);
+    $sortOption = isset($_GET['sort']) ? $_GET['sort'] : ''; // Di chuyển sắp xếp vào đây
+    $show_product = $product->getPaginatedProducts(
+        $currentPage,
+        $productsPerPage,
+        $sortOption,
+        $filterColor,
+        $filterMemory,
+        $filterBrand,
+        $priceFilterValue
+    );
 }
 
 // Tính số thứ tự bắt đầu cho từng trang
 $startNumber = ($currentPage - 1) * $productsPerPage + 1;
-
-// Tính số thứ tự bắt đầu cho từng trang
-$startNumber = ($currentPage - 1) * $productsPerPage + 1;
 ?>
+
 
 <div class="container-fluid pt-4 px-4">
     <div class="bg-secondary text-center rounded p-4">
@@ -52,15 +72,24 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
             </form>
             <a href="productadd.php">ADD Product</a>
         </div>
+        <label for="sort">Sort by: </label>
+        <select name="sort" id="sort">
+            <option value="">-- Select --</option>
+            <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
+            <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
+            <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
+            <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
+        </select>
+
         <form method="GET" action="productlist.php">
-            <label for="sort">Sort by: </label>
-            <select name="sort" id="sort">
-                <option value="price_asc" <?php echo ($sortOption === 'price_asc') ? 'selected' : ''; ?>>Prices go up</option>
-                <option value="price_desc" <?php echo ($sortOption === 'price_desc') ? 'selected' : ''; ?>>Prices go down</option>
-                <option value="name_asc" <?php echo ($sortOption === 'name_asc') ? 'selected' : ''; ?>>Name (A-Z)</option>
-                <option value="name_desc" <?php echo ($sortOption === 'name_desc') ? 'selected' : ''; ?>>Name(Z-A)</option>
+            <label for="brand">Choose Brand:</label>
+            <select name="brand" id="brand">
+                <option value="">ALL</option>
+                <?php foreach ($brands as $brand) : ?>
+                    <option value="<?php echo $brand['brand_id']; ?>"><?php echo $brand['brand_name']; ?></option>
+                <?php endforeach; ?>
             </select>
-            <label for="color">Filter by color:</label>
+            <label for="color">Color:</label>
             <select name="color" id="color">
                 <option value="">ALL</option>
                 <?php foreach ($colors as $color) : ?>
@@ -68,7 +97,7 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
                 <?php endforeach; ?>
             </select>
 
-            <label for="memory">Filter by RAM:</label>
+            <label for="memory"> RAM:</label>
             <select name="memory" id="memory">
                 <option value="">ALL</option>
                 <?php foreach ($memoryRams as $memoryRam) : ?>
@@ -76,7 +105,11 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
                 <?php endforeach; ?>
             </select>
 
-            <input type="submit" value="Filter and Sort">
+            <label for="priceFilterValue"> Price:</label>
+            <input type="range" id="priceFilterValue" name="priceFilterValue" min="100" max="5000" value="<?php echo $priceFilterValue; ?>">
+            <output name="priceOutput" for="priceFilterValue"></output>
+
+            <input type="submit" value="Filter">
         </form><br>
 
         <div class="table-responsive">
@@ -147,12 +180,12 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
                     <ul class="pagination">
                         <?php if ($currentPage > 1) : ?>
                             <li class="page-item">
-                                <a class="page-link" href="productlist.php?page=1<?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="First">
+                                <a class="page-link" href="productlist.php?page=1<?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>&brand=<?php echo $filterBrand; ?>&priceFilterValue=<?php echo $priceFilterValue; ?>" aria-label="First">
                                     <span aria-hidden="true">&laquo;&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Previous">
+                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage - 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>&brand=<?php echo $filterBrand; ?>&priceFilterValue=<?php echo $priceFilterValue; ?>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -160,18 +193,18 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
 
                         <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
                             <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
-                                <a class="page-link" href="productlist.php?page=<?php echo $i; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>"><?php echo $i; ?></a>
+                                <a class="page-link" href="productlist.php?page=<?php echo $i; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>&brand=<?php echo $filterBrand; ?>&priceFilterValue=<?php echo $priceFilterValue; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php endfor; ?>
 
                         <?php if ($currentPage < $totalPages) : ?>
                             <li class="page-item">
-                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Next">
+                                <a class="page-link" href="productlist.php?page=<?php echo $currentPage + 1; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>&brand=<?php echo $filterBrand; ?>&priceFilterValue=<?php echo $priceFilterValue; ?>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="productlist.php?page=<?php echo $totalPages; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>" aria-label="Last">
+                                <a class="page-link" href="productlist.php?page=<?php echo $totalPages; ?><?php echo (!empty($searchTerm)) ? '&search=' . $searchTerm : ''; ?>&sort=<?php echo $sortOption; ?>&color=<?php echo $filterColor; ?>&memory=<?php echo $filterMemory; ?>&brand=<?php echo $filterBrand; ?>&priceFilterValue=<?php echo $priceFilterValue; ?>" aria-label="Last">
                                     <span aria-hidden="true">&raquo;&raquo;</span>
                                 </a>
                             </li>
@@ -180,6 +213,7 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
                 </nav>
             </div>
         <?php endif; ?>
+
 
     </div>
 </div>
@@ -230,6 +264,15 @@ $startNumber = ($currentPage - 1) * $productsPerPage + 1;
             window.location.href = "productdelete.php?product_id=" + productId;
         }
     }
+
+    var priceFilterValue = document.getElementById("priceFilterValue");
+    var priceOutput = document.getElementsByName("priceOutput")[0];
+
+    priceOutput.innerHTML = priceFilterValue.value;
+
+    priceFilterValue.oninput = function() {
+        priceOutput.innerHTML = this.value;
+    };
 </script>
 
 <?php include "footer.php"; ?>
