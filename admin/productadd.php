@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <label for="brand_id">Select Brand <span style="color:red;">*</span></label>
-                            <select name="brand_id" id="brand_id" class="form-control">
+                            <select name="brand_id" id="brand_id" class="form-control" required>
                                 <option value="">--Select--</option>
                                 <?php
                                 $show_brand = $product->show_brand();

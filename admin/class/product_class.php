@@ -75,8 +75,8 @@ class product
         $brand_id = isset($post_data['brand_id']) ? trim($post_data['brand_id']) : '';
         $product_price = isset($post_data['product_price']) ? floatval($post_data['product_price']) : 0;
         $product_price_sale = isset($post_data['product_price_sale']) ? floatval($post_data['product_price_sale']) : 0;
-        $product_color = isset($_POST['product_color']) ? $_POST['product_color'] : array();
-        $product_memory_ram = isset($_POST['product_memory_ram']) ? $_POST['product_memory_ram'] : array();
+        $product_color = isset($_POST['product_color']) ? implode(', ', $_POST['product_color']) : '';
+        $product_memory_ram = isset($_POST['product_memory_ram']) ? implode(', ', $post_data['product_memory_ram']) : '';
         $product_quantity = isset($post_data['product_quantity']) ? intval($post_data['product_quantity']) : 0;
         $product_intro = isset($post_data['product_intro']) ? trim($post_data['product_intro']) : '';
         $product_detail = isset($post_data['product_detail']) ? trim($post_data['product_detail']) : '';
