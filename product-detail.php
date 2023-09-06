@@ -91,7 +91,9 @@ if (isset($_GET['id'])) {
                     <div class="col-xl-7 col-lg-7 col-md-6">
                         <div class="single-product-details">
                             <!-- Hiển thị tên sản phẩm -->
-                            <h2><?php echo $detail['product_name']; ?></h2>
+                            <h2><?php echo $detail['product_name']; ?>
+                                <?php include "danhgia-tbsao.php";?>
+                        </h2>
                             <!-- Hiển thị giá sản phẩm -->
                             <h5> <del>$<?php echo $detail['product_price']; ?></del> $<?php echo $detail['product_price_sale']; ?></h5>
                             <!-- Hiển thị số lượng tồn kho và số lượng đã bán -->

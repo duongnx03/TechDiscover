@@ -58,7 +58,5 @@ class question {
     
         return $responses;
     }
-    
-    
 }
 ?>
