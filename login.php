@@ -105,7 +105,7 @@ mysqli_close($conn);
                     </span>
                 </div>
                 <div class="remember-forgot">
-                    <label><input type="checkbox" name="remember">Remember me</label>
+                    <!-- <label><input type="checkbox" name="remember">Remember me</label> -->
                     <a href="forgotpassword.php">Forgot Password?</a>
                 </div>
                 <button type="submit" name="submit" class="google-login-link">Login</button>

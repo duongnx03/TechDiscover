@@ -83,13 +83,13 @@ input[type="submit"]:hover {
         <h1>Create New Question</h1>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <label for="question">Question:</label>
-            <input type="text" name="question">
+            <input type="text" name="question" required>
             <label for="answer1">Answer 1:</label>
-            <input type="text" name="answer1">
+            <input type="text" name="answer1" required>
             <label for="answer2">Answer 2:</label>
-            <input type="text" name="answer2">
+            <input type="text" name="answer2" required>
             <label for="answer3">Answer 3:</label>
-            <input type="text" name="answer3">
+            <input type="text" name="answer3" required>
             <input type="submit" value="Submit">
         </form>
     </div>

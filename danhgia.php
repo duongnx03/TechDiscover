@@ -1,36 +1,4 @@
 <?php
-class danhgia
-{
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
-    public function insert_danhgia($danhgia_id, $product_id, $user_id, $name, $email, $rating, $comment, $created_at)
-    {
-        $user_info_query = "SELECT fullname, email FROM users WHERE id = $user_id";
-        $user_info_result = $this->db->select($user_info_query);
-        $user_info = $user_info_result->fetch_assoc();
-
-        $name = $user_info['fullname'];
-        $email = $user_info['email'];
-        $query = "INSERT INTO danhgia (danhgia_id, product_id, user_id, name, email, rating, comment, created_at) 
-                  VALUES ('$danhgia_id', '$product_id', '$user_id', '$name', '$email', '$rating', '$comment', '$created_at')";
-
-        $result = $this->db->insert($query);
-        // header('Location: coupon.php');
-        return $result;
-    }
-    public function show_danhgia()
-    {
-        $query = "SELECT danhgia_id, product_id, name, email, rating, comment, created_at FROM danhgia ORDER BY danhgia_id ASC";
-        $result = $this->db->select($query);
-
-        return $result;
-    }
-}
 $danhgia = new danhgia();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once 'admin/database.php'; // Đảm bảo đường dẫn đúng
@@ -209,6 +177,10 @@ function validateSurveyForm() {
         alert('Please select a rating before submitting.');
         return false;
     }
+    if($hasSubmitted = true){
+        alert('You have already submitted a review for this product.');
+        return false;
+    }
 }
 </script>
 </head>
@@ -248,7 +220,25 @@ function validateSurveyForm() {
                 ?>
             </div>
             <!-- Review form -->
+          <?php  if ($reviewCount > 0) {
+    $totalRating = 0;
 
+    foreach ($reviewArray as $review) {
+        if ($review['product_id'] == $product_id) {
+            $totalRating += intval($review['rating']);
+        }
+    }
+    $averageRating = $totalRating / $reviewCount;
+    for ($i = 1; $i <= 5; $i++) {
+        if ($i <= $averageRating) {
+            echo '<span class="star star-' . $i . '">&#9733;</span>';
+        } else {
+            echo '<span class="star star-' . $i . '">&#9734;</span>';
+        }
+    }
+
+    echo "</p>";
+}?>
             <h2>Leave a comment</h2>
             <?php
 if (!isset($_SESSION['id'])) {
