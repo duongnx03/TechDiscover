@@ -34,8 +34,7 @@ if (isset($_GET['blog_id'])) {
                             <div class="card-footer text-muted text-center">
                                 <a href="#"><?php echo $categoryName; ?></a> /
                                 <?php echo $detail['blog_date']; ?> /
-                                <a href="https://github.com/duongnx03"><?php echo $detail['blog_author']; ?></a> /
-                                <a href="#"><?php echo $detail['blog_tags']; ?></a>
+                                <a href="https://github.com/duongnx03"><?php echo $detail['blog_author']; ?></a>
                             </div>
                         </div>
                     </div>
