@@ -89,7 +89,7 @@ $categories = $blog->getCategories();
                         <?php
                         $categoryName = $blog->getCategoryNameById($blogItem['blog_cate_id']);
                         ?>
-                        <a href="category.php?category_id=<?= $blogItem['blog_cate_id']; ?>"><?= $categoryName; ?></a> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?> / <a href=""><?= $blogItem['blog_tags']; ?></a>
+                        <a href="category.php?category_id=<?= $blogItem['blog_cate_id']; ?>"><?= $categoryName; ?></a> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?></a>
                     </div>
                 </div>
             <?php endforeach; ?>

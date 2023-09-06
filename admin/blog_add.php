@@ -16,12 +16,67 @@ $blog = new Blog;
 
 $categories = $blog->show_categories();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $insert_blog = $blog->insert_blog($_POST);
+$errors = []; // Mảng lưu trữ thông báo lỗi
 
-    if ($insert_blog) {
-        echo "<script>window.location.href = 'bloglist.php';</script>";
-        exit; // Thêm dòng này để ngăn tạo ra mã HTML nữa
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Kiểm tra và xử lý dữ liệu đầu vào
+    $blog_title = $_POST['blog_title'];
+    $blog_author = $_POST['blog_author'];
+    $blog_content = $_POST['blog_content'];
+
+    // Kiểm tra tiêu đề
+    if (empty($blog_title)) {
+        $errors[] = "Blog title is required.";
+    } elseif (strlen($blog_title) > 200) {
+        $errors[] = "Blog title should not exceed 200 characters.";
+    }else {
+        // Kiểm tra xem tiêu đề đã tồn tại trong cơ sở dữ liệu chưa
+        $existingBlog = $blog->get_blog_by_title($blog_title);
+        if ($existingBlog) {
+            $errors[] = "Blog with the same title already exists.";
+        }
+    }
+
+    // Kiểm tra tác giả
+    if (empty($blog_author)) {
+        $errors[] = "Blog author is required.";
+    } elseif (strlen($blog_author) > 50) {
+        $errors[] = "Blog author should not exceed 50 characters.";
+    }
+
+    // Kiểm tra nội dung
+    if (empty($blog_content)) {
+        $errors[] = "Blog content is required.";
+    } elseif (strlen($blog_content) < 100) {
+        $errors[] = "Blog content should be at least 100 characters long.";
+    }
+
+    // Kiểm tra và xử lý ảnh
+    $imageInput = $_FILES['blog_image'];
+    if (!empty($imageInput['name'])) {
+        $fileExtension = strtolower(pathinfo($imageInput['name'], PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        $maxFileSize = 5 * 1024 * 1024; // 5MB
+
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            $errors[] = "Invalid image format. Only JPG, JPEG, PNG, GIF, and WebP formats are allowed.";
+        }
+
+        if ($imageInput['size'] > $maxFileSize) {
+            $errors[] = "Image file size is too large. Maximum file size allowed is 5MB.";
+        }
+    } else {
+        $errors[] = "Blog image is required.";
+    }
+
+    // Nếu không có lỗi, thực hiện thêm blog
+    if (empty($errors)) {
+        $insert_blog = $blog->insert_blog($_POST);
+
+        if ($insert_blog) {
+            echo "<script>window.location.href = 'bloglist.php';</script>";
+            exit; // Thêm dòng này để ngăn tạo ra mã HTML nữa
+        }
     }
 }
 ?>
@@ -34,6 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="admin-content-right-product-add row">
             <form action="" method="POST" enctype="multipart/form-data">
+
+                <?php
+                // Hiển thị thông báo lỗi (nếu có)
+                if (!empty($errors)) {
+                    echo '<div class="alert alert-danger">';
+                    foreach ($errors as $error) {
+                        echo '<p>' . $error . '</p>';
+                    }
+                    echo '</div>';
+                }
+                ?>
 
                 <div class="form-group">
                     <label for="blog_cate_id">Select Blog Category <span style="color:red;">*</span></label>
@@ -65,17 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="blog_tags">Blog Tags: <span style="color:red;"></span></label>
-                    <input name="blog_tags" type="text" class="form-control">
-                </div>
-
-                <div class="form-group">
                     <label for="blog_image">Blog Image:<span style="color:red;">*</span></label>
                     <input required name="blog_image" type="file" class="form-control" onchange="previewImage(this, 'previewBlogImg'); validateImage(this);">
                     <img id="previewBlogImg" src="" alt="Preview Image" style="max-width: 200px; max-height: 200px; display: none;"><br>
-                </div>
-                <div class="error-messages">
-                    <!-- Dùng để hiển thị thông báo lỗi -->
                 </div>
 
                 <div class="form-group">
@@ -104,100 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Hàm kiểm tra định dạng và dung lượng của ảnh
-    function validateImage(input) {
-        var errorMessagesContainer = document.querySelector('.error-messages');
-        errorMessagesContainer.innerHTML = '';
-
-        var file = input.files[0];
-        if (file) {
-            // Kiểm tra định dạng ảnh
-            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-            var fileExtension = file.name.split('.').pop().toLowerCase();
-
-            if (!allowedExtensions.includes(fileExtension)) {
-                var errorMessage = document.createElement('div');
-                errorMessage.innerText = "Định dạng đuôi ảnh không hợp lệ. Chỉ chấp nhận định dạng jpg, jpeg, png, gif, webp.";
-                errorMessagesContainer.appendChild(errorMessage);
-                input.value = ''; // Xóa giá trị của trường input
-                return;
-            }
-
-            // Kiểm tra dung lượng ảnh
-            var maxFileSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxFileSize) {
-                var errorMessage = document.createElement('div');
-                errorMessage.innerText = "Dung lượng ảnh quá lớn. Chỉ chấp nhận ảnh có dung lượng tối đa là 5MB.";
-                errorMessagesContainer.appendChild(errorMessage);
-                input.value = ''; // Xóa giá trị của trường input
-                return;
-            }
-        }
-    }
-
     $('#summernote_content').summernote({
         placeholder: 'Enter Blog Content',
         tabsize: 2,
         height: 200
     });
-
-    function validateBlogForm() {
-        var title = document.getElementById("blog_title").value.trim();
-        var author = document.getElementById("blog_author").value.trim();
-        var content = document.getElementById("summernote_content").value.trim();
-        var imageInput = document.querySelector('input[type="file"]');
-
-        // Kiểm tra tiêu đề
-        if (title === "") {
-            alert("Blog title is required.");
-            return false;
-        } else if (title.length > 200) {
-            alert("Blog title should not exceed 200 characters.");
-            return false;
-        }
-
-        // Kiểm tra tác giả
-        if (author === "") {
-            alert("Blog author is required.");
-            return false;
-        } else if (author.length > 50) {
-            alert("Blog author should not exceed 50 characters.");
-            return false;
-        }
-
-        // Kiểm tra nội dung
-        if (content === "") {
-            alert("Blog content is required.");
-            return false;
-        } else if (content.length < 100) {
-            alert("Blog content should be at least 100 characters long.");
-            return false;
-        }
-
-        // Kiểm tra định dạng và kích thước ảnh
-        if (imageInput.files.length > 0) {
-            var file = imageInput.files[0];
-            var allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-            var fileExtension = file.name.split('.').pop().toLowerCase();
-            var maxFileSize = 5 * 1024 * 1024; // 5MB
-
-            if (!allowedExtensions.includes(fileExtension)) {
-                alert("Invalid image format. Only JPG, JPEG, PNG, GIF, and WebP formats are allowed.");
-                return false;
-            }
-
-            if (file.size > maxFileSize) {
-                alert("Image file size is too large. Maximum file size allowed is 5MB.");
-                return false;
-            }
-        } else {
-            alert("Blog image is required.");
-            return false;
-        }
-
-        // Chấp nhận việc gửi form nếu tất cả kiểm tra thành công
-        return true;
-    }
 </script>
 
 <?php

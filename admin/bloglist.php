@@ -124,8 +124,6 @@ if (!empty($categoryFilter) && !empty($authorFilter)) {
                         <th scope="col">Blog Title</th>
                         <th scope="col">Date</th>
                         <th scope="col">Author</th>
-                        <th scope="col">Content</th>
-                        <th scope="col">Tags</th>
                         <th scope="col">Image</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -141,8 +139,6 @@ if (!empty($categoryFilter) && !empty($authorFilter)) {
                                 <td><?php echo htmlspecialchars($result['blog_title']) ?></td>
                                 <td><?php echo $result['blog_date'] ?></td>
                                 <td><?php echo htmlspecialchars($result['blog_author']) ?></td>
-                                <td><?php echo substr(strip_tags($result['blog_content']), 0, 100) . '...' ?></td>
-                                <td><?php echo htmlspecialchars($result['blog_tags']) ?></td>
                                 <td>
                                     <img src="uploads/<?php echo $result['blog_image'] ?>" alt="Blog Image" style="max-width: 100px;">
                                 </td>

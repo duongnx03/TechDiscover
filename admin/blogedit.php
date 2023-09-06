@@ -16,29 +16,72 @@ $blog = new Blog;
 
 $categories = $blog->show_categories();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Xử lý khi gửi biểu mẫu chỉnh sửa bài viết blog
-    $update_blog = $blog->update_blog($_POST, $_GET['blog_id']);
+$errors = []; // Mảng lưu trữ thông báo lỗi
 
-    if ($update_blog) {
-        echo "<script>window.location.href = 'bloglist.php';</script>";
-        exit; // Ngăn tạo ra mã HTML thêm
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Kiểm tra và xử lý dữ liệu đầu vào
+    $blog_title = $_POST['blog_title'];
+    $blog_author = $_POST['blog_author'];
+    $blog_content = $_POST['blog_content'];
+
+    // Kiểm tra tiêu đề
+    if (empty($blog_title)) {
+        $errors[] = "Blog title is required.";
+    } elseif (strlen($blog_title) > 200) {
+        $errors[] = "Blog title should not exceed 200 characters.";
     }
-} elseif (isset($_GET['blog_id']) && !empty($_GET['blog_id'])) {
-    // Xử lý khi tải biểu mẫu chỉnh sửa bài viết blog
-    $blog_id = $_GET['blog_id'];
-    $blog_data = $blog->get_blog_detail($blog_id);
-    if (!$blog_data) {
-        echo "<script>alert('Blog not found.');</script>";
-        echo "<script>window.location.href = 'bloglist.php';</script>";
-        exit; // Ngăn tạo ra mã HTML thêm
+
+    // Kiểm tra tác giả
+    if (empty($blog_author)) {
+        $errors[] = "Blog author is required.";
+    } elseif (strlen($blog_author) > 50) {
+        $errors[] = "Blog author should not exceed 50 characters.";
     }
-    $blog_data = $blog_data->fetch_assoc();
-} else {
-    echo "<script>alert('Invalid blog ID.');</script>";
-    echo "<script>window.location.href = 'bloglist.php';</script>";
-    exit; // Ngăn tạo ra mã HTML thêm
+
+    // Kiểm tra nội dung
+    if (empty($blog_content)) {
+        $errors[] = "Blog content is required.";
+    } elseif (strlen($blog_content) < 100) {
+        $errors[] = "Blog content should be at least 100 characters long.";
+    }
+
+    // Kiểm tra và xử lý ảnh
+    $imageInput = $_FILES['blog_image'];
+    if (!empty($imageInput['name'])) {
+        $fileExtension = strtolower(pathinfo($imageInput['name'], PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        $maxFileSize = 5 * 1024 * 1024; // 5MB
+
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            $errors[] = "Invalid image format. Only JPG, JPEG, PNG, GIF, and WebP formats are allowed.";
+        }
+
+        if ($imageInput['size'] > $maxFileSize) {
+            $errors[] = "Image file size is too large. Maximum file size allowed is 5MB.";
+        }
+    }
+
+    // Nếu không có lỗi, thực hiện cập nhật blog
+    if (empty($errors)) {
+        $update_blog = $blog->update_blog($_POST, $_GET['blog_id']);
+
+        if ($update_blog) {
+            echo "<script>window.location.href = 'bloglist.php';</script>";
+            exit; // Thêm dòng này để ngăn tạo ra mã HTML nữa
+        }
+    }
 }
+
+$blog_id = $_GET['blog_id'];
+$blog_data = $blog->get_blog_detail($blog_id);
+
+if (!$blog_data) {
+    echo "<script>alert('Blog not found.');</script>";
+    echo "<script>window.location.href = 'bloglist.php';</script>";
+    exit;
+}
+
+$blog_data = $blog_data->fetch_assoc();
 ?>
 
 <div class="container-fluid pt-4 px-4">
@@ -49,6 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="admin-content-right-product-add row">
             <form action="" method="POST" enctype="multipart/form-data">
+                <?php
+                // Hiển thị thông báo lỗi (nếu có)
+                if (!empty($errors)) {
+                    echo '<div class="alert alert-danger">';
+                    foreach ($errors as $error) {
+                        echo '<p>' . $error . '</p>';
+                    }
+                    echo '</div>';
+                }
+                ?>
+                
                 <div class="form-group">
                     <label for="blog_cate_id">Select Blog Category <span style="color:red;">*</span></label>
                     <select name="blog_cate_id" id="blog_cate_id" class="form-control" required>
@@ -80,19 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="blog_tags">Blog Tags: <span style="color:red;">*</span></label>
-                    <input name="blog_tags" type="text" class="form-control" value="<?php echo $blog_data['blog_tags']; ?>">
-                </div>
-
-                <div class="form-group">
                     <label for="blog_image">Blog Image: (Leave blank to keep the current image)</label>
                     <input name="blog_image" id="blog_image" type="file" class="form-control" accept="image/*" onchange="previewImage(this, 'previewBlogImg')">
                     <img id="previewBlogImg" src="uploads/<?php echo $blog_data['blog_image']; ?>" alt="" style="max-width: 200px; max-height: 200px; display: block;"><br>
                 </div>
 
-                <div class="error-messages">
-                    <!-- Dùng để hiển thị thông báo lỗi -->
-                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>

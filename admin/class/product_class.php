@@ -106,11 +106,11 @@ class product
         if (empty($brand_id)) {
             $errors[] = "Please select the brand.";
         }
-        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 5000) {
-            $errors[] = "Invalid product price.";
+        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 10000) {
+            $errors[] = "Invalid product price, Price must be lower than 10000.";
         }
-        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 5000) {
-            $errors[] = "Invalid sale price.";
+        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 10000) {
+            $errors[] = "Invalid sale price, price must be lower than 10000.";
         }
         if (empty($product_color)) {
             $errors[] = "Color cannot be empty.";
@@ -259,10 +259,10 @@ class product
         if (empty($brand_id)) {
             $errors[] = "Please select the brand.";
         }
-        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 5000) {
+        if (empty($product_price) || !is_numeric($product_price) || $product_price <= 0 || $product_price >= 10000) {
             $errors[] = "Invalid product price.";
         }
-        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 5000) {
+        if (empty($product_price_sale) || !is_numeric($product_price_sale) || $product_price_sale < 0 || $product_price_sale >= 10000) {
             $errors[] = "Invalid sale price.";
         }
         if (empty($product_color)) {

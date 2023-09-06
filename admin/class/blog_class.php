@@ -74,6 +74,14 @@ class Blog
         return false;
     }
 
+    public function get_blog_by_title($blog_title)
+{
+    // Kết nối đến cơ sở dữ liệu và thực hiện truy vấn để lấy thông tin blog dựa trên tiêu đề
+    $query = "SELECT * FROM tbl_blog WHERE blog_title = '$blog_title'";
+    $result = $this->db->select($query);
+    return $result;
+}
+
     public function isBlogTitleExists($blog_title, $exclude_id = null)
     {
         // Get the database connection from your Database class
@@ -125,13 +133,12 @@ class Blog
         $blog_author = $post_data['blog_author'];
         $blog_date = $post_data['blog_date'];
         $blog_content = $post_data['blog_content'];
-        $blog_tags = $post_data['blog_tags'];
         $blog_image = $_FILES['blog_image']['name'];
         move_uploaded_file($_FILES['blog_image']['tmp_name'], "uploads/" . $_FILES['blog_image']['name']);
 
         $query = "INSERT INTO tbl_blog 
-            (blog_title, blog_cate_id, blog_author, blog_date, blog_content, blog_tags, blog_image) 
-            VALUES ('$blog_title', '$blog_cate_id', '$blog_author', '$blog_date', '$blog_content', '$blog_tags', '$blog_image')";
+            (blog_title, blog_cate_id, blog_author, blog_date, blog_content, blog_image) 
+            VALUES ('$blog_title', '$blog_cate_id', '$blog_author', '$blog_date', '$blog_content', '$blog_image')";
         $result = $this->db->insert($query);
         header('Location: bloglist.php');
         return $result;
@@ -166,7 +173,6 @@ class Blog
         $blog_author = $post_data['blog_author'];
         $blog_date = $post_data['blog_date'];
         $blog_content = $post_data['blog_content'];
-        $blog_tags = $post_data['blog_tags'];
 
         // Lấy tên file ảnh hiện tại của blog
         $current_blog_image = $this->get_blog_image_by_id($blog_id);
@@ -194,7 +200,6 @@ class Blog
               blog_date = '$blog_date', 
               blog_author = '$blog_author', 
               blog_content = '$blog_content', 
-              blog_tags = '$blog_tags',
               blog_image = '$blog_image'
           WHERE blog_id = '$blog_id'";
 
