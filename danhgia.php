@@ -1,5 +1,6 @@
 <?php
 $danhgia = new danhgia();
+$hasSubmitted = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once 'admin/database.php'; // Đảm bảo đường dẫn đúng
 
@@ -15,10 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $submission_query = "SELECT danhgia_id FROM danhgia WHERE user_id = $user_id AND product_id = $product_id";
     $submission_result = $db->select($submission_query);
     if ($submission_result && $submission_result->num_rows > 0) {
-        // Người dùng đã submit rồi, không thực hiện gì cả
+        // Người dùng đã đánh giá rồi, không thực hiện gì cả
         $hasSubmitted = true;
     } else {
-        // Người dùng chưa submit, thực hiện lưu đánh giá mới
+        // Người dùng chưa đánh giá, thực hiện lưu đánh giá mới
         $insert_result = $danhgia->insert_danhgia(null, $product_id, $user_id, '', '', $rating, $comment, $created_at);
         if ($insert_result) {
             $hasSubmitted = true;
@@ -177,10 +178,7 @@ function validateSurveyForm() {
         alert('Please select a rating before submitting.');
         return false;
     }
-    if($hasSubmitted = true){
-        alert('You have already submitted a review for this product.');
-        return false;
-    }
+    
 }
 </script>
 </head>
@@ -243,13 +241,15 @@ function validateSurveyForm() {
             <?php
 if (!isset($_SESSION['id'])) {
     echo "<p>You need to <big><b><a href='login.php'>Login</a></b></big> to leave a comment.</p>";
+} elseif ($hasSubmitted) {
+    echo "<p>You have already reviewed this product.</p>";
 } else {
     // Check if user has purchased the product
     $product_id = isset($_GET['id']) ? $_GET['id'] : null;
     $user_id = $_SESSION['id'];
 
     // Check if the user has purchased the product
-    $purchase_query = "SELECT * FROM tbl_order_items WHERE product_id = $product_id";
+    $purchase_query = "SELECT * FROM tbl_order_items WHERE user_id = $user_id AND product_id = $product_id";
     $purchase_result = $db->select($purchase_query);
 
     if ($purchase_result && $purchase_result->num_rows > 0) {
@@ -257,14 +257,14 @@ if (!isset($_SESSION['id'])) {
         $order_id = $purchase_data['order_id'];
 
         // Check if the order status is 'delivered'
-        $order_status_query = "SELECT * FROM tbl_order WHERE order_id = $order_id AND order_status = 'delivered'";
+        $order_status_query = "SELECT * FROM tbl_order WHERE order_id = $order_id AND order_status = 'delivered' AND user_id = $user_id";
         $order_status_result = $db->select($order_status_query);
 
         if ($order_status_result && $order_status_result->num_rows > 0) {
   // User can leave a review
   ?>
   <!-- Review form -->
-  <form class="review-form" action="" method="POST">
+  <form class="review-form" action="" method="POST"  onsubmit="return validateSurveyForm();">
       <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
       <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
                 <!-- <label for="name">Name:</label>
@@ -287,7 +287,7 @@ if (!isset($_SESSION['id'])) {
                 <label for="comment">Comment:</label>
                 <textarea name="comment" rows="4" required></textarea>
                 <br>
-                <button class="send" type="submit" name="submit_danhgia" onclick="return validateSurveyForm();">Send</button>
+                <button class="send" type="submit" name="submit_danhgia">Send</button>
             </form>
             <?php
         } else {
