@@ -65,8 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $product_img = $item['product_img'];
             $product_id = $item['product_id'];
             $product_price = $item['product_price'];
-            $order_query = ("insert into tbl_order_items (order_id, product_img, product_name, product_color, product_memory_ram, quantity, product_id, product_price) values 
-            ($order_id, '$product_img', '$product_name', '$product_color', '$product_memory_ram', $quantity, $product_id, $product_price)");
+            $order_query = ("insert into tbl_order_items (order_id, product_img, product_name, product_color, product_memory_ram, quantity, product_id, product_price, user_id) values 
+            ($order_id, '$product_img', '$product_name', '$product_color', '$product_memory_ram', $quantity, $product_id, $product_price, $user_id)");
             $order_result = $database->insert($order_query);
             $select_product = "SELECT product_quantity FROM tbl_product WHERE product_id = $product_id";
             $result_product = $database->select($select_product);
