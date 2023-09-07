@@ -3,14 +3,13 @@ include "header.php";
 include "navbar.php";
 include "admin/class/blog_class.php";
 
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 $blog = new Blog();
 $limit = 4; // Số lượng blog trên mỗi trang
+$blogs = array(); // Khởi tạo mảng bài viết rỗng
 
 // Xử lý tìm kiếm theo tiêu đề
 if (isset($_POST['search'])) {
@@ -68,37 +67,51 @@ $categories = $blog->getCategories();
                 <h5 class="card-header">Recent Posts</h5>
                 <div class="card-body">
                     <ul class="list-unstyled">
-                        <?php foreach ($blogs as $blogItem) : ?>
+                        <?php if (!empty($blogs)) : ?>
+                            <?php foreach ($blogs as $blogItem) : ?>
+                                <li>
+                                    <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>">
+                                        <h6><?= $blogItem['blog_title']; ?></h6>
+                                        <p class="small">Posted on <?= $blogItem['blog_date']; ?> by <?= $blogItem['blog_author']; ?></p>
+                                    </a>
+                                </li>
+                                <br>
+                            <?php endforeach; ?>
+                        <?php else : ?>
                             <li>
-                                <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>">
-                                    <h6><?= $blogItem['blog_title']; ?></h6>
-                                    <p class="small">Posted on <?= $blogItem['blog_date']; ?> by <?= $blogItem['blog_author']; ?></p>
-                                </a>
+                                <p>No blogs found.</p>
                             </li>
-                            <br>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="col-md-8">
-            <?php foreach ($blogs as $blogItem) : ?>
-                <div class="card mb-4">
-                    <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><img class="card-img-top" src="admin/uploads/<?= $blogItem['blog_image']; ?>" alt="<?= $blogItem['blog_title']; ?>"></a>
-                    <div class="card-body text-center">
-                        <h2 class="card-title"><a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><?= $blogItem['blog_title']; ?></a></h2>
-                        <p class="card-text"><?php echo substr(strip_tags($blogItem['blog_content']), 0, 298) . '...' ?></p>
-                        <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>" class="btn btn-primary">Read More &rarr;</a>
+            <?php if (!empty($blogs)) : ?>
+                <?php foreach ($blogs as $blogItem) : ?>
+                    <div class="card mb-4">
+                        <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><img class="card-img-top" src="admin/uploads/<?= $blogItem['blog_image']; ?>" alt="<?= $blogItem['blog_title']; ?>"></a>
+                        <div class="card-body text-center">
+                            <h2 class="card-title"><a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>"><?= $blogItem['blog_title']; ?></a></h2>
+                            <p class="card-text"><?php echo substr(strip_tags($blogItem['blog_content']), 0, 298) . '...' ?></p>
+                            <a href="blog-detail.php?blog_id=<?= $blogItem['blog_id']; ?>" class="btn btn-primary">Read More &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted text-center">
+                            <?php
+                            $categoryName = $blog->getCategoryNameById($blogItem['blog_cate_id']);
+                            ?>
+                            <a href="category.php?category_id=<?= $blogItem['blog_cate_id']; ?>"><?= $categoryName; ?></a> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?></a>
+                        </div>
                     </div>
-                    <div class="card-footer text-muted text-center">
-                        <?php
-                        $categoryName = $blog->getCategoryNameById($blogItem['blog_cate_id']);
-                        ?>
-                        <a href="category.php?category_id=<?= $blogItem['blog_cate_id']; ?>"><?= $categoryName; ?></a> / <?= $blogItem['blog_date']; ?> / <a href=""><?= $blogItem['blog_author']; ?></a>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">No blogs found.</h5>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endif; ?>
 
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
