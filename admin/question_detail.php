@@ -20,6 +20,7 @@ $questions = $question->show_question();
         background-color: #f4f4f4;
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        color: black;
     }
 
     h1 {

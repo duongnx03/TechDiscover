@@ -3,6 +3,12 @@ include "header.php";
 include "navbar.php";
 include "admin/class/blog_class.php";
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 $blog = new Blog();
 $limit = 4; // Số lượng blog trên mỗi trang
 
@@ -19,10 +25,10 @@ if (isset($_POST['search'])) {
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $offset = ($page - 1) * $limit;
     $totalBlogs = $blog->countBlogs();
-    $totalPages = ceil($totalBlogs / $limit);
     $blogs = $blog->getBlogsPaginated($offset, $limit);
 }
 
+$totalPages = ceil($totalBlogs / $limit);
 $categories = $blog->getCategories();
 ?>
 
@@ -40,7 +46,7 @@ $categories = $blog->getCategories();
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search for...">
                             <span class="input-group-btn">
-                                <button class="btn btn-secondary" type="submit">Go</button>
+                                <button class="btn btn-secondary" type="submit">Search</button>
                             </span>
                         </div>
                     </form>
